@@ -1,0 +1,9 @@
+node_modules
+.agents
+android
+__pycache__
+DESIGN.md
+.vite
+package-lock.json
+.nvmrc
+/dist

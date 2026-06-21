@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased text-[#1d1d1f] bg-[#f5f5f7] dark:bg-black transition-colors duration-200;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+/* --- Fantasy RPG & Gacha UI Custom Classes --- */
+
+/* Font Helpers */
+.font-gacha {
+  font-family: 'Outfit', sans-serif;
+}
+.font-fantasy {
+  font-family: 'Cinzel', serif;
+}
+
+/* RPG Panels & Cards */
+.rpg-panel {
+  @apply bg-white dark:bg-[#1a1a24] border border-[#e0e0e0] dark:border-[#d4af37]/30 rounded-[18px] transition-all;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+.rpg-panel-active {
+  @apply border-[#0066cc] dark:border-[#d4af37] ring-1 ring-[#0066cc]/20 dark:ring-[#d4af37]/20;
+}
+
+/* Gold Trims & Corner accents */
+.rpg-gold-trim {
+  @apply border-[#d4af37] dark:border-[#d4af37]/60 shadow-[0_0_15px_rgba(212,175,55,0.1)];
+}
+
+/* Rarity colors and glows */
+.rarity-5star {
+  @apply border-amber-400 dark:border-amber-400/80 shadow-[0_0_12px_rgba(245,158,11,0.2)] text-amber-600 dark:text-amber-400;
+}
+.rarity-4star {
+  @apply border-purple-400 dark:border-purple-400/80 shadow-[0_0_12px_rgba(168,85,247,0.2)] text-purple-600 dark:text-purple-400;
+}
+.rarity-3star {
+  @apply border-blue-400 dark:border-blue-400/80 shadow-[0_0_12px_rgba(59,130,246,0.2)] text-blue-600 dark:text-blue-400;
+}
+
+/* Health and Mana Bar styling */
+.rpg-stat-bar {
+  @apply h-2.5 rounded-full bg-neutral-200 dark:bg-neutral-800 overflow-hidden relative;
+}
+
+.rpg-stat-fill-hp {
+  @apply h-full bg-gradient-to-r from-red-500 to-rose-600 transition-all duration-500;
+}
+
+.rpg-stat-fill-mana {
+  @apply h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-500;
+}
+
+/* Gacha 3D Card Flip system */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* High Contrast accessibility theme */
+.high-contrast {
+  --color-text: #000000;
+  --color-bg: #ffffff;
+  --color-correct: #006400;
+  --color-wrong: #8b0000;
+  
+  color-scheme: light !important;
+}
+
+.high-contrast body {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.high-contrast .bg-white {
+  background-color: #ffffff !important;
+}
+
+.high-contrast .text-slate-500,
+.high-contrast .text-slate-600 {
+  color: #000000 !important;
+}
+
+.high-contrast .text-brand-600,
+.high-contrast .text-brand-500 {
+  color: #0000d8 !important;
+  font-weight: 700 !important;
+}
+
+.high-contrast .bg-brand-50,
+.high-contrast .bg-brand-100 {
+  background-color: #f0f9ff !important;
+  border: 2px solid #000000 !important;
+}
+
+.high-contrast .bg-brand-500,
+.high-contrast .bg-brand-600 {
+  background-color: #0000d8 !important;
+  color: #ffffff !important;
+}
+
+.high-contrast .text-correct {
+  color: #006400 !important;
+  font-weight: 700 !important;
+}
+
+.high-contrast .text-wrong {
+  color: #8b0000 !important;
+  font-weight: 700 !important;
+}
+
+.high-contrast .bg-correct {
+  background-color: #006400 !important;
+  color: #ffffff !important;
+}
+
+.high-contrast .bg-wrong {
+  background-color: #8b0000 !important;
+  color: #ffffff !important;
+}
+
+/* Accessible focus outline */
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #0071e3;
+  outline-offset: 2px;
+}
+
+/* Animation controls for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+    transition-delay: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+  transition-delay: 0s !important;
+  animation-delay: 0s !important;
+}
