@@ -234,6 +234,7 @@ export const id = {
     receiptTitle: 'STRUK TRANSAKSI',
     receiptItem: '{name} × {qty}',
     tipTitle: 'Tips Hitung Cepat',
+    tipsLabel: 'Tips',
     tipTotalTitle: 'Hitung Cepat Total Belanja',
     tipChangeTitle: 'Hitung Cepat Uang Kembalian',
     tipZeroTitle: 'Sembunyikan Nol Tiga',
@@ -246,6 +247,8 @@ export const id = {
     tipChangeDirect: 'Hitung langsung selisihnya: Rp{pay} - Rp{total} = Rp{change}.',
     shopTitle: 'Toko Koin Warung',
     shopCoinsCount: 'Koinmu: 🪙 {count}',
+    shopCoins: '🪙 {count} koin',
+    shopFree: 'Gratis',
     shopBuyBtn: 'Beli ({cost} Koin)',
     shopEquipBtn: 'Pakai',
     shopEquipped: 'Dipakai',
@@ -265,6 +268,17 @@ export const id = {
     labelTotal: 'TOTAL',
     labelChange: 'KEMBALIAN',
     receiptCustomer: 'Pelanggan #{id}',
+    gameMode: 'Mode Permainan',
+    introRule1: 'Hitung total harga belanjaan pelanggan',
+    introRule2: 'Hitung uang kembalian yang tepat',
+    introRule3: '5 pelanggan per sesi',
+    introRule4: 'Tekan tombol Tips jika butuh bantuan',
+    difficultyLabel: 'Tingkat Kesulitan',
+    introItemsEasy: ' · 2 item',
+    introItemsMedium: ' · 3 item + kupon',
+    introItemsHard: ' · 4 item + kupon',
+    btnBack: 'Kembali',
+    btnStart: '🏪 Mulai!',
     items: {
       rice: "Beras Super",
       rice_medium: "Beras Medium",
@@ -354,6 +368,15 @@ export const id = {
     reloadButton: 'Muat Ulang',
   },
 } as const;
+
+export const CUSTOMER_POOL_ID = [
+  { name: 'Bu Ani', avatar: '👩‍🍳', dialogueTotal: 'Permisi, tolong totalkan belanjaan saya ya.', dialogueChange: 'Ini uangnya, kembaliannya berapa ya?' },
+  { name: 'Pak Eko', avatar: '👨‍💼', dialogueTotal: 'Berapa total harga barang-barang ini?', dialogueChange: 'Saya bayar pakai uang ini, tolong kembaliannya.' },
+  { name: 'Nenek Siti', avatar: '👵', dialogueTotal: 'Tolong dihitung ya cu, nenek mau bayar belanjaan ini.', dialogueChange: 'Ini uang nenek, tolong hitungkan kembaliannya.' },
+  { name: 'Mang Udin', avatar: '👨‍🌾', dialogueTotal: 'Tolong ditotal semuanya ya, mau langsung jalan.', dialogueChange: 'Ini uangnya, kembaliannya berapa, Kiko?' },
+  { name: 'Adik Budi', avatar: '👦', dialogueTotal: 'Kiko, tolong hitung total es teh dan jajananku.', dialogueChange: 'Ini uang dari ibuku, tolong kembaliannya ya.' },
+  { name: 'Teh Sarah', avatar: '👩', dialogueTotal: 'Halo Kiko, tolong ditotal belanjaan bulanan saya.', dialogueChange: 'Ini uangnya, tolong kembaliannya ya.' }
+];
 
 type DeepString<T> = {
   [K in keyof T]: T[K] extends object ? DeepString<T[K]> : string;

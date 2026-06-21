@@ -3,11 +3,31 @@ import { m, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, Check, Lightbulb, X } from 'lucide-react';
 import { SessionState, SessionAction } from '../types';
 import { useTranslation } from '../hooks/useTranslation';
+import { CUSTOMER_POOL_ID } from '../i18n/id';
+import { CUSTOMER_POOL_EN } from '../i18n/en';
 import MathPet from './MathPet';
 import NumPad from './NumPad';
 import { playCorrectSound, playWrongSound } from '../utils/soundEngine';
 import { triggerHaptic } from '../utils/hapticEngine';
 import { ImpactStyle } from '@capacitor/haptics';
+
+// --- 3D Claymorphism grocery items assets ---
+import riceImg from '../assets/items/rice.png';
+import eggsImg from '../assets/items/eggs.png';
+import oilImg from '../assets/items/oil.png';
+import sugarImg from '../assets/items/sugar.png';
+import waterGalImg from '../assets/items/water_gal.png';
+import noodlesImg from '../assets/items/noodles.png';
+import crackerImg from '../assets/items/cracker.png';
+import biscuitImg from '../assets/items/biscuit.png';
+import chipsImg from '../assets/items/chips.png';
+import tempehImg from '../assets/items/tempeh.png';
+import bananaImg from '../assets/items/banana.png';
+import teaImg from '../assets/items/tea.png';
+import coffeeImg from '../assets/items/coffee.png';
+import milkImg from '../assets/items/milk.png';
+import sodaImg from '../assets/items/soda.png';
+import soapImg from '../assets/items/soap.png';
 
 interface WarungBoardProps {
   state: SessionState;
@@ -43,46 +63,46 @@ interface WarungItem {
 
 const ITEM_POOL = [
   // === Makanan Pokok ===
-  { key: 'rice', basePrice: 15000, icon: '🌾' },
-  { key: 'rice_medium', basePrice: 13000, icon: '🌾' },
+  { key: 'rice', basePrice: 15000, icon: riceImg },
+  { key: 'rice_medium', basePrice: 13000, icon: riceImg },
   { key: 'flour', basePrice: 11000, icon: '🥡' },
   { key: 'flour_sticky', basePrice: 14000, icon: '🥡' },
   { key: 'tapioca', basePrice: 12000, icon: '🥡' },
   { key: 'oat', basePrice: 18000, icon: '🥣' },
 
   // === Mie & Snack ===
-  { key: 'noodles', basePrice: 3500, icon: '🍜' },
-  { key: 'noodles_cup', basePrice: 5500, icon: '🍜' },
+  { key: 'noodles', basePrice: 3500, icon: noodlesImg },
+  { key: 'noodles_cup', basePrice: 5500, icon: noodlesImg },
   { key: 'bihun', basePrice: 4000, icon: '🍜' },
-  { key: 'cracker', basePrice: 1000, icon: '🍘' },
-  { key: 'cracker_prawn', basePrice: 15000, icon: '🍘' },
-  { key: 'biscuit', basePrice: 7500, icon: '🍪' },
-  { key: 'biscuit_cream', basePrice: 8500, icon: '🍪' },
+  { key: 'cracker', basePrice: 1000, icon: crackerImg },
+  { key: 'cracker_prawn', basePrice: 15000, icon: crackerImg },
+  { key: 'biscuit', basePrice: 7500, icon: biscuitImg },
+  { key: 'biscuit_cream', basePrice: 8500, icon: biscuitImg },
   { key: 'wafer', basePrice: 3000, icon: '🍫' },
-  { key: 'chips', basePrice: 6000, icon: '🍿' },
+  { key: 'chips', basePrice: 6000, icon: chipsImg },
   { key: 'permen', basePrice: 2000, icon: '🍬' },
   { key: 'coklat', basePrice: 10000, icon: '🍫' },
 
   // === Minuman ===
   { key: 'water', basePrice: 4000, icon: '💧' },
-  { key: 'water_gal', basePrice: 6000, icon: '🪣' },
-  { key: 'tea', basePrice: 3000, icon: '🥤' },
+  { key: 'water_gal', basePrice: 6000, icon: waterGalImg },
+  { key: 'tea', basePrice: 3000, icon: teaImg },
   { key: 'teapack', basePrice: 6000, icon: '📦' },
-  { key: 'coffee', basePrice: 4000, icon: '☕' },
-  { key: 'coffee_sachet', basePrice: 2000, icon: '☕' },
-  { key: 'milk', basePrice: 6000, icon: '🥛' },
-  { key: 'milk_sweetened', basePrice: 12000, icon: '🥛' },
+  { key: 'coffee', basePrice: 4000, icon: coffeeImg },
+  { key: 'coffee_sachet', basePrice: 2000, icon: coffeeImg },
+  { key: 'milk', basePrice: 6000, icon: milkImg },
+  { key: 'milk_sweetened', basePrice: 12000, icon: milkImg },
   { key: 'syrup', basePrice: 22000, icon: '🍾' },
-  { key: 'soda', basePrice: 5000, icon: '🥤' },
+  { key: 'soda', basePrice: 5000, icon: sodaImg },
   { key: 'energy_drink', basePrice: 7000, icon: '⚡' },
   { key: 'juice_pack', basePrice: 8000, icon: '🧃' },
 
   // === Bumbu & Dapur ===
-  { key: 'sugar', basePrice: 17500, icon: '🍚' },
-  { key: 'sugar_palm', basePrice: 18000, icon: '🥮' },
+  { key: 'sugar', basePrice: 17500, icon: sugarImg },
+  { key: 'sugar_palm', basePrice: 18000, icon: sugarImg },
   { key: 'salt', basePrice: 3000, icon: '🧂' },
-  { key: 'oil', basePrice: 17000, icon: '🧴' },
-  { key: 'oil_coconut', basePrice: 28000, icon: '🧴' },
+  { key: 'oil', basePrice: 17000, icon: oilImg },
+  { key: 'oil_coconut', basePrice: 28000, icon: oilImg },
   { key: 'soy_sauce', basePrice: 10500, icon: '🍶' },
   { key: 'soy_sauce_salty', basePrice: 9000, icon: '🍶' },
   { key: 'chili_sauce', basePrice: 8500, icon: '🌶️' },
@@ -94,23 +114,23 @@ const ITEM_POOL = [
   { key: 'bumbu_racik', basePrice: 2500, icon: '🧂' },
 
   // === Telur & Protein ===
-  { key: 'eggs', basePrice: 2500, icon: '🥚' },
+  { key: 'eggs', basePrice: 2500, icon: eggsImg },
   { key: 'eggs_quail', basePrice: 12000, icon: '🥚' },
   { key: 'sardine', basePrice: 11500, icon: '🥫' },
   { key: 'corned', basePrice: 24000, icon: '🥫' },
   { key: 'tofu', basePrice: 4000, icon: '⬜' },
-  { key: 'tempeh', basePrice: 6000, icon: '🪵' },
+  { key: 'tempeh', basePrice: 6000, icon: tempehImg },
 
   // === Makanan Siap Saji ===
-  { key: 'banana', basePrice: 1500, icon: '🍌' },
+  { key: 'banana', basePrice: 1500, icon: bananaImg },
   { key: 'gorengan', basePrice: 1500, icon: '🍘' },
   { key: 'bakso', basePrice: 1000, icon: '🍢' },
   { key: 'risol', basePrice: 2500, icon: '🥟' },
 
   // === Kebersihan & Perawatan ===
-  { key: 'soap', basePrice: 2500, icon: '🧼' },
-  { key: 'soap_dish', basePrice: 2000, icon: '🧼' },
-  { key: 'soap_body', basePrice: 3500, icon: '🧼' },
+  { key: 'soap', basePrice: 2500, icon: soapImg },
+  { key: 'soap_dish', basePrice: 2000, icon: soapImg },
+  { key: 'soap_body', basePrice: 3500, icon: soapImg },
   { key: 'shampoo', basePrice: 1000, icon: '🧼' },
   { key: 'toothpaste', basePrice: 6000, icon: '🪥' },
   { key: 'detergent', basePrice: 2000, icon: '🧺' },
@@ -259,23 +279,7 @@ interface CustomerProfile {
   dialogueChange: string;
 }
 
-const CUSTOMER_POOL_ID = [
-  { name: 'Bu Ani', avatar: '👩‍🍳', dialogueTotal: 'Permisi, tolong totalkan belanjaan saya ya.', dialogueChange: 'Ini uangnya, kembaliannya berapa ya?' },
-  { name: 'Pak Eko', avatar: '👨‍💼', dialogueTotal: 'Berapa total harga barang-barang ini?', dialogueChange: 'Saya bayar pakai uang ini, tolong kembaliannya.' },
-  { name: 'Nenek Siti', avatar: '👵', dialogueTotal: 'Tolong dihitung ya cu, nenek mau bayar belanjaan ini.', dialogueChange: 'Ini uang nenek, tolong hitungkan kembaliannya.' },
-  { name: 'Mang Udin', avatar: '👨‍🌾', dialogueTotal: 'Tolong ditotal semuanya ya, mau langsung jalan.', dialogueChange: 'Ini uangnya, kembaliannya berapa, Kiko?' },
-  { name: 'Adik Budi', avatar: '👦', dialogueTotal: 'Kiko, tolong hitung total es teh dan jajananku.', dialogueChange: 'Ini uang dari ibuku, tolong kembaliannya ya.' },
-  { name: 'Teh Sarah', avatar: '👩', dialogueTotal: 'Halo Kiko, tolong ditotal belanjaan bulanan saya.', dialogueChange: 'Ini uangnya, tolong kembaliannya ya.' }
-];
-
-const CUSTOMER_POOL_EN = [
-  { name: 'Mrs. Ani', avatar: '👩‍🍳', dialogueTotal: 'Excuse me, please calculate my groceries.', dialogueChange: 'Here is the money, how much is my change?' },
-  { name: 'Mr. Eko', avatar: '👨‍💼', dialogueTotal: 'How much is the total for these items?', dialogueChange: "I'll pay with this banknote, please calculate the change." },
-  { name: 'Grandma Siti', avatar: '👵', dialogueTotal: 'Please total this up, dear. I want to pay.', dialogueChange: 'Here is my money, please calculate my change.' },
-  { name: 'Uncle Udin', avatar: '👨‍🌾', dialogueTotal: 'Please total everything up, I need to go soon.', dialogueChange: 'Here you go, how much change do I get, Kiko?' },
-  { name: 'Young Budi', avatar: '👦', dialogueTotal: 'Kiko, please calculate the total for my snacks.', dialogueChange: 'Here is the money from my mom, please return the change.' },
-  { name: 'Sarah', avatar: '👩', dialogueTotal: 'Hello Kiko, please total my monthly groceries.', dialogueChange: 'Here is the payment, please give me the correct change.' }
-];
+// Dialogue pool pools are imported from i18n files
 
 function generateRandomCustomer(language: string): CustomerProfile {
   const pool = language === 'en' ? CUSTOMER_POOL_EN : CUSTOMER_POOL_ID;
@@ -617,7 +621,7 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
                 <div key={item.id} className="flex justify-between border-b border-[#f5f5f7] dark:border-[#1d1d1f] pb-2 text-ink-muted">
                   <span className="font-semibold text-[#1d1d1f] dark:text-white">{t('warung.receiptCustomer', { id: item.id })}</span>
                   <span className="tabular-nums font-fantasy">
-                    Total: Rp{item.total.toLocaleString('id-ID')}
+                    {t('warung.labelTotal')}: Rp{item.total.toLocaleString('id-ID')}
                   </span>
                 </div>
               ))}
@@ -645,7 +649,7 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
             type="button"
             onClick={handleClaimReward}
             whileTap={{ scale: 0.95 }}
-            className="w-full py-3 rounded-[14px] text-[17px] font-semibold text-white bg-amber-500 hover:bg-amber-600 shadow-[0_4px_15px_rgba(245,158,11,0.35)] transition-all flex items-center justify-center min-h-[44px]"
+            className="btn-primary"
           >
             {t('warung.btnClaim')}
           </m.button>
@@ -682,7 +686,7 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
           type="button"
           onClick={() => dispatch({ type: 'BACK_TO_MENU' })}
           whileTap={{ scale: 0.95 }}
-          className="min-h-[40px] min-w-[40px] p-2 flex items-center justify-center rounded-full bg-[#f5f5f7] dark:bg-[#272729] hover:bg-[#e8e8ed] dark:hover:bg-[#323236] text-[#1d1d1f] dark:text-white transition border border-neutral-200 dark:border-neutral-700/30"
+          className="btn-icon"
           aria-label={t('settings.backButton')}
         >
           <ChevronLeft className="w-5 h-5" />
@@ -699,7 +703,7 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
             type="button"
             onClick={() => setShowShop(true)}
             whileTap={{ scale: 0.95 }}
-            className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900/50 rounded-full px-2.5 py-1 flex items-center gap-1 shrink-0 text-amber-700 dark:text-amber-400 text-xs font-bold transition shadow-sm"
+            className="coins-badge text-xs px-2.5 py-1"
           >
             <span>🪙</span>
             <span className="tabular-nums font-fantasy">{pet.coins || 0}</span>
@@ -768,7 +772,7 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
                     className="text-[9px] font-bold text-amber-500 hover:text-amber-600 flex items-center gap-0.5 hover:underline shrink-0"
                   >
                     <Lightbulb className="w-2.5 h-2.5 animate-pulse" />
-                    <span>Tips</span>
+                    <span>{t('warung.tipsLabel')}</span>
                   </button>
                 </div>
                 <div className="bg-[#fafafc] dark:bg-[#20202d] border border-neutral-200 dark:border-neutral-700/35 px-2 py-1 rounded-[8px] text-[9px] font-normal text-[#1d1d1f] dark:text-white/90 leading-snug mt-1 relative select-none">
@@ -793,8 +797,14 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
                     className="bg-white dark:bg-[#1a1a24] border border-neutral-200 dark:border-[#d4af37]/30 rounded-[14px] px-3 py-2.5 flex items-center gap-3 select-none shadow-[0_2px_8px_rgba(0,0,0,0.04)] transition-all"
                   >
                     {/* Icon */}
-                    <div className="w-10 h-10 bg-amber-50 dark:bg-amber-950/20 rounded-[10px] flex items-center justify-center text-2xl shrink-0 border border-amber-100 dark:border-amber-900/30">
-                      {item.icon}
+                    <div className="w-10 h-10 bg-amber-50 dark:bg-amber-950/20 rounded-[10px] flex items-center justify-center shrink-0 border border-amber-100 dark:border-amber-900/30 p-1 select-none">
+                      {!item.icon.includes('/') && !item.icon.includes('.') && !item.icon.startsWith('data:') ? (
+                        <span className="text-xl" role="img" aria-label={t(item.nameKey)}>
+                          {item.icon}
+                        </span>
+                      ) : (
+                        <img src={item.icon} alt={t(item.nameKey)} className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal" />
+                      )}
                     </div>
 
                     {/* Name + Unit Price */}
@@ -942,11 +952,7 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
           onClick={handleAnswerSubmit}
           disabled={!typedAnswer || isSubmitting}
           whileTap={typedAnswer && !isSubmitting ? { scale: 0.95 } : undefined}
-          className={`w-full py-3 rounded-[14px] text-[17px] font-bold text-white flex items-center justify-center min-h-[44px] transition-all ${
-            typedAnswer && !isSubmitting
-              ? 'bg-amber-500 hover:bg-amber-600 shadow-[0_4px_15px_rgba(245,158,11,0.35)]'
-              : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-600 border border-neutral-300 dark:border-neutral-700/50 cursor-not-allowed shadow-none'
-          }`}
+          className="btn-primary"
         >
           {t('game.submitButton')}
         </m.button>
@@ -1074,7 +1080,7 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
               <button
                 type="button"
                 onClick={() => setShowTips(false)}
-                className="w-full py-3 rounded-[14px] text-base font-bold text-white bg-amber-500 hover:bg-amber-600 shadow-[0_4px_15px_rgba(245,158,11,0.25)] text-center font-fantasy"
+                className="btn-primary font-fantasy"
               >
                 {t('warung.tipClose')}
               </button>
@@ -1147,7 +1153,7 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
                             {t(item.nameKey)}
                           </span>
                           <span className="text-[10px] text-ink-muted mt-0.5">
-                            {item.cost > 0 ? `🪙 ${item.cost} koin` : 'Gratis'}
+                            {item.cost > 0 ? t('warung.shopCoins', { count: item.cost }) : t('warung.shopFree')}
                           </span>
                         </div>
                       </div>

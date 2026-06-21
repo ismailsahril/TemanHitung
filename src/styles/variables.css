@@ -1,0 +1,94 @@
+/* src/styles/variables.css */
+
+:root {
+  /* --- Colors --- */
+  --color-brand-50: #f5f5f7;
+  --color-brand-100: #fafafc;
+  --color-brand-400: #2997ff;
+  --color-brand-500: #0066cc;
+  --color-brand-600: #0066cc;
+  --color-brand-700: #0071e3;
+
+  --color-ink: #1d1d1f;
+  --color-ink-muted: #7a7a7a;
+  --color-ink-muted80: #333333;
+
+  --color-canvas: #ffffff;
+  --color-canvas-parchment: #f5f5f7;
+
+  --color-tile-1: #ffffff;
+  --color-tile-2: #f5f5f7;
+  --color-tile-3: #fafafc;
+
+  --color-correct: #16a34a;
+  --color-wrong: #dc2626;
+  --color-tip: #d97706;
+  --color-surface: #f5f5f7;
+  
+  --color-rpg-gold: #d4af37;
+  --color-rpg-gold-glow: rgba(212, 175, 55, 0.2);
+
+  /* --- Borders & Radii --- */
+  --radius-button: 14px;
+  --radius-panel: 18px;
+  --radius-card: 20px;
+  --radius-input: 14px;
+
+  /* --- Font Sizes (Base: 16px) --- */
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-base: 15px;
+  --font-size-md: 17px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+  --font-size-title: 28px;
+  --font-size-giant: 38px;
+  --font-size-huge: 40px;
+
+  /* --- Accessibility & Layout --- */
+  --font-scale: 1;
+  --z-header: 10;
+  --z-overlay: 40;
+  --z-modal: 50;
+  --z-toast: 100;
+
+  /* --- Transitions & Animations --- */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease-in-out;
+  --transition-bounce: 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* --- Shadow & Glow Effects --- */
+  --shadow-gold-glow: 0 0 15px rgba(212, 175, 55, 0.25);
+  --shadow-primary-glow: 0 4px 15px rgba(0, 102, 204, 0.25);
+  --shadow-danger-glow: 0 4px 15px rgba(239, 68, 68, 0.25);
+  --shadow-success-glow: 0 4px 15px rgba(16, 185, 129, 0.25);
+}
+
+/* Dark Mode Overrides */
+.dark {
+  --color-brand-50: #1a1a24;
+  --color-brand-100: #121218;
+  --color-brand-400: #2997ff;
+  --color-brand-500: #d4af37; /* Amber/gold accent in dark mode */
+  --color-brand-600: #b5942d;
+  --color-brand-700: #d4af37;
+
+  --color-ink: #ffffff;
+  --color-ink-muted: #a1a1a6;
+  --color-ink-muted80: #e0e0e0;
+
+  --color-canvas: #121218;
+  --color-canvas-parchment: #1a1a24;
+
+  --color-tile-1: #272729;
+  --color-tile-2: #2a2a2c;
+  --color-tile-3: #252527;
+
+  --color-surface: #1a1a24;
+
+  /* --- Dark Mode Shadow & Glow Effects --- */
+  --shadow-gold-glow: 0 0 15px rgba(212, 175, 55, 0.35);
+  --shadow-primary-glow: 0 4px 15px rgba(212, 175, 55, 0.35);
+  --shadow-danger-glow: 0 4px 15px rgba(239, 68, 68, 0.35);
+  --shadow-success-glow: 0 4px 15px rgba(16, 185, 129, 0.35);
+}

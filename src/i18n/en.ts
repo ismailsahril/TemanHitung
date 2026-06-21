@@ -236,6 +236,7 @@ export const en: TranslationKey = {
     receiptTitle: 'TRANSACTION RECEIPT',
     receiptItem: '{name} × {qty}',
     tipTitle: 'Quick Cashier Tips',
+    tipsLabel: 'Tips',
     tipTotalTitle: 'Calculate Total Quickly',
     tipChangeTitle: 'Calculate Change Quickly',
     tipZeroTitle: 'Hide the Three Zeros',
@@ -248,6 +249,8 @@ export const en: TranslationKey = {
     tipChangeDirect: 'Calculate the direct difference: Rp{pay} - Rp{total} = Rp{change}.',
     shopTitle: 'Warung Coin Shop',
     shopCoinsCount: 'Your Coins: 🪙 {count}',
+    shopCoins: '🪙 {count} coins',
+    shopFree: 'Free',
     shopBuyBtn: 'Buy ({cost} Coins)',
     shopEquipBtn: 'Equip',
     shopEquipped: 'Equipped',
@@ -267,6 +270,17 @@ export const en: TranslationKey = {
     labelTotal: 'TOTAL',
     labelChange: 'CHANGE',
     receiptCustomer: 'Customer #{id}',
+    gameMode: 'Game Mode',
+    introRule1: 'Calculate the customer\'s total bill',
+    introRule2: 'Calculate the correct change due',
+    introRule3: '5 customers per session',
+    introRule4: 'Tap the Tips button if you need help',
+    difficultyLabel: 'Difficulty Level',
+    introItemsEasy: ' · 2 items',
+    introItemsMedium: ' · 3 items + coupon',
+    introItemsHard: ' · 4 items + coupon',
+    btnBack: 'Go Back',
+    btnStart: '🏪 Start!',
     items: {
       rice: "Premium Rice",
       rice_medium: "Medium Rice",
@@ -356,3 +370,12 @@ export const en: TranslationKey = {
     reloadButton: 'Reload',
   },
 };
+
+export const CUSTOMER_POOL_EN = [
+  { name: 'Mrs. Ani', avatar: '👩‍🍳', dialogueTotal: 'Excuse me, please calculate my groceries.', dialogueChange: 'Here is the money, how much is my change?' },
+  { name: 'Mr. Eko', avatar: '👨‍💼', dialogueTotal: 'How much is the total for these items?', dialogueChange: "I'll pay with this banknote, please calculate the change." },
+  { name: 'Grandma Siti', avatar: '👵', dialogueTotal: 'Please total this up, dear. I want to pay.', dialogueChange: 'Here is my money, please calculate my change.' },
+  { name: 'Uncle Udin', avatar: '👨', dialogueTotal: 'Please total everything up, I need to go soon.', dialogueChange: 'Here you go, how much change do I get, Kiko?' },
+  { name: 'Young Budi', avatar: '👦', dialogueTotal: 'Kiko, please calculate the total for my snacks.', dialogueChange: 'Here is the money from my mom, please return the change.' },
+  { name: 'Sarah', avatar: '👩', dialogueTotal: 'Hello Kiko, please total my monthly groceries.', dialogueChange: 'Here is the payment, please give me the correct change.' }
+];

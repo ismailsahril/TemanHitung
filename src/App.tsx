@@ -172,6 +172,7 @@ export const App: React.FC = () => {
             settings={state.settings}
             highScores={state.highScores}
             recentSessions={state.recentSessions}
+            pet={state.pet}
             dispatch={dispatch}
             updateSetting={updateSetting}
             clearHighScoreData={handleClearAllProgress}

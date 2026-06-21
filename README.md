@@ -1,11 +1,11 @@
-# 🧮 TemanHitung — Aplikasi Latihan Hitung Mental
+# 🧮 TemanHitung — Mental Math Training App
 
 <p align="center">
   <img src="assets/icon.png" alt="TemanHitung Logo" width="96" />
 </p>
 
 <p align="center">
-  <strong>Latihan matematika yang menyenangkan untuk semua usia — bergaya RPG, ada pet teman belajar, dan simulasi kasir warung!</strong>
+  <strong>Fun math training for all ages — featuring an RPG style, learning companion pets, and a traditional Indonesian grocery store ("warung") cashier simulation!</strong>
 </p>
 
 <p align="center">
@@ -18,127 +18,127 @@
 
 ---
 
-## 📖 Tentang Aplikasi
+## 📖 About the App
 
-**TemanHitung** adalah aplikasi latihan hitung mental berbasis mobile yang dirancang khusus untuk pengguna Indonesia. Dengan tampilan bergaya game RPG/fantasi, latihan matematika terasa seperti bermain game — bukan belajar yang membosankan.
+**TemanHitung** (translates to "Counting Buddy") is a mobile-friendly mental math training application designed specifically to make learning fun. Sporting a vibrant RPG/fantasy game style, practicing mathematics feels like playing a game rather than doing boring homework.
 
-Aplikasi ini cocok untuk:
-- 🧒 **Anak-anak** yang sedang belajar berhitung
-- 👩‍👧 **Orang tua** yang ingin mendampingi belajar anak
-- 🏪 **Pemilik warung / kasir** yang ingin mengasah kemampuan hitung cepat
-- 🧠 **Siapa saja** yang ingin melatih kemampuan berhitung sehari-hari
+This app is perfect for:
+- 🧒 **Children** who are learning to count and calculate
+- 👩‍👧 **Parents** looking to accompany and support their children's learning journey
+- 🏪 **Shopkeepers / Cashiers** wanting to sharpen their quick math skills
+- 🧠 **Anyone** looking to keep their mind sharp with daily calculation exercises
 
 ---
 
-## ✨ Fitur Utama
+## ✨ Key Features
 
-### 🎯 Mode Latihan Biasa
-Latihan 4 operasi matematika dengan 3 tingkat kesulitan:
+### 🎯 Practice Mode
+Practice 4 basic math operations with 3 levels of difficulty:
 
-| Operasi | Mudah | Sedang | Susah |
+| Operation | Easy | Medium | Hard |
 |---|---|---|---|
-| ➕ Penjumlahan | Angka kecil | Angka menengah | Angka besar |
-| ➖ Pengurangan | Bilangan bulat | Bilangan bulat | Bilangan bulat/desimal |
-| ✖️ Perkalian | Satu digit | Dua digit | Dua digit kompleks |
-| ➗ Pembagian | Satu digit | Dua digit | Dua digit kompleks |
+| ➕ Addition | Small numbers | Medium numbers | Large numbers |
+| ➖ Subtraction | Integers | Integers | Integers / Decimals |
+| ✖️ Multiplication | Single digit | Two digits | Complex two digits |
+| ➗ Division | Single digit | Two digits | Complex two digits |
 
-### 🏪 Mode Kasir Warung
-Simulasi menjadi kasir warung kelontong Indonesia:
-- Hitung **total belanjaan** dari beberapa item dengan harga berbeda
-- Hitung **uang kembalian** yang tepat dari pembayaran pelanggan
-- Pelanggan membayar dengan pecahan Rupiah nyata (Rp1.000 – Rp100.000)
-- Ada **voucher diskon** (kupon) sebagai tantangan tambahan
-- **Kesabaran pelanggan** berkurang jika terlalu lama — kerjakan cepat untuk bonus koin!
+### 🏪 Warung Cashier Mode
+Simulate being a cashier at a traditional Indonesian kelontong store:
+- Calculate the **total purchase amount** of multiple items with varying prices
+- Calculate the correct **change due** for the customer
+- Customers pay with realistic Indonesian Rupiah banknotes (Rp1,000 – Rp100,000)
+- Face additional challenges with **discount vouchers** (coupons)
+- Watch out! **Customer patience** runs out if you take too long — serve them quickly for bonus coins!
 
-### 🐾 Sistem Pet Teman Belajar
-Adopsi hewan peliharaan virtual sebagai teman belajar:
-- 🐱 **Kiko** — Si Kucing Pemberani
-- 🐹 **Hami** — Si Hamster Rajin
-- 🐰 **Mochi** — Si Kelinci Ceria
-- 🦊 **Kiba** — Si Rubah Cerdik
-- 🐦 **Piko** — Si Burung Semangat
-- 🐒 **Momo** — Si Monyet Jenaka
+### 🐾 Companion Pet System
+Adopt a virtual pet to accompany you on your learning journey:
+- 🐱 **Kiko** — The Brave Cat
+- 🐹 **Hami** — The Hardworking Hamster
+- 🐰 **Mochi** — The Cheerful Rabbit
+- 🦊 **Kiba** — The Clever Fox
+- 🐦 **Piko** — The Enthusiastic Bird
+- 🐒 **Momo** — The Playful Monkey
 
-Pet mendapatkan **EXP** setiap sesi latihan, naik level, dan bisa dilengkapi dengan upgrade dari **Toko Koin Warung**.
+Pets earn **EXP** with every training session, level up, and can be customized with items purchased using your earned coins in the **Warung Coin Shop**.
 
-### 💡 Tips Hitung Cepat
-Setiap soal dilengkapi tips strategi perhitungan cepat — tanpa membocorkan jawaban. Misalnya:
-- Teknik pembulatan ke puluhan terdekat
-- Trik perkalian ×5 (kalikan 10, bagi 2)
-- Trik perkalian ×9 (kalikan 10, kurangi sekali)
-- Pecah puluhan dan satuan terpisah
+### 💡 Quick Math Tips
+Every question comes with strategic calculation tips — teaching you the logic without spoiling the final answer. For example:
+- Rounding to the nearest tens technique
+- Multiplication ×5 trick (multiply by 10, then divide by 2)
+- Multiplication ×9 trick (multiply by 10, then subtract the number once)
+- Splitting tens and units separately
 
-### ⚙️ Pengaturan Lengkap
-- 🌙 Tema Terang / Gelap / Ikut Sistem
-- ⏱️ Timer per soal (15 / 30 / 60 detik / tanpa timer)
+### ⚙️ Feature-Rich Settings
+- 🌙 Light / Dark / System theme support
+- ⏱️ Question timer settings (15 / 30 / 60 seconds / untimed)
 - 📳 Haptic feedback
-- 🔊 Suara efek
-- 🌏 Bahasa Indonesia & English
-- 📊 Statistik akurasi per operasi & tingkat kesulitan
-- 📈 Grafik skor 10 sesi terakhir
+- 🔊 Sound effects
+- 🌏 Multi-language support (Indonesian & English)
+- 📊 Detailed accuracy statistics by operation & difficulty level
+- 📈 Score history graph showing your performance over the last 10 sessions
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Teknologi | Kegunaan |
+| Technology | Purpose |
 |---|---|
 | [React 18](https://react.dev) + [TypeScript](https://typescriptlang.org) | UI framework & type safety |
 | [Vite 5](https://vitejs.dev) | Build tool & dev server |
 | [Tailwind CSS 3](https://tailwindcss.com) | Styling |
-| [Framer Motion 11](https://www.framer.com/motion/) | Animasi & transisi |
-| [Capacitor 5](https://capacitorjs.com) | Wrapper native Android |
+| [Framer Motion 11](https://www.framer.com/motion/) | Animations & page transitions |
+| [Capacitor 5](https://capacitorjs.com) | Native Android wrapper |
 | [Lucide React](https://lucide.dev) | Icon library |
 | [@capacitor/haptics](https://capacitorjs.com/docs/apis/haptics) | Haptic feedback |
-| [@capacitor/preferences](https://capacitorjs.com/docs/apis/preferences) | Penyimpanan lokal persistent |
+| [@capacitor/preferences](https://capacitorjs.com/docs/apis/preferences) | Persistent local storage |
 
 ---
 
-## 🚀 Menjalankan Secara Lokal
+## 🚀 Running Locally
 
-### Prasyarat
+### Prerequisites
 - Node.js ≥ 18
 - npm
 
-### Langkah-langkah
+### Installation Steps
 
 ```bash
-# 1. Clone repository
+# 1. Clone the repository
 git clone https://github.com/username/TemanHitung.git
 cd TemanHitung
 
 # 2. Install dependencies
 npm install
 
-# 3. Jalankan development server
+# 3. Start the development server
 npm run dev
 ```
 
-Buka browser di `http://localhost:5173`
+Open your browser and navigate to `http://localhost:5173`
 
 ---
 
-## 📱 Build untuk Android
+## 📱 Building for Android
 
-### Prasyarat Tambahan
+### Additional Prerequisites
 - Java 17 (JDK)
-- Android Studio dengan Android SDK API 24+
-- Perangkat Android (USB Debugging aktif) atau emulator
+- Android Studio with Android SDK API 24+
+- Android device (USB Debugging enabled) or emulator
 
-### Langkah Build
+### Build Steps
 
 ```bash
-# 1. Build aplikasi web
+# 1. Build the web application
 npm run build
 
-# 2. Sync dengan Capacitor
+# 2. Sync with Capacitor
 npm run cap:sync
 
-# 3. Buka di Android Studio
+# 3. Open in Android Studio
 npm run cap:open
 ```
 
-Di Android Studio: **Build → Build Bundle(s) / APK(s) → Build APK(s)**
+In Android Studio: Go to **Build → Build Bundle(s) / APK(s) → Build APK(s)**
 
 #### Build APK via CLI (Windows):
 ```powershell
@@ -146,49 +146,49 @@ cd android
 .\gradlew.bat assembleDebug
 ```
 
-APK tersedia di: `android/app/build/outputs/apk/debug/app-debug.apk`
+The APK will be generated at: `android/app/build/outputs/apk/debug/app-debug.apk`
 
-#### Atau langsung jalankan ke perangkat:
+#### Run directly on your connected device:
 ```bash
 npm run cap:run
 ```
 
 ---
 
-## 📂 Struktur Proyek
+## 📂 Project Structure
 
 ```
 TemanHitung/
 ├── src/
-│   ├── components/       # Komponen UI (GameBoard, WarungBoard, MainMenu, dll)
-│   ├── hooks/            # Custom hooks (useSessionReducer, useSettings, usePet, dll)
-│   ├── i18n/             # File terjemahan (id.ts, en.ts)
+│   ├── components/       # UI Components (GameBoard, WarungBoard, MainMenu, etc.)
+│   ├── hooks/            # Custom Hooks (useSessionReducer, useSettings, usePet, etc.)
+│   ├── i18n/             # Localization files (id.ts, en.ts)
 │   ├── types/            # TypeScript type definitions
-│   └── utils/            # Utility functions (mathEngine, dll)
+│   └── utils/            # Utility functions (mathEngine, etc.)
 ├── android/              # Native Android project (Capacitor)
-├── assets/               # Asset gambar & ikon
-└── public/               # File statis
+├── assets/               # Image & icon assets
+└── public/               # Static files
 ```
 
 ---
 
-## 🤝 Kontribusi
+## 🤝 Contributing
 
-Kontribusi sangat disambut! Silakan:
-1. Fork repository ini
-2. Buat branch fitur baru (`git checkout -b fitur/nama-fitur`)
-3. Commit perubahan (`git commit -m 'Tambah fitur X'`)
-4. Push ke branch (`git push origin fitur/nama-fitur`)
-5. Buat Pull Request
+Contributions are welcome! Please follow these steps:
+1. Fork this repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ---
 
-## 📄 Lisensi
+## 📄 License
 
-Proyek ini dibuat untuk tujuan edukasi dan belajar. Bebas digunakan dan dimodifikasi.
+This project was built for educational and learning purposes. Feel free to use, modify, and distribute it.
 
 ---
 
 <p align="center">
-  Dibuat dengan ❤️ untuk membantu belajar matematika jadi lebih menyenangkan 🧮
+  Made with ❤️ to make learning math more fun 🧮
 </p>

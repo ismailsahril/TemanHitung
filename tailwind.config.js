@@ -9,31 +9,31 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          50:  '#f5f5f7', // Parchment
-          100: '#fafafc', // Pearl
-          400: '#2997ff', // Sky Link Blue
-          500: '#0066cc', // Action Blue
-          600: '#0066cc', // Action Blue
-          700: '#0071e3', // Focus Blue
+          50:  'var(--color-brand-50)',
+          100: 'var(--color-brand-100)',
+          400: 'var(--color-brand-400)',
+          500: 'var(--color-brand-500)',
+          600: 'var(--color-brand-600)',
+          700: 'var(--color-brand-700)',
         },
         ink: {
-          DEFAULT: '#1d1d1f', // Near-Black Ink
-          muted: '#7a7a7a',
-          muted80: '#333333',
+          DEFAULT: 'var(--color-ink)',
+          muted: 'var(--color-ink-muted)',
+          muted80: 'var(--color-ink-muted80)',
         },
         canvas: {
-          DEFAULT: '#ffffff',
-          parchment: '#f5f5f7',
+          DEFAULT: 'var(--color-canvas)',
+          parchment: 'var(--color-canvas-parchment)',
         },
         tile: {
-          1: '#272729',
-          2: '#2a2a2c',
-          3: '#252527',
+          1: 'var(--color-tile-1)',
+          2: 'var(--color-tile-2)',
+          3: 'var(--color-tile-3)',
         },
-        correct: '#16a34a',
-        wrong:   '#dc2626',
-        tip:     '#d97706',
-        surface: '#f5f5f7',
+        correct: 'var(--color-correct)',
+        wrong:   'var(--color-wrong)',
+        tip:     'var(--color-tip)',
+        surface: 'var(--color-surface)',
       },
       fontFamily: {
         sans: ['SF Pro Text', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],

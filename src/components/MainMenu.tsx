@@ -92,7 +92,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ settings, dispatch, pet, upd
           type="button"
           onClick={() => dispatch({ type: 'GO_TO_SETTINGS' })}
           whileTap={{ scale: 0.95 }}
-          className="min-h-[44px] min-w-[44px] p-2.5 flex items-center justify-center rounded-full bg-[#f5f5f7] dark:bg-[#272729] hover:bg-[#e8e8ed] dark:hover:bg-[#323236] text-[#1d1d1f] dark:text-white transition border border-neutral-200 dark:border-neutral-700/30"
+          className="btn-icon"
           aria-label={t('menu.settingsButton')}
         >
           <Settings className="w-5.5 h-5.5" />
@@ -285,12 +285,9 @@ export const MainMenu: React.FC<MainMenuProps> = ({ settings, dispatch, pet, upd
           <m.button
             type="button"
             onClick={handleStartSession}
+            disabled={!selectedOperation}
             whileTap={selectedOperation ? { scale: 0.95 } : undefined}
-            className={`w-full py-3 rounded-[14px] text-[17px] font-semibold text-white transition-all flex items-center justify-center min-h-[44px] ${
-              selectedOperation
-                ? 'bg-amber-500 hover:bg-amber-600 shadow-[0_4px_15px_rgba(245,158,11,0.35)]'
-                : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-600 border border-neutral-300 dark:border-neutral-700/50 cursor-not-allowed'
-            }`}
+            className="btn-primary"
           >
             {t('menu.startButton')}
           </m.button>
@@ -363,7 +360,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ settings, dispatch, pet, upd
                     🏪
                   </div>
                   <div>
-                    <p className="text-[10px] text-amber-600 dark:text-amber-400 font-bold uppercase tracking-widest font-fantasy">Mode Permainan</p>
+                    <p className="text-[10px] text-amber-600 dark:text-amber-400 font-bold uppercase tracking-widest font-fantasy">{t('warung.gameMode')}</p>
                     <h2 className="text-[19px] font-bold text-[#1d1d1f] dark:text-white font-fantasy leading-tight">
                       {t('warung.bannerTitle')}
                     </h2>
@@ -378,10 +375,10 @@ export const MainMenu: React.FC<MainMenuProps> = ({ settings, dispatch, pet, upd
                 {/* Rules list */}
                 <div className="bg-white dark:bg-[#20202d] border border-neutral-200 dark:border-[#d4af37]/20 rounded-[14px] p-3.5 flex flex-col gap-2.5">
                   {[
-                    { icon: '🛒', text: 'Hitung total harga belanjaan pelanggan' },
-                    { icon: '💵', text: 'Hitung uang kembalian yang tepat' },
-                    { icon: '👥', text: '5 pelanggan per sesi' },
-                    { icon: '💡', text: 'Tekan tombol Tips jika butuh bantuan' },
+                    { icon: '🛒', text: t('warung.introRule1') },
+                    { icon: '💵', text: t('warung.introRule2') },
+                    { icon: '👥', text: t('warung.introRule3') },
+                    { icon: '💡', text: t('warung.introRule4') },
                   ].map(({ icon, text }) => (
                     <div key={text} className="flex items-start gap-2.5">
                       <span className="text-base shrink-0 mt-0.5">{icon}</span>
@@ -396,7 +393,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ settings, dispatch, pet, upd
                     <svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 2L4 6v6c0 5.25 3.42 10.16 8 11.5 4.58-1.34 8-6.25 8-11.5V6l-8-4z" />
                     </svg>
-                    <span className="text-[12px] font-bold text-amber-700 dark:text-amber-400 font-fantasy uppercase tracking-wider">Tingkat Kesulitan</span>
+                    <span className="text-[12px] font-bold text-amber-700 dark:text-amber-400 font-fantasy uppercase tracking-wider">{t('warung.difficultyLabel')}</span>
                   </div>
                   <div className={`px-3 py-1 rounded-full text-[12px] font-bold font-fantasy ${
                     selectedDifficulty === 'hard'
@@ -406,9 +403,9 @@ export const MainMenu: React.FC<MainMenuProps> = ({ settings, dispatch, pet, upd
                         : 'bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40'
                   }`}>
                     {t(`difficulty.${selectedDifficulty}`)}
-                    {selectedDifficulty === 'easy' && ' · 2 item'}
-                    {selectedDifficulty === 'medium' && ' · 3 item + kupon'}
-                    {selectedDifficulty === 'hard' && ' · 4 item + kupon'}
+                    {selectedDifficulty === 'easy' && t('warung.introItemsEasy')}
+                    {selectedDifficulty === 'medium' && t('warung.introItemsMedium')}
+                    {selectedDifficulty === 'hard' && t('warung.introItemsHard')}
                   </div>
                 </div>
 
@@ -418,9 +415,9 @@ export const MainMenu: React.FC<MainMenuProps> = ({ settings, dispatch, pet, upd
                     type="button"
                     onClick={() => setShowWarungIntro(false)}
                     whileTap={{ scale: 0.95 }}
-                    className="flex-1 py-3 rounded-[14px] text-[15px] font-semibold border border-neutral-300 dark:border-neutral-700/50 bg-white dark:bg-[#272729] text-neutral-600 dark:text-neutral-300 transition"
+                    className="flex-1 btn-secondary"
                   >
-                    Kembali
+                    {t('warung.btnBack')}
                   </m.button>
                   <m.button
                     type="button"
@@ -429,9 +426,9 @@ export const MainMenu: React.FC<MainMenuProps> = ({ settings, dispatch, pet, upd
                       dispatch({ type: 'START_WARUNG', payload: { difficulty: selectedDifficulty } });
                     }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex-[2] py-3 rounded-[14px] text-[17px] font-bold text-white bg-amber-500 hover:bg-amber-600 shadow-[0_4px_15px_rgba(245,158,11,0.35)] transition"
+                    className="flex-[2] btn-primary"
                   >
-                    🏪 Mulai!
+                    {t('warung.btnStart')}
                   </m.button>
                 </div>
               </div>

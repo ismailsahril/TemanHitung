@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Cinzel:wght@600;700;800;900&display=swap');
+@import './styles/variables.css';
 
 @tailwind base;
 @tailwind components;
@@ -6,14 +7,14 @@
 
 @layer base {
   body {
-    @apply antialiased text-[#1d1d1f] bg-[#f5f5f7] dark:bg-black transition-colors duration-200;
-    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    @apply antialiased transition-colors duration-200;
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-gacha), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 }
 
-/* --- Fantasy RPG & Gacha UI Custom Classes --- */
-
-/* Font Helpers */
+/* --- Font Helpers --- */
 .font-gacha {
   font-family: 'Outfit', sans-serif;
 }
@@ -21,22 +22,135 @@
   font-family: 'Cinzel', serif;
 }
 
-/* RPG Panels & Cards */
+/* --- Global Semantic Components --- */
+
+/* 1. Buttons */
+.btn-primary {
+  @apply w-full py-3 flex items-center justify-center font-bold text-white min-h-[44px];
+  background-color: var(--color-brand-500);
+  border-radius: var(--radius-button);
+  font-size: var(--font-size-md);
+  box-shadow: var(--shadow-primary-glow);
+  transition: all var(--transition-bounce);
+}
+.btn-primary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.dark .btn-primary {
+  background-color: var(--color-brand-500); /* Will be gold */
+  color: #121218;
+  box-shadow: var(--shadow-primary-glow);
+}
+.btn-primary:hover:not(:disabled) {
+  opacity: 0.95;
+}
+.btn-primary:disabled {
+  @apply bg-neutral-200 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-600 border border-neutral-300 dark:border-neutral-700/50 cursor-not-allowed shadow-none active:scale-100;
+  transform: none !important;
+}
+
+.btn-secondary {
+  @apply w-full py-3 flex items-center justify-center font-semibold min-h-[44px] border;
+  background-color: var(--color-tile-1);
+  color: var(--color-ink);
+  border-color: var(--color-brand-50);
+  border-radius: var(--radius-button);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-fast);
+}
+.btn-secondary:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.dark .btn-secondary {
+  border-color: var(--color-brand-700); /* Gold trim */
+  background-color: var(--color-brand-50);
+}
+.btn-secondary:hover:not(:disabled) {
+  @apply bg-neutral-100 dark:bg-neutral-800;
+}
+
+.btn-danger {
+  @apply w-full py-3 flex items-center justify-center font-bold text-white min-h-[44px];
+  background: linear-gradient(to right, var(--color-wrong), #f43f5e);
+  border-radius: var(--radius-button);
+  font-size: var(--font-size-base);
+  box-shadow: var(--shadow-danger-glow);
+  transition: all var(--transition-fast);
+}
+.btn-danger:active {
+  transform: scale(0.98);
+}
+.btn-danger:hover {
+  filter: brightness(1.05);
+}
+
+.btn-icon {
+  @apply min-h-[44px] min-w-[44px] p-2.5 flex items-center justify-center rounded-full border;
+  background-color: var(--color-tile-1);
+  border-color: var(--color-brand-50);
+  color: var(--color-ink);
+  transition: all var(--transition-fast);
+}
+.btn-icon:active {
+  transform: scale(0.95);
+}
+.dark .btn-icon {
+  border-color: var(--color-brand-50);
+  background-color: var(--color-brand-50);
+}
+.btn-icon:hover {
+  @apply bg-neutral-100 dark:bg-neutral-800;
+}
+
+/* 2. Panels and Cards */
 .rpg-panel {
-  @apply bg-white dark:bg-[#1a1a24] border border-[#e0e0e0] dark:border-[#d4af37]/30 rounded-[18px] transition-all;
+  border: 1px solid var(--color-brand-50);
+  border-radius: var(--radius-panel);
+  background-color: var(--color-tile-1);
   box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  transition: all var(--transition-fast);
+}
+.dark .rpg-panel {
+  border-color: var(--color-brand-50);
+  background-color: var(--color-brand-50);
 }
 
 .rpg-panel-active {
-  @apply border-[#0066cc] dark:border-[#d4af37] ring-1 ring-[#0066cc]/20 dark:ring-[#d4af37]/20;
+  border-color: var(--color-brand-400);
+  box-shadow: 0 0 10px rgba(41, 151, 255, 0.15);
+}
+.dark .rpg-panel-active {
+  border-color: var(--color-brand-500); /* Gold */
+  box-shadow: var(--shadow-gold-glow);
 }
 
-/* Gold Trims & Corner accents */
 .rpg-gold-trim {
-  @apply border-[#d4af37] dark:border-[#d4af37]/60 shadow-[0_0_15px_rgba(212,175,55,0.1)];
+  border-color: var(--color-rpg-gold);
+  box-shadow: var(--shadow-gold-glow);
 }
 
-/* Rarity colors and glows */
+/* 3. Badges */
+.coins-badge {
+  @apply border rounded-full px-3 py-1 flex items-center gap-1 shrink-0 font-fantasy font-bold shadow-sm;
+  background-color: rgba(212, 175, 55, 0.1);
+  border-color: rgba(212, 175, 55, 0.4);
+  color: var(--color-rpg-gold);
+  font-size: var(--font-size-xs);
+}
+
+/* 4. Inputs */
+.input-display {
+  @apply p-4 text-center min-h-[64px] flex items-center justify-center shadow-inner border;
+  border-radius: var(--radius-input);
+  background-color: var(--color-tile-1);
+  border-color: var(--color-brand-50);
+}
+.dark .input-display {
+  background-color: var(--color-brand-50);
+  border-color: var(--color-brand-50);
+}
+
+/* --- Rarity Colors --- */
 .rarity-5star {
   @apply border-amber-400 dark:border-amber-400/80 shadow-[0_0_12px_rgba(245,158,11,0.2)] text-amber-600 dark:text-amber-400;
 }
@@ -47,20 +161,19 @@
   @apply border-blue-400 dark:border-blue-400/80 shadow-[0_0_12px_rgba(59,130,246,0.2)] text-blue-600 dark:text-blue-400;
 }
 
-/* Health and Mana Bar styling */
+/* --- RPG Stat Bars --- */
 .rpg-stat-bar {
-  @apply h-2.5 rounded-full bg-neutral-200 dark:bg-neutral-800 overflow-hidden relative;
+  @apply h-2.5 rounded-full overflow-hidden relative;
+  background-color: var(--color-tile-2);
 }
-
 .rpg-stat-fill-hp {
   @apply h-full bg-gradient-to-r from-red-500 to-rose-600 transition-all duration-500;
 }
-
 .rpg-stat-fill-mana {
   @apply h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-500;
 }
 
-/* Gacha 3D Card Flip system */
+/* --- 3D Gacha Flip System --- */
 .perspective-1000 {
   perspective: 1000px;
 }
@@ -74,76 +187,39 @@
   transform: rotateY(180deg);
 }
 
-/* High Contrast accessibility theme */
+/* --- High Contrast Accessibility Theme --- */
 .high-contrast {
-  --color-text: #000000;
-  --color-bg: #ffffff;
+  --color-brand-50: #ffffff;
+  --color-brand-100: #ffffff;
+  --color-brand-400: #0000d8;
+  --color-brand-500: #0000d8;
+  --color-brand-650: #0000d8;
+  --color-brand-700: #000000;
+  --color-ink: #000000;
+  --color-ink-muted: #000000;
+  --color-ink-muted80: #000000;
+  --color-canvas: #ffffff;
+  --color-canvas-parchment: #ffffff;
+  --color-tile-1: #ffffff;
+  --color-tile-2: #ffffff;
+  --color-tile-3: #ffffff;
   --color-correct: #006400;
   --color-wrong: #8b0000;
-  
   color-scheme: light !important;
 }
-
 .high-contrast body {
   background-color: #ffffff !important;
   color: #000000 !important;
 }
 
-.high-contrast .bg-white {
-  background-color: #ffffff !important;
-}
-
-.high-contrast .text-slate-500,
-.high-contrast .text-slate-600 {
-  color: #000000 !important;
-}
-
-.high-contrast .text-brand-600,
-.high-contrast .text-brand-500 {
-  color: #0000d8 !important;
-  font-weight: 700 !important;
-}
-
-.high-contrast .bg-brand-50,
-.high-contrast .bg-brand-100 {
-  background-color: #f0f9ff !important;
-  border: 2px solid #000000 !important;
-}
-
-.high-contrast .bg-brand-500,
-.high-contrast .bg-brand-600 {
-  background-color: #0000d8 !important;
-  color: #ffffff !important;
-}
-
-.high-contrast .text-correct {
-  color: #006400 !important;
-  font-weight: 700 !important;
-}
-
-.high-contrast .text-wrong {
-  color: #8b0000 !important;
-  font-weight: 700 !important;
-}
-
-.high-contrast .bg-correct {
-  background-color: #006400 !important;
-  color: #ffffff !important;
-}
-
-.high-contrast .bg-wrong {
-  background-color: #8b0000 !important;
-  color: #ffffff !important;
-}
-
-/* Accessible focus outline */
+/* Accessible focus outlines */
 button:focus-visible,
 input:focus-visible {
-  outline: 2px solid #0071e3;
+  outline: 2px solid var(--color-brand-400);
   outline-offset: 2px;
 }
 
-/* Animation controls for accessibility */
+/* Reduced Motion system */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -154,7 +230,6 @@ input:focus-visible {
     animation-delay: 0s !important;
   }
 }
-
 .reduce-motion *,
 .reduce-motion *::before,
 .reduce-motion *::after {

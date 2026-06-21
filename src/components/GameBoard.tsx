@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, Award } from 'lucide-react';
+import { ChevronLeft, Award, Lightbulb, X } from 'lucide-react';
 import { SessionState, SessionAction } from '../types';
 import { useTranslation } from '../hooks/useTranslation';
 import { formatNumber, verifyAnswer } from '../utils/mathEngine';
@@ -8,7 +8,6 @@ import { playCorrectSound, playWrongSound } from '../utils/soundEngine';
 import { triggerHaptic } from '../utils/hapticEngine';
 import { ImpactStyle } from '@capacitor/haptics';
 import ProgressBar from './ProgressBar';
-import QuickTip from './QuickTip';
 import NumPad from './NumPad';
 import FeedbackOverlay from './FeedbackOverlay';
 
@@ -36,14 +35,20 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
   // Keep track of time left locally
   const [elapsed, setElapsed] = useState(0);
 
+  // Automatically show quick tip if no action for 7 seconds
+  const [showTipDueToInactivity, setShowTipDueToInactivity] = useState(false);
+  const [showTipModal, setShowTipModal] = useState(false);
+
   // Focus ref for screen reader accessibility
   const firstNumpadRef = useRef<HTMLDivElement>(null);
 
-  // Reset input and elapsed timer for a new question
+  // Reset input, elapsed timer, inactivity tip state, and modal state for a new question
   useEffect(() => {
     if (!isShowingFeedback) {
       setTypedAnswer('');
       setElapsed(0);
+      setShowTipDueToInactivity(false);
+      setShowTipModal(false);
       
       // Accessibility focus management: set focus to container
       if (firstNumpadRef.current) {
@@ -51,6 +56,22 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
       }
     }
   }, [currentIndex, isShowingFeedback]);
+
+  // Idle timer to show quick tips after 7 seconds of no action
+  useEffect(() => {
+    if (isShowingFeedback || state.phase !== 'playing' || settings.autoShowTip) {
+      return;
+    }
+
+    // Reset showing tip flag if user starts acting again
+    setShowTipDueToInactivity(false);
+
+    const idleTimeout = setTimeout(() => {
+      setShowTipDueToInactivity(true);
+    }, 7000); // 7 seconds of inactivity
+
+    return () => clearTimeout(idleTimeout);
+  }, [typedAnswer, currentIndex, isShowingFeedback, state.phase, settings.autoShowTip]);
 
   // Sync elapsed timer
   useEffect(() => {
@@ -232,7 +253,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
           type="button"
           onClick={() => dispatch({ type: 'BACK_TO_MENU' })}
           whileTap={{ scale: 0.95 }}
-          className="min-h-[44px] min-w-[44px] p-2.5 flex items-center justify-center rounded-full bg-white dark:bg-[#1a1a24] hover:bg-neutral-100 dark:hover:bg-[#20202d] text-[#1d1d1f] dark:text-white transition border border-neutral-200 dark:border-[#d4af37]/20 shadow-sm"
+          className="btn-icon"
           aria-label={t('settings.backButton')}
         >
           <ChevronLeft className="w-6 h-6" />
@@ -242,7 +263,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
         <ProgressBar current={currentIndex} total={totalQuestions} history={history} />
 
         {/* Score Badge styled as a Golden Emblem */}
-        <div className="bg-amber-500/10 dark:bg-[#d4af37]/15 border border-[#d4af37]/40 rounded-full px-3 py-1 flex items-center gap-1 shrink-0 font-fantasy text-amber-600 dark:text-[#d4af37] font-bold text-xs shadow-sm">
+        <div className="coins-badge">
           <Award className="w-4 h-4 text-amber-500" />
           <span className="tabular-nums">
             {score}
@@ -275,31 +296,100 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: settings.reduceAnimations ? 0 : -50 }}
             transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-            className="text-center bg-white dark:bg-[#1a1a24] border border-neutral-300/50 dark:border-[#d4af37]/25 rounded-[20px] px-8 py-4 shadow-sm min-w-[200px]"
+            className="relative text-center bg-white dark:bg-[#1a1a24] border border-neutral-300/50 dark:border-[#d4af37]/25 rounded-[20px] px-10 py-6 shadow-sm min-w-[200px]"
           >
             <span className="text-[34px] sm:text-[40px] font-bold text-[#1d1d1f] dark:text-white tracking-wide font-fantasy">
               {getExpr()}
             </span>
+
+            {/* Floating Bulb Trigger inside Question Card */}
+            <AnimatePresence>
+              {currentQuestion && (settings.autoShowTip || showTipDueToInactivity) && (
+                <m.button
+                  key="tips-btn"
+                  type="button"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setShowTipModal(true)}
+                  className="absolute top-2.5 right-2.5 w-8 h-8 bg-amber-500/10 hover:bg-amber-500/20 dark:bg-amber-500/15 dark:hover:bg-amber-500/25 border border-amber-500/20 rounded-full flex items-center justify-center text-amber-500 transition-all cursor-pointer"
+                  aria-label={t('game.tipToggle')}
+                >
+                  <Lightbulb className="w-4 h-4 animate-pulse" />
+                </m.button>
+              )}
+            </AnimatePresence>
           </m.div>
         </AnimatePresence>
       </div>
 
-      {/* 4. Typed Answer Calculator Display */}
-      <div className="rpg-panel border border-neutral-200 dark:border-[#d4af37]/20 p-4 mb-4 text-center min-h-[64px] flex items-center justify-center bg-white dark:bg-[#1a1a24] shadow-inner">
-        <span className={`text-[28px] font-bold tracking-tight tabular-nums font-fantasy ${typedAnswer ? 'text-amber-600 dark:text-amber-400' : 'text-neutral-400 dark:text-neutral-600'}`}>
-          {formatTypedAnswer(typedAnswer, settings.numberFormat)}
-        </span>
+      {/* 4. Typed Answer Display */}
+      <div className="w-full max-w-[340px] mx-auto mb-4 select-none">
+        <div className="input-display w-full">
+          <span className={`text-[28px] font-bold tracking-tight tabular-nums font-fantasy ${typedAnswer ? 'text-amber-600 dark:text-amber-400' : 'text-neutral-400 dark:text-neutral-600'}`}>
+            {formatTypedAnswer(typedAnswer, settings.numberFormat)}
+          </span>
+        </div>
       </div>
 
-      {/* 5. Strategy Helper Drawer */}
-      <div className="mb-4">
-        {currentQuestion && (
-          <QuickTip 
-            quickTip={currentQuestion.quickTip} 
-            autoShowTip={settings.autoShowTip} 
-          />
+      {/* 5. Strategy Helper Bottom Sheet Modal */}
+      <AnimatePresence>
+        {showTipModal && currentQuestion && (
+          <>
+            {/* Backdrop */}
+            <m.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.4 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowTipModal(false)}
+              className="absolute inset-0 bg-black z-40"
+            />
+            {/* Modal Sheet */}
+            <m.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="absolute bottom-0 inset-x-0 bg-white dark:bg-[#1a1a24] border-t border-neutral-200 dark:border-[#d4af37]/25 rounded-t-[20px] p-5 pb-6 z-50 flex flex-col space-y-4 max-h-[80%] overflow-y-auto select-none"
+            >
+              {/* Drag Handle Indicator */}
+              <div className="w-10 h-1.5 bg-gray-200 dark:bg-neutral-700 rounded-full mx-auto" />
+              
+              {/* Header */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-amber-500">
+                  <Lightbulb className="w-5 h-5" />
+                  <h3 className="text-base font-bold text-[#1d1d1f] dark:text-white font-fantasy">
+                    {t('game.tipToggle')}
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowTipModal(false)}
+                  className="p-1.5 rounded-full bg-[#f5f5f7] dark:bg-[#2c2c2e] text-[#1d1d1f] dark:text-white transition"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Tip Content Box */}
+              <div className="bg-amber-500/5 dark:bg-amber-500/5 border border-amber-500/20 dark:border-amber-500/20 rounded-[14px] p-4 text-[13px] text-ink-muted leading-relaxed whitespace-pre-line font-medium text-left">
+                {currentQuestion.quickTip}
+              </div>
+
+              {/* Close Button */}
+              <button
+                type="button"
+                onClick={() => setShowTipModal(false)}
+                className="w-full py-3 rounded-[14px] text-sm font-bold text-white bg-amber-500 hover:bg-amber-600 shadow-[0_4px_15px_rgba(245,158,11,0.2)] text-center font-fantasy"
+              >
+                {t('warung.tipClose')}
+              </button>
+            </m.div>
+          </>
         )}
-      </div>
+      </AnimatePresence>
 
       {/* 6. Keyboard Grid */}
       <div className="mb-4">
@@ -319,11 +409,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
         onClick={() => handleSubmitAnswer(typedAnswer)}
         disabled={!typedAnswer || isShowingFeedback}
         whileTap={typedAnswer && !isShowingFeedback ? { scale: 0.95 } : undefined}
-        className={`w-full py-3 rounded-[14px] text-[17px] font-semibold text-white flex items-center justify-center min-h-[44px] transition-all ${
-          typedAnswer && !isShowingFeedback
-            ? 'bg-amber-500 hover:bg-amber-600 shadow-[0_4px_15px_rgba(245,158,11,0.35)]'
-            : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-600 border border-neutral-300 dark:border-neutral-700/50 cursor-not-allowed'
-        }`}
+        className="btn-primary"
       >
         {t('game.submitButton')}
       </m.button>

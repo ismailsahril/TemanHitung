@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { m, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, RotateCcw, BarChart2, ShieldAlert, Award } from 'lucide-react';
-import { AppSettings, SessionAction, HighScoreMap, SessionHistoryEntry, TimerOption, AppLanguage, FontSizeScale, AppTheme } from '../types';
+import { ChevronLeft, ChevronRight, BarChart2, ShieldAlert, Award } from 'lucide-react';
+import { AppSettings, SessionAction, HighScoreMap, SessionHistoryEntry, TimerOption, AppLanguage, FontSizeScale, AppTheme, PetState } from '../types';
 import { useTranslation } from '../hooks/useTranslation';
 import SettingSection from './settings/SettingSection';
 import SettingRow from './settings/SettingRow';
@@ -11,6 +11,7 @@ interface SettingsScreenProps {
   settings: AppSettings;
   highScores: HighScoreMap;
   recentSessions: SessionHistoryEntry[];
+  pet: PetState;
   dispatch: React.Dispatch<SessionAction>;
   updateSetting: <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => Promise<void>;
   clearHighScoreData: () => Promise<void>;
@@ -25,6 +26,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
   settings,
   highScores,
   recentSessions,
+  pet,
   dispatch,
   updateSetting,
   clearHighScoreData,
@@ -209,8 +211,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
     const ops: ('addition' | 'subtraction' | 'multiplication' | 'division')[] = ['addition', 'subtraction', 'multiplication', 'division'];
     const diffs: ('easy' | 'medium' | 'hard')[] = ['easy', 'medium', 'hard'];
 
-    // Check if there is any high score data
-    const hasData = Object.keys(highScores).length > 0;
+    // Check if there is any high score data or adopted pet
+    const hasData = Object.keys(highScores).length > 0 || pet.hasAdopted;
 
     return (
       <div className="flex-1 flex flex-col overflow-y-auto bg-[#fafafc] dark:bg-[#121218]">
@@ -222,56 +224,126 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             </div>
           ) : (
             <>
+              {/* Pet & Warung Shop Stats */}
+              {pet.hasAdopted && (
+                <div className="bg-white dark:bg-[#1a1a24] border border-neutral-200 dark:border-[#d4af37]/20 rounded-[18px] p-4 shadow-sm mb-4 select-none">
+                  <h3 className="text-sm font-bold text-[#1d1d1f] dark:text-white mb-3 font-fantasy flex items-center gap-1.5 uppercase tracking-wide">
+                    <span>🏪</span> {t('warung.shopTitle')} & Pet
+                  </h3>
+                  
+                  <div className="grid grid-cols-2 gap-3 text-left">
+                    {/* Pet Status */}
+                    <div className="bg-neutral-50 dark:bg-neutral-900/30 border border-neutral-100 dark:border-neutral-800/35 rounded-[12px] p-3 flex flex-col justify-center">
+                      <span className="text-[10px] font-bold text-ink-muted uppercase tracking-wider font-fantasy">
+                        {pet.name}
+                      </span>
+                      <span className="text-sm font-bold text-[#1d1d1f] dark:text-white mt-0.5 font-fantasy">
+                        {t('pet.levelLabel', { level: pet.level })}
+                      </span>
+                      {/* Mini EXP progress bar */}
+                      <div className="w-full bg-neutral-200 dark:bg-neutral-800 h-1.5 rounded-full overflow-hidden mt-1.5 border border-neutral-300/20 dark:border-neutral-700/20">
+                        <div 
+                          className="h-full bg-gradient-to-r from-amber-400 to-yellow-500 transition-all duration-300"
+                          style={{ width: `${Math.min(100, (pet.exp / (pet.level * 100)) * 100)}%` }}
+                        />
+                      </div>
+                      <span className="text-[9px] text-ink-muted mt-1 font-fantasy">
+                        EXP {pet.exp} / {pet.level * 100}
+                      </span>
+                    </div>
+
+                    {/* Coins & Active Counter */}
+                    <div className="flex flex-col gap-2">
+                      {/* Coins */}
+                      <div className="bg-neutral-50 dark:bg-neutral-900/30 border border-neutral-100 dark:border-neutral-800/35 rounded-[12px] px-3 py-2 flex items-center justify-between">
+                        <div className="flex flex-col">
+                          <span className="text-[9px] font-bold text-ink-muted uppercase tracking-wider font-fantasy">
+                            {t('warung.totalTipsReceipt')}
+                          </span>
+                          <span className="text-xs font-bold text-amber-600 dark:text-[#d4af37] font-fantasy mt-0.5">
+                            🪙 {pet.coins}
+                          </span>
+                        </div>
+                        <span className="text-lg">🪙</span>
+                      </div>
+
+                      {/* Active Upgrade Table */}
+                      <div className="bg-neutral-50 dark:bg-neutral-900/30 border border-neutral-100 dark:border-neutral-800/35 rounded-[12px] px-3 py-2 flex items-center justify-between">
+                        <div className="flex flex-col">
+                          <span className="text-[9px] font-bold text-ink-muted uppercase tracking-wider font-fantasy">
+                            {t('settings.theme')} Meja
+                          </span>
+                          <span className="text-[10px] font-bold text-[#1d1d1f] dark:text-white truncate font-fantasy mt-0.5 max-w-[110px]">
+                            {t(
+                              pet.activeUpgrade === 'table_wood'
+                                ? 'warung.upgradeTablePremium'
+                                : pet.activeUpgrade === 'table_neon'
+                                  ? 'warung.upgradeTableNeon'
+                                  : pet.activeUpgrade === 'mascot_cat'
+                                    ? 'warung.upgradeMascotCat'
+                                    : 'warung.upgradeTableDefault'
+                            )}
+                          </span>
+                        </div>
+                        <span className="text-sm">🪟</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Progress Line Chart */}
-              {renderSVGChart()}
+              {recentSessions.length > 0 && renderSVGChart()}
 
               {/* Accuracy Grid Table */}
-              <div className="bg-white dark:bg-[#1a1a24] border border-neutral-200 dark:border-[#d4af37]/20 rounded-[18px] overflow-hidden shadow-sm">
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse">
-                    <thead>
-                      <tr className="bg-[#f5f5f7] dark:bg-[#20202d] border-b border-neutral-200 dark:border-[#d4af37]/20">
-                        <th className="p-3 text-left text-[10px] font-bold text-ink-muted uppercase tracking-widest font-fantasy w-[40%]">
-                          {t('stats.operation')}
-                        </th>
-                        {diffs.map(d => (
-                          <th key={d} className="p-3 text-center text-[10px] font-bold text-ink-muted uppercase tracking-widest font-fantasy">
-                            {t(`difficulty.${d}`)}
+              {Object.keys(highScores).length > 0 && (
+                <div className="bg-white dark:bg-[#1a1a24] border border-neutral-200 dark:border-[#d4af37]/20 rounded-[18px] overflow-hidden shadow-sm">
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="bg-[#f5f5f7] dark:bg-[#20202d] border-b border-neutral-200 dark:border-[#d4af37]/20">
+                          <th className="p-3 text-left text-[10px] font-bold text-ink-muted uppercase tracking-widest font-fantasy w-[40%]">
+                            {t('stats.operation')}
                           </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-neutral-100 dark:divide-[#d4af37]/10">
-                      {ops.map(op => (
-                        <tr key={op} className="hover:bg-neutral-50/50 dark:hover:bg-[#20202d]/35 transition-colors">
-                          <td className="p-3 text-left font-bold text-[#1d1d1f] dark:text-white text-sm font-fantasy">
-                            {t(`operations.${op}`)}
-                          </td>
-                          {diffs.map(d => {
-                            const entry = highScores[`${op}-${d}`];
-                            return (
-                              <td key={d} className="p-3 text-center text-sm">
-                                {entry ? (
-                                  <div className="flex flex-col items-center">
-                                    <span className="text-amber-600 dark:text-amber-400 font-bold font-fantasy">
-                                      {entry.score}/{entry.outOf}
-                                    </span>
-                                    <span className="text-[10px] text-ink-muted font-normal font-fantasy">
-                                      {Math.round((entry.score / entry.outOf) * 100)}%
-                                    </span>
-                                  </div>
-                                ) : (
-                                  <span className="text-neutral-300 dark:text-neutral-700">-</span>
-                                )}
-                              </td>
-                            );
-                          })}
+                          {diffs.map(d => (
+                            <th key={d} className="p-3 text-center text-[10px] font-bold text-ink-muted uppercase tracking-widest font-fantasy">
+                              {t(`difficulty.${d}`)}
+                            </th>
+                          ))}
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody className="divide-y divide-neutral-100 dark:divide-[#d4af37]/10">
+                        {ops.map(op => (
+                          <tr key={op} className="hover:bg-neutral-50/50 dark:hover:bg-[#20202d]/35 transition-colors">
+                            <td className="p-3 text-left font-bold text-[#1d1d1f] dark:text-white text-sm font-fantasy">
+                              {t(`operations.${op}`)}
+                            </td>
+                            {diffs.map(d => {
+                              const entry = highScores[`${op}-${d}`];
+                              return (
+                                <td key={d} className="p-3 text-center text-sm">
+                                  {entry ? (
+                                    <div className="flex flex-col items-center">
+                                      <span className="text-amber-600 dark:text-amber-400 font-bold font-fantasy">
+                                        {entry.score}/{entry.outOf}
+                                      </span>
+                                      <span className="text-[10px] text-ink-muted font-normal font-fantasy">
+                                        {Math.round((entry.score / entry.outOf) * 100)}%
+                                      </span>
+                                    </div>
+                                  ) : (
+                                    <span className="text-neutral-300 dark:text-neutral-700">-</span>
+                                  )}
+                                </td>
+                              );
+                            })}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
+              )}
             </>
           )}
         </div>
@@ -532,11 +604,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           >
             <button
               type="button"
-              onClick={async () => {
-                if (window.confirm(t('settings.resetPetConfirm'))) {
-                  await handleResetPet();
-                }
-              }}
+              onClick={() => setShowResetPetConfirm(true)}
               className="px-4 py-1.5 text-xs font-bold text-white bg-red-600 hover:bg-red-700 transition rounded-[8px] min-h-[34px] flex items-center justify-center shadow-sm"
             >
               Reset
@@ -551,11 +619,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           >
             <button
               type="button"
-              onClick={async () => {
-                if (window.confirm(t('settings.resetConfirm'))) {
-                  await handleResetProgress();
-                }
-              }}
+              onClick={() => setShowResetConfirm(true)}
               className="px-4 py-1.5 text-xs font-bold text-white bg-red-600 hover:bg-red-700 transition rounded-[8px] min-h-[34px] flex items-center justify-center shadow-sm"
             >
               Reset
@@ -607,7 +671,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
           type="button"
           onClick={handleBack}
           whileTap={{ scale: 0.95 }}
-          className="min-h-[44px] min-w-[44px] p-2.5 flex items-center justify-center rounded-full bg-white dark:bg-[#1a1a24] hover:bg-neutral-100 dark:hover:bg-[#20202d] text-[#1d1d1f] dark:text-white transition border border-neutral-200 dark:border-[#d4af37]/20 shadow-sm"
+          className="btn-icon"
           aria-label={t('settings.backButton')}
         >
           <ChevronLeft className="w-6 h-6" />
@@ -628,37 +692,49 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-[#000000]/30 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+            className="fixed inset-0 bg-neutral-950/60 backdrop-blur-md flex items-center justify-center p-4 z-50"
             role="alertdialog"
             aria-modal="true"
           >
             <m.div
-              initial={{ scale: 0.95, y: 15 }}
+              initial={{ scale: 0.9, y: 30 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 15 }}
-              className="bg-white dark:bg-[#1a1a24] w-full max-w-sm rounded-[18px] p-6 border border-neutral-200 dark:border-[#d4af37]/25 text-center shadow-lg"
+              exit={{ scale: 0.9, y: 30 }}
+              transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+              className="bg-white dark:bg-[#1c1c27] w-full max-w-sm rounded-[24px] p-6 border-2 border-red-500/30 dark:border-red-500/20 text-center shadow-[0_20px_50px_rgba(239,68,68,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden relative"
             >
-              <div className="w-12 h-12 bg-red-100 dark:bg-red-950/20 rounded-full flex items-center justify-center text-red-600 mx-auto mb-4 border border-red-200/50">
-                <RotateCcw className="w-6 h-6" />
-              </div>
-              <h3 className="text-[17px] font-bold text-[#1d1d1f] dark:text-white mb-2 font-fantasy">
+              {/* Decorative top strip */}
+              <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-red-500 via-rose-500 to-amber-500" />
+              
+              {/* Alert icon with breathing glow */}
+              <m.div 
+                animate={{ scale: [1, 1.05, 1], boxShadow: ['0 0 0 0 rgba(239,68,68,0.2)', '0 0 0 12px rgba(239,68,68,0)', '0 0 0 0 rgba(239,68,68,0)'] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+                className="w-14 h-14 bg-red-500/10 dark:bg-red-500/5 rounded-full flex items-center justify-center text-red-500 mx-auto mb-4 border border-red-500/20"
+              >
+                <ShieldAlert className="w-7 h-7" />
+              </m.div>
+              
+              <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-2 font-fantasy tracking-wide">
                 {t('settings.resetProgress')}
               </h3>
-              <p className="text-[13px] text-ink-muted mb-6 leading-relaxed">
+              
+              <p className="text-[13px] text-ink-muted mb-6 leading-relaxed px-2">
                 {t('settings.resetConfirm')}
               </p>
+              
               <div className="flex flex-col gap-2">
                 <button
                   type="button"
                   onClick={handleResetProgress}
-                  className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-full min-h-[44px] transition active:scale-95 shadow-sm"
+                  className="btn-danger"
                 >
                   {t('settings.resetConfirmYes')}
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowResetConfirm(false)}
-                  className="w-full py-2.5 bg-[#f5f5f7] dark:bg-[#20202d] text-[#1d1d1f] dark:text-white font-semibold rounded-full min-h-[44px] border border-neutral-250 dark:border-[#d4af37]/20 transition active:scale-95"
+                  className="btn-secondary"
                 >
                   {t('settings.resetConfirmNo')}
                 </button>
@@ -672,37 +748,49 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-[#000000]/30 backdrop-blur-sm flex items-center justify-center p-4 z-50"
+            className="fixed inset-0 bg-neutral-950/60 backdrop-blur-md flex items-center justify-center p-4 z-50"
             role="alertdialog"
             aria-modal="true"
           >
             <m.div
-              initial={{ scale: 0.95, y: 15 }}
+              initial={{ scale: 0.9, y: 30 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 15 }}
-              className="bg-white dark:bg-[#1a1a24] w-full max-w-sm rounded-[18px] p-6 border border-neutral-200 dark:border-[#d4af37]/25 text-center shadow-lg"
+              exit={{ scale: 0.9, y: 30 }}
+              transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+              className="bg-white dark:bg-[#1c1c27] w-full max-w-sm rounded-[24px] p-6 border-2 border-red-500/30 dark:border-red-500/20 text-center shadow-[0_20px_50px_rgba(239,68,68,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden relative"
             >
-              <div className="w-12 h-12 bg-red-100 dark:bg-red-950/20 rounded-full flex items-center justify-center text-red-600 mx-auto mb-4 border border-red-200/50">
-                <RotateCcw className="w-6 h-6" />
-              </div>
-              <h3 className="text-[17px] font-bold text-[#1d1d1f] dark:text-white mb-2 font-fantasy">
+              {/* Decorative top strip */}
+              <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-red-500 via-rose-500 to-amber-500" />
+              
+              {/* Alert icon with breathing glow */}
+              <m.div 
+                animate={{ scale: [1, 1.05, 1], boxShadow: ['0 0 0 0 rgba(239,68,68,0.2)', '0 0 0 12px rgba(239,68,68,0)', '0 0 0 0 rgba(239,68,68,0)'] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+                className="w-14 h-14 bg-red-500/10 dark:bg-red-500/5 rounded-full flex items-center justify-center text-red-500 mx-auto mb-4 border border-red-500/20"
+              >
+                <ShieldAlert className="w-7 h-7" />
+              </m.div>
+              
+              <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-2 font-fantasy tracking-wide">
                 {t('settings.resetPet')}
               </h3>
-              <p className="text-[13px] text-ink-muted mb-6 leading-relaxed">
+              
+              <p className="text-[13px] text-ink-muted mb-6 leading-relaxed px-2">
                 {t('settings.resetPetConfirm')}
               </p>
+              
               <div className="flex flex-col gap-2">
                 <button
                   type="button"
                   onClick={handleResetPet}
-                  className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-full min-h-[44px] transition active:scale-95 shadow-sm"
+                  className="btn-danger"
                 >
                   {t('settings.resetConfirmYes')}
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowResetPetConfirm(false)}
-                  className="w-full py-2.5 bg-[#f5f5f7] dark:bg-[#20202d] text-[#1d1d1f] dark:text-white font-semibold rounded-full min-h-[44px] border border-neutral-250 dark:border-[#d4af37]/20 transition active:scale-95"
+                  className="btn-secondary"
                 >
                   {t('settings.resetConfirmNo')}
                 </button>
