@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { m } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { Settings } from 'lucide-react';
 import { SessionAction, AppSettings, Operation, Difficulty, NumberMode, SessionConfig, PetState } from '../types';
 import { useTranslation } from '../hooks/useTranslation';
@@ -29,6 +29,9 @@ export const MainMenu: React.FC<MainMenuProps> = ({ settings, dispatch, pet, upd
 
   // Local state for the username prompt if not set
   const [tempName, setTempName] = useState('');
+
+  // Warung intro briefing modal
+  const [showWarungIntro, setShowWarungIntro] = useState(false);
 
   const handleStartSession = (): void => {
     if (!selectedOperation) {
@@ -303,7 +306,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({ settings, dispatch, pet, upd
         {/* Section 4: Mode Warung Card */}
         <m.button
           type="button"
-          onClick={() => dispatch({ type: 'START_WARUNG', payload: { difficulty: selectedDifficulty } })}
+          onClick={() => setShowWarungIntro(true)}
           whileTap={{ scale: 0.95 }}
           className="w-full text-left bg-gradient-to-r from-amber-500/5 to-yellow-500/5 dark:from-[#d4af37]/5 dark:to-[#1a1a24] border border-[#d4af37]/30 dark:border-[#d4af37]/45 rounded-[18px] p-4 flex items-center gap-4 transition shadow-[0_4px_12px_rgba(212,175,55,0.05)] hover:border-[#d4af37]/80"
         >
@@ -318,8 +321,124 @@ export const MainMenu: React.FC<MainMenuProps> = ({ settings, dispatch, pet, upd
               {t('warung.bannerDesc')}
             </p>
           </div>
+          <span className="text-amber-500 text-[11px] font-bold uppercase tracking-wider shrink-0 font-fantasy">▶ Mulai</span>
         </m.button>
       </main>
+
+      {/* ── Warung Intro Briefing Modal ── */}
+      <AnimatePresence>
+        {showWarungIntro && (
+          <>
+            {/* Backdrop */}
+            <m.div
+              key="warung-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowWarungIntro(false)}
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm z-40"
+            />
+
+            {/* Sheet Panel */}
+            <m.div
+              key="warung-sheet"
+              initial={{ y: '100%', opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: '100%', opacity: 0 }}
+              transition={{ type: 'spring', damping: 28, stiffness: 260 }}
+              className="absolute bottom-0 left-0 right-0 z-50 bg-[#fafafc] dark:bg-[#1a1a24] rounded-t-[24px] border-t border-neutral-200 dark:border-[#d4af37]/30 overflow-hidden font-gacha"
+            >
+              {/* Gold accent line */}
+              <div className="h-1 w-full bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-400" />
+
+              {/* Drag handle */}
+              <div className="flex justify-center pt-3 pb-1">
+                <div className="w-10 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
+              </div>
+
+              <div className="px-5 pb-6 pt-3 flex flex-col gap-4">
+                {/* Header */}
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-amber-500/10 dark:bg-amber-950/30 border border-[#d4af37]/40 rounded-[14px] flex items-center justify-center text-2xl shrink-0">
+                    🏪
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-amber-600 dark:text-amber-400 font-bold uppercase tracking-widest font-fantasy">Mode Permainan</p>
+                    <h2 className="text-[19px] font-bold text-[#1d1d1f] dark:text-white font-fantasy leading-tight">
+                      {t('warung.bannerTitle')}
+                    </h2>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <p className="text-[13px] text-neutral-600 dark:text-neutral-300 leading-relaxed">
+                  {t('warung.bannerDesc')}
+                </p>
+
+                {/* Rules list */}
+                <div className="bg-white dark:bg-[#20202d] border border-neutral-200 dark:border-[#d4af37]/20 rounded-[14px] p-3.5 flex flex-col gap-2.5">
+                  {[
+                    { icon: '🛒', text: 'Hitung total harga belanjaan pelanggan' },
+                    { icon: '💵', text: 'Hitung uang kembalian yang tepat' },
+                    { icon: '👥', text: '5 pelanggan per sesi' },
+                    { icon: '💡', text: 'Tekan tombol Tips jika butuh bantuan' },
+                  ].map(({ icon, text }) => (
+                    <div key={text} className="flex items-start gap-2.5">
+                      <span className="text-base shrink-0 mt-0.5">{icon}</span>
+                      <span className="text-[12px] text-[#1d1d1f] dark:text-white/90 leading-snug">{text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Difficulty Badge */}
+                <div className="flex items-center justify-between bg-amber-500/8 dark:bg-[#d4af37]/8 border border-[#d4af37]/30 rounded-[12px] px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <svg className="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 2L4 6v6c0 5.25 3.42 10.16 8 11.5 4.58-1.34 8-6.25 8-11.5V6l-8-4z" />
+                    </svg>
+                    <span className="text-[12px] font-bold text-amber-700 dark:text-amber-400 font-fantasy uppercase tracking-wider">Tingkat Kesulitan</span>
+                  </div>
+                  <div className={`px-3 py-1 rounded-full text-[12px] font-bold font-fantasy ${
+                    selectedDifficulty === 'hard'
+                      ? 'bg-red-100 dark:bg-red-950/40 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800/40'
+                      : selectedDifficulty === 'medium'
+                        ? 'bg-amber-100 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/40'
+                        : 'bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40'
+                  }`}>
+                    {t(`difficulty.${selectedDifficulty}`)}
+                    {selectedDifficulty === 'easy' && ' · 2 item'}
+                    {selectedDifficulty === 'medium' && ' · 3 item + kupon'}
+                    {selectedDifficulty === 'hard' && ' · 4 item + kupon'}
+                  </div>
+                </div>
+
+                {/* Action buttons */}
+                <div className="flex gap-2.5 pt-1">
+                  <m.button
+                    type="button"
+                    onClick={() => setShowWarungIntro(false)}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex-1 py-3 rounded-[14px] text-[15px] font-semibold border border-neutral-300 dark:border-neutral-700/50 bg-white dark:bg-[#272729] text-neutral-600 dark:text-neutral-300 transition"
+                  >
+                    Kembali
+                  </m.button>
+                  <m.button
+                    type="button"
+                    onClick={() => {
+                      setShowWarungIntro(false);
+                      dispatch({ type: 'START_WARUNG', payload: { difficulty: selectedDifficulty } });
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex-[2] py-3 rounded-[14px] text-[17px] font-bold text-white bg-amber-500 hover:bg-amber-600 shadow-[0_4px_15px_rgba(245,158,11,0.35)] transition"
+                  >
+                    🏪 Mulai!
+                  </m.button>
+                </div>
+              </div>
+            </m.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

@@ -140,7 +140,7 @@ const ITEM_POOL = [
 ];
 
 function generateRupiahPayment(total: number): number[] {
-  const banknotes = [100000, 50000, 20000, 10000, 5000, 2000];
+  const banknotes = [100000, 50000, 20000, 10000, 5000, 2000, 1000];
   const rand = Math.random();
   
   // Scenario 1: Single large banknote (e.g. paying 15.000 with a 20.000 note)
@@ -154,7 +154,7 @@ function generateRupiahPayment(total: number): number[] {
   
   // Scenario 2: Multiple of the same banknote (e.g. paying 12.000 with three 5.000 notes)
   if (rand < 0.7) {
-    for (const note of [20000, 10000, 5000, 2000]) {
+    for (const note of [20000, 10000, 5000, 2000, 1000]) {
       if (note < total && total < note * 5) {
         const count = Math.ceil((total + 100) / note); // Ensure strictly greater
         return Array(count).fill(note);
@@ -187,7 +187,7 @@ function generateRupiahPayment(total: number): number[] {
       }
     }
     if (!added) {
-      result.push(2000); // Fallback
+      result.push(1000); // Fallback to smallest note
     }
   }
   
@@ -200,8 +200,9 @@ const BANKNOTE_COLORS: Record<number, { bg: string; text: string; border: string
   50000: { bg: 'bg-[#dbeafe] dark:bg-[#1e40af]/20', text: 'text-[#2563eb] dark:text-[#93c5fd]', border: 'border-[#bfdbfe] dark:border-[#1e40af]/35' },
   20000: { bg: 'bg-[#dcfce7] dark:bg-[#166534]/20', text: 'text-[#16a34a] dark:text-[#86efac]', border: 'border-[#bbf7d0] dark:border-[#166534]/35' },
   10000: { bg: 'bg-[#f3e8ff] dark:bg-[#5b21b6]/20', text: 'text-[#7c3aed] dark:text-[#c084fc]', border: 'border-[#e9d5ff] dark:border-[#5b21b6]/35' },
-  5000: { bg: 'bg-[#fef9c3] dark:bg-[#854d0e]/20', text: 'text-[#ca8a04] dark:text-[#fde047]', border: 'border-[#fef08a] dark:border-[#854d0e]/35' },
-  2000: { bg: 'bg-[#f3f4f6] dark:bg-[#374151]/20', text: 'text-[#4b5563] dark:text-[#d1d5db]', border: 'border-[#e5e7eb] dark:border-[#374151]/35' }
+  5000:  { bg: 'bg-[#fef9c3] dark:bg-[#854d0e]/20', text: 'text-[#ca8a04] dark:text-[#fde047]', border: 'border-[#fef08a] dark:border-[#854d0e]/35' },
+  2000:  { bg: 'bg-[#f3f4f6] dark:bg-[#374151]/20', text: 'text-[#4b5563] dark:text-[#d1d5db]', border: 'border-[#e5e7eb] dark:border-[#374151]/35' },
+  1000:  { bg: 'bg-[#ffedd5] dark:bg-[#7c2d12]/20', text: 'text-[#c2410c] dark:text-[#fb923c]', border: 'border-[#fed7aa] dark:border-[#7c2d12]/35' },
 };
 
 /**
@@ -785,25 +786,30 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
           {stage === 'total' ? (
             /* Items List */
             <div className="flex flex-col space-y-2 max-w-[340px] mx-auto w-full">
-              <div className="grid grid-cols-2 gap-1.5 w-full">
+              <div className="flex flex-col gap-2 w-full">
                 {currentOrder.items.map((item) => (
                   <div 
                     key={item.id}
-                    className="bg-white dark:bg-[#1a1a24] border border-neutral-200 dark:border-[#d4af37]/30 rounded-[14px] p-2 flex flex-col justify-between min-h-[75px] select-none shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:border-amber-500/50 transition-all"
+                    className="bg-white dark:bg-[#1a1a24] border border-neutral-200 dark:border-[#d4af37]/30 rounded-[14px] px-3 py-2.5 flex items-center gap-3 select-none shadow-[0_2px_8px_rgba(0,0,0,0.04)] transition-all"
                   >
-                    <div className="flex justify-between items-center">
-                      <span className="text-xl select-none">{item.icon}</span>
-                      <span className="text-[10px] font-bold text-white bg-amber-500 dark:bg-amber-600 px-1.5 py-0.2 rounded-full shrink-0">
-                        ×{item.quantity}
-                      </span>
+                    {/* Icon */}
+                    <div className="w-10 h-10 bg-amber-50 dark:bg-amber-950/20 rounded-[10px] flex items-center justify-center text-2xl shrink-0 border border-amber-100 dark:border-amber-900/30">
+                      {item.icon}
                     </div>
-                    <div className="mt-0.5">
-                      <h4 className="text-[12px] font-bold text-[#1d1d1f] dark:text-white truncate">
+
+                    {/* Name + Unit Price */}
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-[13px] font-bold text-[#1d1d1f] dark:text-white leading-tight truncate">
                         {t(item.nameKey)}
                       </h4>
-                      <span className="text-[10px] text-ink-muted font-normal tabular-nums font-fantasy">
-                        @Rp{item.price.toLocaleString('id-ID')}
+                      <span className="text-[12px] font-semibold text-amber-700 dark:text-amber-400 tabular-nums font-fantasy">
+                        Rp{item.price.toLocaleString('id-ID')}
                       </span>
+                    </div>
+
+                    {/* Right: Qty Badge only */}
+                    <div className="flex items-center gap-1 bg-amber-500 dark:bg-amber-600 rounded-[8px] px-2.5 py-1 shrink-0">
+                      <span className="text-[13px] font-extrabold text-white leading-none tracking-wide">×{item.quantity}</span>
                     </div>
                   </div>
                 ))}
@@ -877,9 +883,10 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
         </div>
 
         {/* Interactive Banknote Clickers */}
-        <div className="flex justify-center gap-1.5 px-2 py-1 overflow-x-auto select-none no-scrollbar shrink-0">
-          {[100000, 50000, 20000, 10000, 5000, 2000].map((note) => {
+        <div className="flex justify-center gap-1 px-2 py-1 overflow-x-auto select-none no-scrollbar shrink-0">
+          {[100000, 50000, 20000, 10000, 5000, 2000, 1000].map((note) => {
             const colors = BANKNOTE_COLORS[note];
+            const label = note >= 1000 ? `${note / 1000}k` : `${note}`;
             return (
               <m.button
                 key={note}
@@ -895,10 +902,10 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
                   });
                   triggerHaptic(ImpactStyle.Light, settings.hapticEnabled);
                 }}
-                className={`flex-1 min-w-[46px] max-w-[56px] py-1.5 rounded-[10px] border flex flex-col items-center justify-center font-bold font-fantasy select-none leading-none transition-shadow ${colors.bg} ${colors.text} ${colors.border}`}
+                className={`flex-1 min-w-[40px] max-w-[52px] py-1.5 rounded-[10px] border flex flex-col items-center justify-center font-bold font-fantasy select-none leading-none transition-shadow ${colors.bg} ${colors.text} ${colors.border}`}
                 style={{ boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}
               >
-                <span className="text-[10px] tracking-tight">{note / 1000}k</span>
+                <span className="text-[10px] tracking-tight">{label}</span>
                 <span className="text-[6px] uppercase tracking-wider font-semibold opacity-85 mt-0.5">Rp</span>
               </m.button>
             );

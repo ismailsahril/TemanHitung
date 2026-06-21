@@ -120,28 +120,28 @@ export function getQuickTip(question: Omit<Question, 'quickTip'>, language: 'id'
 
   if (isDecimal) {
     if (operation === 'addition') {
-      return isEn 
-        ? `Split numbers before & after decimal: ${Math.floor(operandA)} + ${Math.floor(operandB)} = ${Math.floor(operandA) + Math.floor(operandB)}, then ${Math.round((operandA % 1) * 10) / 10} + ${Math.round((operandB % 1) * 10) / 10} = ${Math.round(((operandA % 1) + (operandB % 1)) * 10) / 10} → final result: ${formatNumber(operandA + operandB, 'en')}`
-        : `Pisahkan angka sebelum & sesudah koma: ${Math.floor(operandA)} + ${Math.floor(operandB)} = ${Math.floor(operandA) + Math.floor(operandB)}, lalu ${Math.round((operandA % 1) * 10) / 10} + ${Math.round((operandB % 1) * 10) / 10} = ${Math.round(((operandA % 1) + (operandB % 1)) * 10) / 10} → hasil akhir: ${formatNumber(operandA + operandB, 'id')}`;
+      return isEn
+        ? `Split numbers before & after decimal: ${Math.floor(operandA)} + ${Math.floor(operandB)} = ${Math.floor(operandA) + Math.floor(operandB)}, then add ${Math.round((operandA % 1) * 10) / 10} + ${Math.round((operandB % 1) * 10) / 10} = ${Math.round(((operandA % 1) + (operandB % 1)) * 10) / 10}. Combine both parts!`
+        : `Pisahkan angka sebelum & sesudah koma: ${Math.floor(operandA)} + ${Math.floor(operandB)} = ${Math.floor(operandA) + Math.floor(operandB)}, lalu ${Math.round((operandA % 1) * 10) / 10} + ${Math.round((operandB % 1) * 10) / 10} = ${Math.round(((operandA % 1) + (operandB % 1)) * 10) / 10}. Gabungkan keduanya!`;
     }
     if (operation === 'subtraction') {
-      return isEn 
-        ? `Subtract the integer parts: ${Math.floor(operandA)} - ${Math.floor(operandB)} = ${Math.floor(operandA) - Math.floor(operandB)}, then adjust decimals: ${formatNumber(operandA, 'en')} minus ${formatNumber(operandB, 'en')} → final result: ${formatNumber(operandA - operandB, 'en')}`
-        : `Kurangi bagian bulat: ${Math.floor(operandA)} - ${Math.floor(operandB)} = ${Math.floor(operandA) - Math.floor(operandB)}, lalu sesuaikan desimalnya: ${formatNumber(operandA, 'id')} dikurang ${formatNumber(operandB, 'id')} → hasil akhir: ${formatNumber(operandA - operandB, 'id')}`;
+      return isEn
+        ? `Subtract the integer parts first: ${Math.floor(operandA)} - ${Math.floor(operandB)} = ${Math.floor(operandA) - Math.floor(operandB)}, then handle the decimal part of ${formatNumber(operandA, 'en')} minus ${formatNumber(operandB, 'en')}.`
+        : `Kurangi bagian bulat lebih dulu: ${Math.floor(operandA)} - ${Math.floor(operandB)} = ${Math.floor(operandA) - Math.floor(operandB)}, lalu sesuaikan desimalnya antara ${formatNumber(operandA, 'id')} dan ${formatNumber(operandB, 'id')}.`;
     }
     if (operation === 'multiplication') {
       const scaleA = operandA * 10;
       const scaleB = operandB * 10;
       return isEn
-        ? `Ignore decimals temporarily: Multiply ${Math.round(scaleA)} × ${Math.round(scaleB)} = ${Math.round(scaleA * scaleB)}, then divide by 100 for two decimal places → result: ${formatNumber(operandA * operandB, 'en')}`
-        : `Abaikan koma sementara: Kalikan ${Math.round(scaleA)} × ${Math.round(scaleB)} = ${Math.round(scaleA * scaleB)}, lalu bagi dengan 100 karena ada dua desimal → hasilnya ${formatNumber(operandA * operandB, 'id')}`;
+        ? `Ignore decimals temporarily: Multiply ${Math.round(scaleA)} × ${Math.round(scaleB)} = ${Math.round(scaleA * scaleB)}, then divide by 100 because there are two decimal places.`
+        : `Abaikan koma sementara: Kalikan ${Math.round(scaleA)} × ${Math.round(scaleB)} = ${Math.round(scaleA * scaleB)}, lalu bagi dengan 100 karena ada dua desimal.`;
     }
     if (operation === 'division') {
       const scaleA = operandA * 10;
       const scaleB = operandB * 10;
       return isEn
-        ? `Multiply both numbers by 10 to make them integers: ${Math.round(scaleA)} ÷ ${Math.round(scaleB)} = ${formatNumber((scaleA) / (scaleB), 'en')}`
-        : `Kalikan kedua angka dengan 10 agar bulat: ${Math.round(scaleA)} ÷ ${Math.round(scaleB)} = ${formatNumber((scaleA) / (scaleB), 'id')}`;
+        ? `Multiply both numbers by 10 to make them integers: ${Math.round(scaleA)} ÷ ${Math.round(scaleB)} — then calculate!`
+        : `Kalikan kedua angka dengan 10 agar bulat: ${Math.round(scaleA)} ÷ ${Math.round(scaleB)} — lalu hitung hasilnya!`;
     }
   }
 
@@ -152,15 +152,15 @@ export function getQuickTip(question: Omit<Question, 'quickTip'>, language: 'id'
     const diffB = nextTenB - operandB;
     if (diffB <= 2 && operandB > 5) {
       return isEn
-        ? `Round ${operandB} → ${nextTenB}, then ${operandA} + ${nextTenB} = ${operandA + nextTenB}, subtract ${diffB} → result: ${operandA + operandB}`
-        : `Bulatkan ${operandB} → ${nextTenB}, lalu ${operandA} + ${nextTenB} = ${operandA + nextTenB}, kurangi ${diffB} → hasilnya ${operandA + operandB}`;
+        ? `Round ${operandB} up to ${nextTenB}: ${operandA} + ${nextTenB} = ${operandA + nextTenB}, then subtract ${diffB}.`
+        : `Bulatkan ${operandB} ke ${nextTenB}: ${operandA} + ${nextTenB} = ${operandA + nextTenB}, lalu kurangi ${diffB}.`;
     }
     const nextTenA = Math.ceil(operandA / 10) * 10;
     const diffA = nextTenA - operandA;
     if (diffA <= 2 && operandA > 5) {
       return isEn
-        ? `Round ${operandA} → ${nextTenA}, then ${nextTenA} + ${operandB} = ${nextTenA + operandB}, subtract ${diffA} → result: ${operandA + operandB}`
-        : `Bulatkan ${operandA} → ${nextTenA}, lalu ${nextTenA} + ${operandB} = ${nextTenA + operandB}, kurangi ${diffA} → hasilnya ${operandA + operandB}`;
+        ? `Round ${operandA} up to ${nextTenA}: ${nextTenA} + ${operandB} = ${nextTenA + operandB}, then subtract ${diffA}.`
+        : `Bulatkan ${operandA} ke ${nextTenA}: ${nextTenA} + ${operandB} = ${nextTenA + operandB}, lalu kurangi ${diffA}.`;
     }
     // General strategy: split by tens & ones
     const tensA = Math.floor(operandA / 10) * 10;
@@ -169,12 +169,12 @@ export function getQuickTip(question: Omit<Question, 'quickTip'>, language: 'id'
     const onesB = operandB % 10;
     if (tensA > 0 && tensB > 0) {
       return isEn
-        ? `Add tens: ${tensA} + ${tensB} = ${tensA + tensB}. Add ones: ${onesA} + ${onesB} = ${onesA + onesB}. Combine: ${tensA + tensB} + ${onesA + onesB} = ${operandA + operandB}`
-        : `Jumlahkan puluhan: ${tensA} + ${tensB} = ${tensA + tensB}. Jumlahkan satuan: ${onesA} + ${onesB} = ${onesA + onesB}. Gabungkan: ${tensA + tensB} + ${onesA + onesB} = ${operandA + operandB}`;
+        ? `Add tens: ${tensA} + ${tensB} = ${tensA + tensB}. Add ones: ${onesA} + ${onesB} = ${onesA + onesB}. Now combine both!`
+        : `Jumlahkan puluhan: ${tensA} + ${tensB} = ${tensA + tensB}. Jumlahkan satuan: ${onesA} + ${onesB} = ${onesA + onesB}. Gabungkan keduanya!`;
     }
     return isEn
-      ? `Add directly: ${operandA} + ${operandB} = ${operandA + operandB}`
-      : `Tambahkan langsung: ${operandA} + ${operandB} = ${operandA + operandB}`;
+      ? `Add step by step: start with ${operandA}, then count up ${operandB} more.`
+      : `Tambahkan bertahap: mulai dari ${operandA}, lalu hitung ${operandB} langkah ke atas.`;
   }
 
   if (operation === 'subtraction') {
@@ -183,8 +183,8 @@ export function getQuickTip(question: Omit<Question, 'quickTip'>, language: 'id'
     const diffB = nextTenB - operandB;
     if (diffB <= 2 && operandB > 5) {
       return isEn
-        ? `Round subtrahend up: Subtract ${operandA} − ${nextTenB} = ${operandA - nextTenB}, then add back difference ${diffB} → result: ${operandA - operandB}`
-        : `Bulatkan pembagi ke atas: Kurangi ${operandA} − ${nextTenB} = ${operandA - nextTenB}, lalu tambahkan kembali selisih ${diffB} → hasilnya ${operandA - operandB}`;
+        ? `Round subtrahend up: Subtract ${operandA} − ${nextTenB} = ${operandA - nextTenB}, then add back the difference of ${diffB}.`
+        : `Bulatkan pengurang ke atas: Kurangi ${operandA} − ${nextTenB} = ${operandA - nextTenB}, lalu tambahkan kembali selisih ${diffB}.`;
     }
     // Split by place values
     const tensA = Math.floor(operandA / 10) * 10;
@@ -193,36 +193,36 @@ export function getQuickTip(question: Omit<Question, 'quickTip'>, language: 'id'
     const onesB = operandB % 10;
     if (tensA > 0 && tensB > 0 && onesA >= onesB) {
       return isEn
-        ? `Subtract tens: ${tensA} − ${tensB} = ${tensA - tensB}. Subtract ones: ${onesA} − ${onesB} = ${onesA - onesB}. Combine results: ${tensA - tensB} + ${onesA - onesB} = ${operandA - operandB}`
-        : `Kurangi puluhan: ${tensA} − ${tensB} = ${tensA - tensB}. Kurangi satuan: ${onesA} − ${onesB} = ${onesA - onesB}. Jumlahkan hasil: ${tensA - tensB} + ${onesA - onesB} = ${operandA - operandB}`;
+        ? `Subtract tens: ${tensA} − ${tensB} = ${tensA - tensB}. Subtract ones: ${onesA} − ${onesB} = ${onesA - onesB}. Now combine both!`
+        : `Kurangi puluhan: ${tensA} − ${tensB} = ${tensA - tensB}. Kurangi satuan: ${onesA} − ${onesB} = ${onesA - onesB}. Jumlahkan hasilnya!`;
     }
     return isEn
-      ? `Subtract in stages: Subtract tens first, then subtract ones. ${operandA} - ${tensB} = ${operandA - tensB}, then - ${onesB} = ${operandA - operandB}`
-      : `Kurangi bertahap: Kurangi puluhan lebih dulu, baru kurangi satuannya. ${operandA} - ${tensB} = ${operandA - tensB}, lalu - ${onesB} = ${operandA - operandB}`;
+      ? `Subtract in stages: ${operandA} - ${tensB} = ${operandA - tensB}, then subtract ${onesB} more.`
+      : `Kurangi bertahap: ${operandA} - ${tensB} = ${operandA - tensB}, lalu kurangi ${onesB} lagi.`;
   }
 
   if (operation === 'multiplication') {
     // Multiply by 5
     if (operandB === 5) {
       return isEn
-        ? `Multiply by 5 trick: Multiply ${operandA} × 10 = ${operandA * 10}, then divide by 2 → result: ${operandA * 10} ÷ 2 = ${operandA * operandB}`
-        : `Trik perkalian 5: Kalikan ${operandA} × 10 = ${operandA * 10}, lalu bagi 2 → hasilnya ${operandA * 10} ÷ 2 = ${operandA * operandB}`;
+        ? `Multiply by 5 trick: Multiply ${operandA} × 10 = ${operandA * 10}, then divide by 2.`
+        : `Trik perkalian 5: Kalikan ${operandA} × 10 = ${operandA * 10}, lalu bagi 2.`;
     }
     if (operandA === 5) {
       return isEn
-        ? `Multiply by 5 trick: Multiply ${operandB} × 10 = ${operandB * 10}, then divide by 2 → result: ${operandB * 10} ÷ 2 = ${operandA * operandB}`
-        : `Trik perkalian 5: Kalikan ${operandB} × 10 = ${operandB * 10}, lalu bagi 2 → hasilnya ${operandB * 10} ÷ 2 = ${operandA * operandB}`;
+        ? `Multiply by 5 trick: Multiply ${operandB} × 10 = ${operandB * 10}, then divide by 2.`
+        : `Trik perkalian 5: Kalikan ${operandB} × 10 = ${operandB * 10}, lalu bagi 2.`;
     }
     // Multiply by 9
     if (operandB === 9) {
       return isEn
-        ? `Multiply by 9 trick: Multiply ${operandA} × 10 = ${operandA * 10}, then subtract ${operandA} → result: ${operandA * 10} − ${operandA} = ${operandA * operandB}`
-        : `Trik perkalian 9: Kalikan ${operandA} × 10 = ${operandA * 10}, lalu kurangi ${operandA} → hasilnya ${operandA * 10} − ${operandA} = ${operandA * operandB}`;
+        ? `Multiply by 9 trick: Multiply ${operandA} × 10 = ${operandA * 10}, then subtract ${operandA}.`
+        : `Trik perkalian 9: Kalikan ${operandA} × 10 = ${operandA * 10}, lalu kurangi ${operandA}.`;
     }
     if (operandA === 9) {
       return isEn
-        ? `Multiply by 9 trick: Multiply ${operandB} × 10 = ${operandB * 10}, then subtract ${operandB} → result: ${operandB * 10} − ${operandB} = ${operandA * operandB}`
-        : `Trik perkalian 9: Kalikan ${operandB} × 10 = ${operandB * 10}, lalu kurangi ${operandB} → hasilnya ${operandB * 10} − ${operandB} = ${operandA * operandB}`;
+        ? `Multiply by 9 trick: Multiply ${operandB} × 10 = ${operandB * 10}, then subtract ${operandB}.`
+        : `Trik perkalian 9: Kalikan ${operandB} × 10 = ${operandB * 10}, lalu kurangi ${operandB}.`;
     }
     // Multiply by 11 (two digits)
     if (operandB === 11 && operandA >= 10 && operandA <= 99) {
@@ -231,46 +231,45 @@ export function getQuickTip(question: Omit<Question, 'quickTip'>, language: 'id'
       const sum = first + second;
       if (sum < 10) {
         return isEn
-          ? `Multiply by 11 trick: Insert the sum of digits (${first} + ${second} = ${sum}) between ${first} and ${second} → result: ${first}${sum}${second}`
-          : `Trik angka 11: Sisipkan penjumlahan digit (${first} + ${second} = ${sum}) di antara ${first} dan ${second} → hasilnya ${first}${sum}${second}`;
+          ? `Multiply by 11 trick: Insert the sum of digits (${first} + ${second} = ${sum}) between ${first} and ${second}.`
+          : `Trik angka 11: Sisipkan penjumlahan digit (${first} + ${second} = ${sum}) di antara angka ${first} dan ${second}.`;
       } else {
         return isEn
-          ? `Multiply by 11 trick: Add ${first} + ${second} = ${sum}. Add 1 to ${first} (making it ${first + 1}) and place ${sum % 10} in the middle → result: ${first + 1}${sum % 10}${second}`
-          : `Trik angka 11: Jumlahkan ${first} + ${second} = ${sum}. Menjadi ${first + 1} dan letakkan ${sum % 10} di tengah → hasilnya ${first + 1}${sum % 10}${second}`;
+          ? `Multiply by 11 trick: Add ${first} + ${second} = ${sum}. Add 1 to ${first} (making it ${first + 1}), then place ${sum % 10} in the middle.`
+          : `Trik angka 11: Jumlahkan ${first} + ${second} = ${sum}. Jadikan ${first + 1} dan letakkan ${sum % 10} di tengah.`;
       }
     }
     // General doubling/splitting
     if (operandB % 2 === 0 && operandB <= 10) {
       const halfB = operandB / 2;
       return isEn
-        ? `Use doubling: Multiply ${operandA} × ${halfB} = ${operandA * halfB}, then double it → result: ${operandA * halfB * 2}`
-        : `Gunakan kelipatan dua: Kalikan ${operandA} × ${halfB} = ${operandA * halfB}, lalu kalikan dua → hasilnya ${operandA * halfB * 2}`;
+        ? `Use doubling: Multiply ${operandA} × ${halfB} = ${operandA * halfB}, then double it.`
+        : `Gunakan kelipatan dua: Kalikan ${operandA} × ${halfB} = ${operandA * halfB}, lalu kalikan dua.`;
     }
     // Standard splitting
     const tensB = Math.floor(operandB / 10) * 10;
     const onesB = operandB % 10;
     if (tensB > 0) {
       return isEn
-        ? `Split the multiplier: ${operandA} × ${tensB} = ${operandA * tensB}, and ${operandA} × ${onesB} = ${operandA * onesB}. Add them: ${operandA * tensB} + ${operandA * onesB} = ${operandA * operandB}`
-        : `Pecah pengali: ${operandA} × ${tensB} = ${operandA * tensB}, dan ${operandA} × ${onesB} = ${operandA * onesB}. Jumlahkan: ${operandA * tensB} + ${operandA * onesB} = ${operandA * operandB}`;
+        ? `Split the multiplier: ${operandA} × ${tensB} = ${operandA * tensB}, and ${operandA} × ${onesB} = ${operandA * onesB}. Add them together!`
+        : `Pecah pengali: ${operandA} × ${tensB} = ${operandA * tensB}, dan ${operandA} × ${onesB} = ${operandA * onesB}. Jumlahkan keduanya!`;
     }
     return isEn
-      ? `Multiply directly: ${operandA} × ${operandB} = ${operandA * operandB}`
-      : `Kalikan langsung: ${operandA} × ${operandB} = ${operandA * operandB}`;
+      ? `Calculate ${operandA} × ${operandB} step by step using repeated addition or splitting.`
+      : `Hitung ${operandA} × ${operandB} bertahap dengan penjumlahan berulang atau pemecahan angka.`;
   }
 
   if (operation === 'division') {
     // Divisor is 5
     if (operandB === 5) {
       return isEn
-        ? `Divide by 5 trick: Multiply ${operandA} × 2 = ${operandA * 2}, then divide by 10 (shift decimal point 1 digit) → result: ${operandA * 2} ÷ 10 = ${operandA / operandB}`
-        : `Trik pembagian 5: Kalikan ${operandA} × 2 = ${operandA * 2}, lalu bagi 10 (geser koma 1 digit) → hasilnya ${operandA * 2} ÷ 10 = ${operandA / operandB}`;
+        ? `Divide by 5 trick: Multiply ${operandA} × 2 = ${operandA * 2}, then divide by 10 (shift decimal one place).`
+        : `Trik pembagian 5: Kalikan ${operandA} × 2 = ${operandA * 2}, lalu bagi 10 (geser koma 1 digit).`;
     }
-    // Derived fact
-    const divisionFact = operandA / operandB;
+    // Derived fact: hint using inverse multiplication
     return isEn
-      ? `Use the inverse of multiplication: Since we know ${operandB} × ${divisionFact} = ${operandA}, then ${operandA} ÷ ${operandB} = ${divisionFact}`
-      : `Gunakan kebalikan perkalian: Kita tahu bahwa ${operandB} × ${divisionFact} = ${operandA}, maka ${operandA} ÷ ${operandB} = ${divisionFact}`;
+      ? `Think of it as multiplication: What number times ${operandB} equals ${operandA}? (Hint: ${operandB} × ? = ${operandA})`
+      : `Gunakan kebalikan perkalian: Berapa dikali ${operandB} sama dengan ${operandA}? (Petunjuk: ${operandB} × ? = ${operandA})`;
   }
 
   return isEn
