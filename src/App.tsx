@@ -22,6 +22,7 @@ const ScoreSummary = React.lazy(() => import('./components/ScoreSummary'));
 const SettingsScreen = React.lazy(() => import('./components/SettingsScreen'));
 const AdoptionScreen = React.lazy(() => import('./components/AdoptionScreen'));
 const WarungBoard = React.lazy(() => import('./components/WarungBoard'));
+const QuizBoard = React.lazy(() => import('./components/QuizBoard'));
 
 export const App: React.FC = () => {
   const { state, dispatch } = useSessionReducer();
@@ -200,6 +201,17 @@ export const App: React.FC = () => {
             addCoins={handleAddCoins}
             buyUpgrade={handleBuyUpgrade}
             equipUpgrade={handleEquipUpgrade}
+            onBack={triggerQuitConfirm}
+            registerBackButton={registerBackButton}
+          />
+        );
+      case 'quiz':
+        return (
+          <QuizBoard
+            state={state}
+            dispatch={dispatch}
+            feedPet={feedPet}
+            addCoins={handleAddCoins}
             onBack={triggerQuitConfirm}
             registerBackButton={registerBackButton}
           />

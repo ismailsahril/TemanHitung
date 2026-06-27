@@ -20,7 +20,7 @@ export type FontSizeScale = 'normal' | 'large' | 'extra-large';
 export type TimerOption = 0 | 15 | 30 | 60;
 
 // Game screen/phase
-export type GamePhase = 'menu' | 'playing' | 'summary' | 'settings' | 'onboarding' | 'warung';
+export type GamePhase = 'menu' | 'playing' | 'summary' | 'settings' | 'onboarding' | 'warung' | 'quiz';
 
 export type PetType = 'cat' | 'hamster' | 'bird' | 'rabbit' | 'fox' | 'monkey';
 
@@ -178,4 +178,5 @@ export type SessionAction =
   | { type: 'TICK_TIMER' }
   | { type: 'ADD_COINS'; payload: { amount: number } }
   | { type: 'BUY_UPGRADE'; payload: { id: string; cost: number } }
-  | { type: 'EQUIP_UPGRADE'; payload: { id: string } };    // Dispatched every second when timerPerQuestion > 0
+  | { type: 'EQUIP_UPGRADE'; payload: { id: string } }
+  | { type: 'START_QUIZ' };

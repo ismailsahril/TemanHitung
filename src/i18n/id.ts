@@ -60,6 +60,8 @@ export const id = {
     placeholder: '...',
     timeLeft: '{seconds} detik',
     timeUp: 'Waktu habis!',
+    countdownReady: 'Bersiap-siap...',
+    countdownGo: 'Mulai! 🚀',
   },
 
   // Feedback
@@ -442,6 +444,429 @@ export const id = {
     desc: 'Kemajuan latihanmu saat ini akan hilang. Yakin ingin keluar?',
     yes: 'Ya, Keluar',
     no: 'Lanjutkan',
+  },
+
+  // Quiz Mode
+  quiz: {
+    title: 'Mode Kuis Soal Cerita',
+    description: 'Pecahkan soal cerita matematika bersama pet kesayanganmu!',
+    startButton: 'Mulai Kuis',
+    submitButton: 'Kirim Semua Jawaban',
+    unansweredWarning: 'Ada soal kuis yang belum terjawab!',
+    confirmSubmitTitle: 'Kirim Jawaban?',
+    confirmSubmitDesc: 'Yakin ingin menyelesaikan kuis ini?',
+    confirmSubmitYes: 'Ya, Kirim',
+    confirmSubmitNo: 'Batal',
+    correctLabel: 'Benar',
+    wrongLabel: 'Salah',
+    scoreTitle: 'Hasil Kuis Soal Cerita',
+    questionsCount: '{count} Soal',
+    retryButton: 'Ulangi Kuis',
+    menuButton: 'Menu Utama',
+    earnReward: 'Selamat! Kamu mendapat +🪙 {coins} koin dan +{exp} EXP!',
+    perfectReward: 'Luar biasa! Skor Sempurna! Bonus +🪙 {coins} koin dan +{exp} EXP!',
+    dialoguePerfect: 'Hebat sekali! Semua jawabanmu benar! Aku sangat bangga padamu! 🌟🏆',
+    dialogueOk: 'Bagus! Kamu berhasil menyelesaikan kuis ini. Mari terus berlatih! 👍',
+    q1: {
+      question: 'Mochi si Kelinci memiliki 12 wortel. Dia memberikan 4 wortel kepada Kiko si Kucing. Berapa sisa wortel Mochi sekarang?',
+      options: ['6 wortel', '8 wortel', '10 wortel', '12 wortel'],
+    },
+    q2: {
+      question: 'Hami si Hamster berlari di roda putar selama 15 menit di pagi hari dan 25 menit di sore hari. Berapa total menit Hami bermain hari ini?',
+      options: ['30 menit', '35 menit', '40 menit', '45 menit'],
+    },
+    q3: {
+      question: 'Foxy si Rubah mengumpulkan 5 kotak buah beri. Setiap kotak berisi 8 buah beri merah manis. Berapa total buah beri yang dimiliki Foxy?',
+      options: ['35 buah', '40 buah', '45 buah', '48 buah'],
+    },
+    q4: {
+      question: 'Moko si Monyet memetik 24 buah pisang dari kebun. Dia membaginya rata kepada 4 temannya. Berapa banyak pisang yang diterima setiap teman Moko?',
+      options: ['5 buah', '6 buah', '7 buah', '8 buah'],
+    },
+    q5: {
+      question: 'Piko si Burung terbang sejauh 50 meter ke pohon A, lalu terbang lagi sejauh 35 meter ke pohon B. Berapa total jarak penerbangan Piko?',
+      options: ['75 meter', '80 meter', '85 meter', '90 meter'],
+    },
+    q6: {
+      question: 'Kiko si Kucing menangkap 20 mainan tikus, lalu memberikan 7 mainan tikus ke Hami si Hamster. Berapa sisa mainan tikus Kiko sekarang?',
+      options: ['11 mainan', '12 mainan', '13 mainan', '14 mainan'],
+    },
+    q7: {
+      question: 'Mochi si Kelinci membeli 3 kantong biji-bijian. Setiap kantong berisi 12 biji wortel manis. Berapa total biji wortel manis yang dibeli Mochi?',
+      options: ['30 biji', '32 biji', '36 biji', '40 biji'],
+    },
+    q8: {
+      question: 'Hami si Hamster memiliki 30 kuaci matahari. Dia ingin membaginya sama rata ke dalam 5 kantong kecil. Berapa isi kuaci di setiap kantong?',
+      options: ['5 kuaci', '6 kuaci', '7 kuaci', '8 kuaci'],
+    },
+    q9: {
+      question: 'Foxy si Rubah menemukan 45 koin emas di sebuah peti karun dan 27 koin emas lagi di dalam kantong kecil. Berapa total koin emas Foxy?',
+      options: ['62 koin', '70 koin', '72 koin', '75 koin'],
+    },
+    q10: {
+      question: 'Moko si Monyet memiliki 50 kelapa di pohonnya, namun 18 kelapa di antaranya busuk. Berapa banyak kelapa bagus yang tersisa?',
+      options: ['30 kelapa', '32 kelapa', '34 kelapa', '38 kelapa'],
+    },
+    q11: {
+      question: 'Piko si Burung mengumpulkan 18 ranting pohon di pagi hari dan 14 ranting lagi di sore hari untuk sarangnya. Berapa total ranting pohon Piko?',
+      options: ['28 ranting', '30 ranting', '32 ranting', '34 ranting'],
+    },
+    q12: {
+      question: 'Kiko si Kucing tidur selama 4 jam setiap harinya. Berapa total jam tidur Kiko selama 7 hari?',
+      options: ['24 jam', '26 jam', '28 jam', '30 jam'],
+    },
+    q13: {
+      question: 'Mochi si Kelinci melompat sebanyak 45 kali dalam waktu 9 detik. Berapa rata-rata lompatan Mochi setiap satu detiknya?',
+      options: ['4 lompatan', '5 lompatan', '6 lompatan', '7 lompatan'],
+    },
+    q14: {
+      question: 'Hami si Hamster menabung 150 koin minggu lalu dan 250 koin minggu ini. Berapa total koin tabungan Hami sekarang?',
+      options: ['350 koin', '380 koin', '400 koin', '420 koin'],
+    },
+    q15: {
+      question: 'Foxy si Rubah memetik 80 buah beri merah. Dia memberikan 25 buah ke Moko dan 15 buah ke Piko. Berapa sisa buah beri Foxy?',
+      options: ['35 buah', '40 buah', '45 buah', '50 buah'],
+    },
+    q16: {
+      question: 'Moko si Monyet bermain dengan 6 kelompok temannya, di mana setiap kelompok beranggotakan 6 monyet. Berapa total monyet yang bermain?',
+      options: ['30 monyet', '32 monyet', '36 monyet', '42 monyet'],
+    },
+    q17: {
+      question: 'Piko si Burung menemukan 48 buah ceri kecil lalu membaginya sama rata kepada 6 anak burung di sarang. Berapa ceri yang didapat tiap anak burung?',
+      options: ['6 buah', '7 buah', '8 buah', '9 buah'],
+    },
+    q18: {
+      question: 'Kiko si Kucing menangkap 37 tikus mainan dan Mochi si Kelinci menangkap 24. Berapa total tikus mainan yang mereka tangkap bersama?',
+      options: ['51 mainan', '59 mainan', '61 mainan', '65 mainan'],
+    },
+    q19: {
+      question: 'Hami si Hamster memiliki terowongan sepanjang 90 cm. Dia baru saja membersihkan 45 cm. Berapa sisa panjang terowongan yang belum bersih?',
+      options: ['40 cm', '45 cm', '50 cm', '55 cm'],
+    },
+    q20: {
+      question: 'Foxy si Rubah menggunakan 9 poin energi untuk setiap trik sulap. Jika dia melakukan 4 trik sulap, berapa total poin energi yang digunakan?',
+      options: ['32 poin', '34 poin', '36 poin', '40 poin'],
+    },
+    q21: {
+      question: 'Mochi si Kelinci memiliki 15 apel dan membeli 8 apel lagi di pasar. Berapa total apel yang dimiliki Mochi sekarang?',
+      options: ['20 apel', '21 apel', '22 apel', '23 apel'],
+    },
+    q22: {
+      question: 'Piko si Burung terbang sejauh 35 meter lalu melanjutkan terbang sejauh 48 meter menuju sarangnya. Berapa total jarak yang ditempuh Piko?',
+      options: ['79 meter', '81 meter', '83 meter', '85 meter'],
+    },
+    q23: {
+      question: 'Kiko si Kucing memiliki 45 tikus mainan dan menyimpannya sama rata ke dalam 5 kotak. Berapa tikus mainan di setiap kotak?',
+      options: ['7 ekor', '8 ekor', '9 ekor', '10 ekor'],
+    },
+    q24: {
+      question: 'Hami si Hamster makan 3 biji bunga matahari setiap jam. Berapa total biji yang dimakan Hami dalam 8 jam?',
+      options: ['21 biji', '22 biji', '24 biji', '26 biji'],
+    },
+    q25: {
+      question: 'Foxy si Rubah memetik 60 buah beri merah, namun 23 di antaranya jatuh ke tanah. Berapa buah beri yang masih dipegang Foxy?',
+      options: ['35 buah', '37 buah', '39 buah', '41 buah'],
+    },
+    q26: {
+      question: 'Moko si Monyet memanjat 6 pohon kelapa. Setiap pohon memiliki 12 kelapa matang. Berapa total kelapa yang ditemukan Moko?',
+      options: ['60 kelapa', '66 kelapa', '70 kelapa', '72 kelapa'],
+    },
+    q27: {
+      question: 'Kiko si Kucing berlari sejauh 4 km di pagi hari dan 7 km di sore hari. Berapa total jarak berlari Kiko hari ini?',
+      options: ['9 km', '10 km', '11 km', '12 km'],
+    },
+    q28: {
+      question: 'Hami si Hamster mengumpulkan 25 biji ek di pagi hari dan 15 biji ek lagi di sore hari. Berapa total biji ek yang berhasil dikumpulkan?',
+      options: ['35 biji', '38 biji', '40 biji', '42 biji'],
+    },
+    q29: {
+      question: 'Foxy si Rubah mengumpulkan 34 buah beri dan Moko si Monyet mengumpulkan 28 buah beri. Berapa jumlah buah beri mereka berdua?',
+      options: ['56 buah', '60 buah', '62 buah', '64 buah'],
+    },
+    q30: {
+      question: 'Piko si Burung menemukan 18 bulu merah, 24 bulu biru, dan 13 bulu kuning untuk menghias sarangnya. Berapa total bulu yang ditemukan Piko?',
+      options: ['50 bulu', '53 bulu', '55 bulu', '58 bulu'],
+    },
+    q31: {
+      question: 'Mochi si Kelinci memiliki 100 biji wortel. Dia menanam 37 biji di kebun belakang rumahnya. Berapa biji wortel yang masih tersisa?',
+      options: ['53 biji', '63 biji', '73 biji', '83 biji'],
+    },
+    q32: {
+      question: 'Kiko si Kucing memiliki 200 tikus mainan, namun memberikan 75 di antaranya kepada teman-temannya. Berapa sisa tikus mainan Kiko?',
+      options: ['115 mainan', '120 mainan', '125 mainan', '130 mainan'],
+    },
+    q33: {
+      question: 'Kiko si Kucing memiliki 5 keranjang mainan. Setiap keranjang berisi 9 tikus mainan kesayangan. Berapa total tikus mainan milik Kiko?',
+      options: ['40 mainan', '42 mainan', '45 mainan', '48 mainan'],
+    },
+    q34: {
+      question: 'Hami si Hamster berlari di roda putarnya sejauh 8 km setiap hari. Berapa total kilometer yang ditempuh Hami dalam 9 hari?',
+      options: ['63 km', '70 km', '72 km', '81 km'],
+    },
+    q35: {
+      question: 'Foxy si Rubah mendapatkan 50 koin setiap harinya dari berburu harta. Berapa total koin yang dimiliki Foxy setelah 6 hari?',
+      options: ['250 koin', '280 koin', '300 koin', '320 koin'],
+    },
+    q36: {
+      question: 'Moko si Monyet memetik 11 pisang setiap hari selama 7 hari berturut-turut. Berapa total pisang yang berhasil dipetik Moko?',
+      options: ['70 buah', '74 buah', '77 buah', '84 buah'],
+    },
+    q37: {
+      question: 'Moko si Monyet memiliki 110 pisang di peti buahnya. Setelah memakan 47 pisang, berapa sisa pisang yang dimiliki Moko?',
+      options: ['57 buah', '60 buah', '63 buah', '67 buah'],
+    },
+    q38: {
+      question: 'Foxy si Rubah memiliki 120 koin emas. Dia menghabiskan 55 koin untuk membeli buah beri langka di pasar hutan. Berapa sisa koin Foxy?',
+      options: ['60 koin', '63 koin', '65 koin', '70 koin'],
+    },
+    q39: {
+      question: 'Piko si Burung terbang 150 meter menuju sarangnya, tetapi berbalik arah sejauh 86 meter. Berapa jarak Piko dari sarangnya sekarang?',
+      options: ['60 meter', '64 meter', '68 meter', '72 meter'],
+    },
+    q40: {
+      question: 'Hami si Hamster menyimpan 45 biji bunga matahari untuk musim dingin. Setelah memakan 18 biji, berapa biji sunflower yang masih tersisa?',
+      options: ['25 biji', '26 biji', '27 biji', '28 biji'],
+    },
+    q41: {
+      question: 'Mochi si Kelinci melakukan lompatan sejauh 3 meter sebanyak 7 kali dalam sesi latihan. Berapa total jarak lompatan Mochi?',
+      options: ['18 meter', '20 meter', '21 meter', '24 meter'],
+    },
+    q42: {
+      question: 'Kiko si Kucing tidur siang 4 kali sehari, dengan setiap tidur siang berlangsung selama 2 jam. Berapa total jam tidur siang Kiko?',
+      options: ['6 jam', '7 jam', '8 jam', '10 jam'],
+    },
+    q43: {
+      question: 'Hami si Hamster menggali 6 terowongan yang masing-masing panjangnya 15 cm. Berapa total panjang seluruh terowongan Hami?',
+      options: ['80 cm', '85 cm', '90 cm', '95 cm'],
+    },
+    q44: {
+      question: 'Piko si Burung menyanyikan 12 lagu setiap jam selama 5 jam berturut-turut di pagi hari. Berapa total lagu yang dinyanyikan Piko?',
+      options: ['48 lagu', '54 lagu', '60 lagu', '72 lagu'],
+    },
+    q45: {
+      question: 'Foxy si Rubah melakukan 3 trik sulap memukau. Setiap trik berhasil menghasilkan 25 koin emas. Berapa total koin yang diperoleh Foxy?',
+      options: ['65 koin', '70 koin', '75 koin', '80 koin'],
+    },
+    q46: {
+      question: 'Moko si Monyet memakan 9 pisang segar setiap hari. Berapa total pisang yang dimakan Moko dalam 8 hari?',
+      options: ['63 buah', '70 buah', '72 buah', '81 buah'],
+    },
+    q47: {
+      question: 'Kiko si Kucing mengambil 11 langkah setiap putaran permainan tangkap tikus. Jika ada 7 putaran, berapa total langkah Kiko?',
+      options: ['63 langkah', '70 langkah', '77 langkah', '84 langkah'],
+    },
+    q48: {
+      question: 'Hami si Hamster berhasil mengumpulkan 12 biji setiap harinya. Berapa total biji yang berhasil dikumpulkan Hami dalam 4 hari?',
+      options: ['40 biji', '44 biji', '48 biji', '52 biji'],
+    },
+    q49: {
+      question: 'Mochi si Kelinci berlatih melompat sebanyak 9 kali dalam satu sesi latihan. Jika ada 8 sesi latihan, berapa total lompatan yang dilakukan Mochi?',
+      options: ['63 kali', '72 kali', '81 kali', '90 kali'],
+    },
+    q50: {
+      question: 'Foxy si Rubah menemukan 14 koin emas di setiap hutan yang ia kunjungi. Jika Foxy mengunjungi 5 hutan berbeda, berapa total koin emas?',
+      options: ['65 koin', '68 koin', '70 koin', '75 koin'],
+    },
+    q51: {
+      question: 'Piko si Burung menemukan 63 buah ceri dan membaginya rata kepada 9 ekor burung kecil di hutan. Berapa ceri yang diterima setiap burung?',
+      options: ['5 buah', '6 buah', '7 buah', '8 buah'],
+    },
+    q52: {
+      question: 'Kiko si Kucing memiliki 45 ikan kecil dan meletakkannya sama rata ke dalam 9 mangkok makan. Berapa ikan di setiap mangkok?',
+      options: ['3 ekor', '4 ekor', '5 ekor', '6 ekor'],
+    },
+    q53: {
+      question: 'Hami si Hamster memiliki 56 biji dan ingin memasukkannya sama rata ke dalam 8 kantong kecil. Berapa biji di setiap kantong?',
+      options: ['5 biji', '6 biji', '7 biji', '8 biji'],
+    },
+    q54: {
+      question: 'Moko si Monyet memiliki 84 kelapa yang dipetik dari 12 pohon berbeda. Jika setiap pohon menghasilkan jumlah yang sama, berapa kelapa dari setiap pohon?',
+      options: ['5 kelapa', '6 kelapa', '7 kelapa', '8 kelapa'],
+    },
+    q55: {
+      question: 'Foxy si Rubah memetik 96 buah beri dan ingin memasukkannya ke dalam kotak. Jika setiap kotak berisi 6 buah beri, berapa kotak yang diperlukan?',
+      options: ['12 kotak', '14 kotak', '16 kotak', '18 kotak'],
+    },
+    q56: {
+      question: 'Piko si Burung menghitung 81 bulu indahnya dan membaginya secara rata ke dalam 9 kelompok untuk dipamerkan. Berapa bulu di setiap kelompok?',
+      options: ['7 bulu', '8 bulu', '9 bulu', '10 bulu'],
+    },
+    q57: {
+      question: 'Kiko si Kucing memiliki 72 tikus mainan dan menyimpannya sama rata di dalam 8 kandang mainan. Berapa tikus mainan di setiap kandang?',
+      options: ['7 ekor', '8 ekor', '9 ekor', '10 ekor'],
+    },
+    q58: {
+      question: 'Hami si Hamster memiliki persediaan 120 biji untuk dimakan selama 10 hari. Berapa biji yang boleh dimakan Hami setiap harinya agar cukup?',
+      options: ['10 biji', '11 biji', '12 biji', '13 biji'],
+    },
+    q59: {
+      question: 'Mochi si Kelinci dapat melakukan 90 lompatan dalam 6 menit latihan. Berapa rata-rata lompatan Mochi setiap satu menitnya?',
+      options: ['12 kali', '13 kali', '14 kali', '15 kali'],
+    },
+    q60: {
+      question: 'Foxy si Rubah menanam 144 buah beri di kebunnya dan menatanya dalam 12 baris yang sama panjang. Berapa buah beri di setiap barisnya?',
+      options: ['10 buah', '11 buah', '12 buah', '14 buah'],
+    },
+    q61: {
+      question: 'Kiko si Kucing melangkah 125 langkah di taman pagi hari dan 238 langkah lagi saat bermain sore hari. Berapa total langkah Kiko hari ini?',
+      options: ['353 langkah', '363 langkah', '373 langkah', '383 langkah'],
+    },
+    q62: {
+      question: 'Hami si Hamster menyimpan 456 biji untuk musim dingin, tetapi 189 biji dimakan oleh tikus nakal. Berapa biji yang masih tersisa?',
+      options: ['257 biji', '267 biji', '277 biji', '287 biji'],
+    },
+    q63: {
+      question: 'Foxy si Rubah berlari sejauh 13 meter setiap putaran lomba lari. Berapa total meter yang ditempuh Foxy dalam 7 putaran penuh?',
+      options: ['84 meter', '87 meter', '91 meter', '98 meter'],
+    },
+    q64: {
+      question: 'Moko si Monyet memetik 18 pisang segar setiap hari. Berapa total pisang yang berhasil dipetik Moko dalam 6 hari?',
+      options: ['96 buah', '102 buah', '108 buah', '114 buah'],
+    },
+    q65: {
+      question: 'Piko si Burung memiliki 96 telur dan membaginya rata ke dalam 4 sarang yang berbeda. Berapa telur yang ada di setiap sarang?',
+      options: ['20 telur', '22 telur', '24 telur', '26 telur'],
+    },
+    q66: {
+      question: 'Kiko si Kucing mengelompokkan 256 mainannya ke dalam 8 kelompok yang sama besar. Berapa mainan yang ada di setiap kelompok?',
+      options: ['28 mainan', '30 mainan', '32 mainan', '34 mainan'],
+    },
+    q67: {
+      question: 'Foxy si Rubah memiliki 350 buah beri dan memberikan 167 beri kepada teman-temannya sebagai hadiah. Berapa sisa buah beri Foxy?',
+      options: ['173 buah', '183 buah', '193 buah', '203 buah'],
+    },
+    q68: {
+      question: 'Hami si Hamster menemukan 78 biji di ladang utara dan 94 biji di ladang selatan. Berapa total biji yang berhasil ditemukan Hami?',
+      options: ['162 biji', '168 biji', '172 biji', '178 biji'],
+    },
+    q69: {
+      question: 'Mochi si Kelinci melakukan 15 lompatan setiap menit saat latihan. Berapa total lompatan yang dilakukan Mochi dalam 8 menit?',
+      options: ['100 kali', '112 kali', '120 kali', '128 kali'],
+    },
+    q70: {
+      question: 'Moko si Monyet mengumpulkan 11 pisang dari setiap pohon dan memanjat 11 pohon berbeda. Berapa total pisang yang berhasil dikumpulkan Moko?',
+      options: ['110 buah', '115 buah', '121 buah', '132 buah'],
+    },
+    q71: {
+      question: 'Foxy si Rubah memiliki 400 koin emas, lalu membeli perlengkapan petualangan seharga 175 koin. Berapa sisa koin yang dimiliki Foxy?',
+      options: ['215 koin', '220 koin', '225 koin', '230 koin'],
+    },
+    q72: {
+      question: 'Piko si Burung menyanyikan 15 lagu setiap hari selama 7 hari berturut-turut. Berapa total lagu yang telah dinyanyikan Piko?',
+      options: ['95 lagu', '100 lagu', '105 lagu', '110 lagu'],
+    },
+    q73: {
+      question: 'Kiko si Kucing memiliki 168 camilan spesial untuk dimakan selama 7 minggu. Berapa camilan yang dimakan Kiko setiap minggu?',
+      options: ['20 camilan', '22 camilan', '24 camilan', '28 camilan'],
+    },
+    q74: {
+      question: 'Hami si Hamster rajin mengumpulkan 12 biji setiap harinya. Berapa total biji yang berhasil dikumpulkan Hami dalam 9 hari?',
+      options: ['90 biji', '99 biji', '108 biji', '117 biji'],
+    },
+    q75: {
+      question: 'Foxy si Rubah harus menyelesaikan 300 trik sulap yang dibagi menjadi 15 sesi latihan. Berapa trik yang dilakukan di setiap sesinya?',
+      options: ['15 trik', '18 trik', '20 trik', '25 trik'],
+    },
+    q76: {
+      question: 'Moko si Monyet mengumpulkan 88 bulu cantik dan Piko si Burung memberikan 77 bulu tambahan. Berapa total bulu yang dimiliki Moko?',
+      options: ['155 bulu', '160 bulu', '165 bulu', '170 bulu'],
+    },
+    q77: {
+      question: 'Kiko si Kucing memiliki 240 mainan lucu. Setelah memberikan 95 mainan kepada teman-temannya, berapa sisa mainan Kiko?',
+      options: ['135 mainan', '140 mainan', '145 mainan', '150 mainan'],
+    },
+    q78: {
+      question: 'Hami si Hamster rajin mengumpulkan 9 biji setiap harinya. Berapa total biji yang terkumpul dalam 14 hari?',
+      options: ['112 biji', '119 biji', '126 biji', '133 biji'],
+    },
+    q79: {
+      question: 'Foxy si Rubah memiliki 500 buah beri dan ingin memasukkannya ke dalam kantong yang masing-masing berisi 25 beri. Berapa kantong yang dibutuhkan?',
+      options: ['15 kantong', '18 kantong', '20 kantong', '25 kantong'],
+    },
+    q80: {
+      question: 'Mochi si Kelinci memecahkan rekor dengan melakukan 13 lompatan di setiap 13 putaran latihan. Berapa total lompatan yang dilakukan Mochi?',
+      options: ['156 kali', '162 kali', '169 kali', '176 kali'],
+    },
+    q81: {
+      question: 'Foxy si Rubah mengumpulkan 85 buah beri dan Kiko si Kucing mengumpulkan 96 buah beri untuk pesta. Berapa jumlah total buah beri mereka?',
+      options: ['171 buah', '176 buah', '181 buah', '186 buah'],
+    },
+    q82: {
+      question: 'Hami si Hamster menyimpan 750 biji di gudangnya. Setelah digunakan selama musim dingin sebanyak 384 biji, berapa yang masih tersisa?',
+      options: ['356 biji', '366 biji', '376 biji', '386 biji'],
+    },
+    q83: {
+      question: 'Moko si Monyet memanjat pohon setinggi 17 meter setiap harinya. Berapa total meter yang dipanjat Moko dalam 8 hari?',
+      options: ['126 meter', '130 meter', '136 meter', '144 meter'],
+    },
+    q84: {
+      question: 'Piko si Burung memimpin 225 lagu indah dan membaginya rata ke dalam 9 kelompok paduan suara. Berapa lagu yang diberikan kepada setiap kelompok?',
+      options: ['20 lagu', '23 lagu', '25 lagu', '27 lagu'],
+    },
+    q85: {
+      question: 'Kiko si Kucing berhasil menangkap 12 tikus mainan setiap harinya. Berapa total tangkapan Kiko dalam 14 hari penuh?',
+      options: ['152 ekor', '160 ekor', '168 ekor', '176 ekor'],
+    },
+    q86: {
+      question: 'Foxy si Rubah memiliki 600 buah beri dan memasukkannya sama rata ke dalam 25 toples cantik. Berapa buah beri yang ada di setiap toples?',
+      options: ['20 buah', '22 buah', '24 buah', '26 buah'],
+    },
+    q87: {
+      question: 'Hami si Hamster menemukan 48 biji di ladang, 57 biji di semak-semak, dan 36 biji di bawah pohon besar. Berapa total biji yang ditemukan?',
+      options: ['131 biji', '136 biji', '141 biji', '146 biji'],
+    },
+    q88: {
+      question: 'Moko si Monyet memiliki 900 kelapa di pulau hutan dan berbagi 436 kelapa kepada keluarga besarnya. Berapa kelapa yang masih tersisa?',
+      options: ['444 kelapa', '454 kelapa', '464 kelapa', '474 kelapa'],
+    },
+    q89: {
+      question: 'Piko si Burung terbang sejauh 19 meter ke setiap pohon yang dikunjunginya. Berapa total jarak yang ditempuh jika Piko mengunjungi 7 pohon?',
+      options: ['126 meter', '130 meter', '133 meter', '140 meter'],
+    },
+    q90: {
+      question: 'Kiko si Kucing menangkap 78 ikan kecil lalu membaginya ke dalam 6 kelompok yang sama besar. Berapa ikan yang ada di setiap kelompok?',
+      options: ['11 ekor', '12 ekor', '13 ekor', '14 ekor'],
+    },
+    q91: {
+      question: 'Foxy si Rubah memiliki 250 koin dan Mochi si Kelinci memiliki 375 koin. Berapa total koin yang mereka miliki bersama-sama?',
+      options: ['600 koin', '615 koin', '625 koin', '635 koin'],
+    },
+    q92: {
+      question: 'Hami si Hamster mengumpulkan 1000 biji untuk musim dingin, tetapi 437 biji terbawa angin kencang. Berapa biji yang masih tersisa?',
+      options: ['553 biji', '563 biji', '573 biji', '583 biji'],
+    },
+    q93: {
+      question: 'Moko si Monyet rajin memetik 12 pisang setiap harinya. Berapa total pisang yang dipetik Moko selama 16 hari?',
+      options: ['180 buah', '186 buah', '192 buah', '198 buah'],
+    },
+    q94: {
+      question: 'Piko si Burung memiliki 126 telur dan menata menjadi 7 baris yang sama rata di dalam sarang. Berapa telur yang ada di setiap baris?',
+      options: ['14 telur', '16 telur', '18 telur', '21 telur'],
+    },
+    q95: {
+      question: 'Kiko si Kucing memiliki 25 kotak mainan, dan setiap kotak berisi 8 tikus mainan kesayangan. Berapa total tikus mainan yang dimiliki Kiko?',
+      options: ['175 ekor', '185 ekor', '200 ekor', '215 ekor'],
+    },
+    q96: {
+      question: 'Foxy si Rubah memiliki 450 buah beri yang dimasukkan ke dalam 18 toples dengan isi yang sama. Berapa buah beri di setiap toples?',
+      options: ['20 buah', '23 buah', '25 buah', '27 buah'],
+    },
+    q97: {
+      question: 'Hami si Hamster mengumpulkan 132 biji dan Mochi si Kelinci mengumpulkan 246 biji untuk persediaan bersama. Berapa total biji yang dikumpulkan?',
+      options: ['358 biji', '368 biji', '378 biji', '388 biji'],
+    },
+    q98: {
+      question: 'Moko si Monyet memiliki 800 pisang dan memberikan 325 pisang kepada monyet-monyet lain di hutan. Berapa pisang yang masih dimiliki Moko?',
+      options: ['465 buah', '470 buah', '475 buah', '485 buah'],
+    },
+    q99: {
+      question: 'Piko si Burung berkicau 22 kali setiap jam selama 9 jam penuh di pagi hari yang cerah. Berapa total kicauan yang dihasilkan Piko?',
+      options: ['180 kali', '189 kali', '198 kali', '207 kali'],
+    },
+    q100: {
+      question: 'Kiko si Kucing memiliki 96 pak ikan spesial dan menghabiskannya dalam 4 hari. Berapa pak ikan yang dimakan Kiko setiap harinya?',
+      options: ['18 pak', '21 pak', '24 pak', '27 pak'],
+    },
   },
 
   // Error boundary

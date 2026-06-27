@@ -32,6 +32,10 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch, onBack, r
   const isShowingFeedback = history.length === currentIndex + 1;
   const lastAnswered = isShowingFeedback ? history[currentIndex] : null;
 
+  // Countdown before game starts
+  const [countdown, setCountdown] = useState<number | null>(3);
+  const isCountingDown = countdown !== null;
+
   // Companion Pet Cheerleader states
   const [petAnimationState, setPetAnimationState] = useState<'idle' | 'eating' | 'levelUp'>('idle');
   const [petSpeech, setPetSpeech] = useState<string>('');
@@ -49,6 +53,19 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch, onBack, r
 
   // Focus ref for screen reader accessibility
   const firstNumpadRef = useRef<HTMLDivElement>(null);
+
+  // Countdown 3-2-1 effect
+  useEffect(() => {
+    if (countdown === null) return;
+    if (countdown === 0) {
+      // Countdown done — dismiss overlay and give haptic pulse
+      triggerHaptic(ImpactStyle.Medium, settings.hapticEnabled);
+      setCountdown(null);
+      return;
+    }
+    const t = setTimeout(() => setCountdown(prev => (prev !== null ? prev - 1 : null)), 1000);
+    return () => clearTimeout(t);
+  }, [countdown, settings.hapticEnabled]);
 
   // Register Android hardware back button handler
   useEffect(() => {
@@ -78,7 +95,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch, onBack, r
 
   // Dynamically calculate and transition timer stage
   useEffect(() => {
-    if (isShowingFeedback || state.phase !== 'playing') return;
+    if (isShowingFeedback || isCountingDown || state.phase !== 'playing') return;
 
     // 1. Calculate target stage
     let targetStage: 'relaxed' | 'warning' | 'panic' = 'relaxed';
@@ -110,7 +127,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch, onBack, r
 
   // Idle timer to show quick tips after 7 seconds of no action
   useEffect(() => {
-    if (isShowingFeedback || state.phase !== 'playing' || settings.autoShowTip) {
+    if (isShowingFeedback || isCountingDown || state.phase !== 'playing' || settings.autoShowTip) {
       return;
     }
 
@@ -126,7 +143,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch, onBack, r
 
   // Sync elapsed timer
   useEffect(() => {
-    if (settings.timerPerQuestion === 0 || isShowingFeedback || state.phase !== 'playing') {
+    if (settings.timerPerQuestion === 0 || isShowingFeedback || isCountingDown || state.phase !== 'playing') {
       return;
     }
 
@@ -192,12 +209,12 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch, onBack, r
 
   }, [currentIndex, totalQuestions, currentQuestion, isShowingFeedback, settings.soundEnabled, settings.hapticEnabled, dispatch, t]);
 
-  // Handle Timeout
+  // Handle Timeout — not active during countdown
   useEffect(() => {
-    if (settings.timerPerQuestion > 0 && timeLeft === 0 && !isShowingFeedback && state.phase === 'playing') {
+    if (settings.timerPerQuestion > 0 && timeLeft === 0 && !isShowingFeedback && !isCountingDown && state.phase === 'playing') {
       handleSubmitAnswer(null);
     }
-  }, [timeLeft, settings.timerPerQuestion, isShowingFeedback, state.phase, handleSubmitAnswer]);
+  }, [timeLeft, settings.timerPerQuestion, isShowingFeedback, isCountingDown, state.phase, handleSubmitAnswer]);
 
   // Real-time localized format styling for typed input
   const formatTypedAnswer = (raw: string, format: 'id' | 'en'): string => {
@@ -514,7 +531,64 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch, onBack, r
          userAnswer={lastAnswered ? lastAnswered.userAnswer : null}
          numberFormat={settings.numberFormat}
       />
+
+      {/* 9. Countdown overlay — rendered on top of everything */}
+      <AnimatePresence>
+        {isCountingDown && (
+          <m.div
+            key="countdown-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="absolute inset-0 z-[60] flex flex-col items-center justify-center bg-[#fafafc]/80 dark:bg-[#121218]/85 backdrop-blur-sm"
+          >
+            {/* Pet speech bubble above number */}
+            <m.p
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-[13px] text-ink-muted dark:text-neutral-400 mb-6 font-gacha"
+            >
+              {t('game.countdownReady')}
+            </m.p>
+
+            {/* Big animated countdown digit */}
+            <AnimatePresence mode="wait">
+              <m.div
+                key={countdown}
+                initial={{ scale: 1.6, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.6, opacity: 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 22 }}
+                className="flex items-center justify-center"
+              >
+                {countdown! > 0 ? (
+                  <span className="text-[96px] font-black leading-none text-[#0066cc] dark:text-[#d4af37] font-fantasy select-none" style={{ textShadow: '0 4px 24px rgba(0,102,204,0.25)' }}>
+                    {countdown}
+                  </span>
+                ) : (
+                  <span className="text-[52px] font-black leading-none text-emerald-500 font-fantasy select-none tracking-tight">
+                    {t('game.countdownGo')}
+                  </span>
+                )}
+              </m.div>
+            </AnimatePresence>
+
+            {/* Subtle ring pulse */}
+            {countdown! > 0 && (
+              <m.div
+                key={`ring-${countdown}`}
+                initial={{ scale: 0.7, opacity: 0.6 }}
+                animate={{ scale: 2.2, opacity: 0 }}
+                transition={{ duration: 0.9, ease: 'easeOut' }}
+                className="absolute w-24 h-24 rounded-full border-4 border-[#0066cc]/30 dark:border-[#d4af37]/30 pointer-events-none"
+              />
+            )}
+          </m.div>
+        )}
+      </AnimatePresence>
     </m.div>
+
   );
 };
 export default GameBoard;

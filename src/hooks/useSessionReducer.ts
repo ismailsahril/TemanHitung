@@ -51,6 +51,19 @@ function sessionReducer(state: SessionState, action: SessionAction): SessionStat
       };
     }
 
+    case 'START_QUIZ': {
+      return {
+        ...state,
+        phase: 'quiz',
+        config: null,
+        questions: [],
+        currentIndex: 0,
+        history: [],
+        score: 0,
+        timerStartedAt: null,
+      };
+    }
+
     case 'SUBMIT_ANSWER': {
       if (state.phase !== 'playing' || !state.config) return state;
       

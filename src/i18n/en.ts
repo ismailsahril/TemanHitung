@@ -62,6 +62,8 @@ export const en: TranslationKey = {
     placeholder: '...',
     timeLeft: '{seconds} seconds',
     timeUp: 'Time\'s up!',
+    countdownReady: 'Get ready...',
+    countdownGo: 'Go! 🚀',
   },
 
   // Feedback
@@ -444,6 +446,429 @@ export const en: TranslationKey = {
     desc: 'Your current practice progress will be lost. Are you sure you want to quit?',
     yes: 'Yes, Quit',
     no: 'Continue',
+  },
+
+  // Quiz Mode
+  quiz: {
+    title: 'Word Problem Quiz Mode',
+    description: 'Solve math word problems together with your favorite pet!',
+    startButton: 'Start Quiz',
+    submitButton: 'Submit All Answers',
+    unansweredWarning: 'There are unanswered quiz questions!',
+    confirmSubmitTitle: 'Submit Answers?',
+    confirmSubmitDesc: 'Are you sure you want to complete this quiz?',
+    confirmSubmitYes: 'Yes, Submit',
+    confirmSubmitNo: 'Cancel',
+    correctLabel: 'Correct',
+    wrongLabel: 'Wrong',
+    scoreTitle: 'Word Problem Quiz Results',
+    questionsCount: '{count} Questions',
+    retryButton: 'Retry Quiz',
+    menuButton: 'Main Menu',
+    earnReward: 'Congratulations! You earned +🪙 {coins} coins and +{exp} EXP!',
+    perfectReward: 'Awesome! Perfect Score! Bonus +🪙 {coins} coins and +{exp} EXP!',
+    dialoguePerfect: 'Amazing! All your answers are correct! I am so proud of you! 🌟🏆',
+    dialogueOk: 'Great! You have completed the quiz. Let\'s keep practicing! 👍',
+    q1: {
+      question: 'Mochi the Rabbit has 12 carrots. He gives 4 carrots to Kiko the Cat. How many carrots does Mochi have left?',
+      options: ['6 carrots', '8 carrots', '10 carrots', '12 carrots'],
+    },
+    q2: {
+      question: 'Hami the Hamster runs on his wheel for 15 minutes in the morning and 25 minutes in the afternoon. What is the total minutes Hami played today?',
+      options: ['30 minutes', '35 minutes', '40 minutes', '45 minutes'],
+    },
+    q3: {
+      question: 'Foxy the Fox collects 5 boxes of berries. Each box contains 8 sweet red berries. How many berries does Foxy have in total?',
+      options: ['35 berries', '40 berries', '45 berries', '48 berries'],
+    },
+    q4: {
+      question: 'Moko the Monkey picked 24 bananas from the garden. He divides them equally among 4 of his friends. How many bananas does each friend receive?',
+      options: ['5 bananas', '6 bananas', '7 bananas', '8 bananas'],
+    },
+    q5: {
+      question: 'Piko the Bird flies 50 meters to tree A, then flies another 35 meters to tree B. What is Piko\'s total flight distance?',
+      options: ['75 meters', '80 meters', '85 meters', '90 meters'],
+    },
+    q6: {
+      question: 'Kiko the Cat catches 20 toy mice, then gives 7 toy mice to Hami the Hamster. How many toy mice does Kiko have now?',
+      options: ['11 toys', '12 toys', '13 toys', '14 toys'],
+    },
+    q7: {
+      question: 'Mochi the Rabbit buys 3 packs of seeds. Each pack contains 12 sweet carrot seeds. How many sweet carrot seeds did Mochi buy in total?',
+      options: ['30 seeds', '32 seeds', '36 seeds', '40 seeds'],
+    },
+    q8: {
+      question: 'Hami the Hamster has 30 sunflower seeds. He wants to distribute them equally into 5 small bags. How many seeds are in each bag?',
+      options: ['5 seeds', '6 seeds', '7 seeds', '8 seeds'],
+    },
+    q9: {
+      question: 'Foxy the Fox finds 45 gold coins in a treasure chest and 27 more gold coins in a pouch. How many gold coins does Foxy have in total?',
+      options: ['62 coins', '70 coins', '72 coins', '75 coins'],
+    },
+    q10: {
+      question: 'Moko the Monkey has 50 coconuts on his tree, but 18 of them are spoiled. How many good coconuts does Moko have left?',
+      options: ['30 coconuts', '32 coconuts', '34 coconuts', '38 coconuts'],
+    },
+    q11: {
+      question: 'Piko the Bird collects 18 twigs in the morning and 14 more twigs in the afternoon for her nest. How many twigs does Piko have in total?',
+      options: ['28 twigs', '30 twigs', '32 twigs', '34 twigs'],
+    },
+    q12: {
+      question: 'Kiko the Cat sleeps for 4 hours every day. How many hours does Kiko sleep in total over 7 days?',
+      options: ['24 hours', '26 hours', '28 hours', '30 hours'],
+    },
+    q13: {
+      question: 'Mochi the Rabbit hops 45 times in 9 seconds. What is Mochi\'s average number of hops per second?',
+      options: ['4 hops', '5 hops', '6 hops', '7 hops'],
+    },
+    q14: {
+      question: 'Hami the Hamster saved 150 coins last week and 250 coins this week. How many coins does Hami have saved in total now?',
+      options: ['350 coins', '380 coins', '400 coins', '420 coins'],
+    },
+    q15: {
+      question: 'Foxy the Fox picks 80 red berries. He gives 25 to Moko and 15 to Piko. How many berries does Foxy have left?',
+      options: ['35 berries', '40 berries', '45 berries', '50 berries'],
+    },
+    q16: {
+      question: 'Moko the Monkey plays with 6 groups of friends, where each group has 6 monkeys. How many monkeys are playing in total?',
+      options: ['30 monkeys', '32 monkeys', '36 monkeys', '42 monkeys'],
+    },
+    q17: {
+      question: 'Piko the Bird finds 48 small cherries and divides them equally among 6 nestlings in the nest. How many cherries does each nestling get?',
+      options: ['6 cherries', '7 cherries', '8 cherries', '9 cherries'],
+    },
+    q18: {
+      question: 'Kiko the Cat catches 37 toy mice and Mochi the Rabbit catches 24. How many toy mice did they catch together in total?',
+      options: ['51 toys', '59 toys', '61 toys', '65 toys'],
+    },
+    q19: {
+      question: 'Hami the Hamster has a tunnel that is 90 cm long. He has just cleaned 45 cm of it. How many centimeters of the tunnel are left to clean?',
+      options: ['40 cm', '45 cm', '50 cm', '55 cm'],
+    },
+    q20: {
+      question: 'Foxy the Fox uses 9 energy points for each magic trick. If he performs 4 magic tricks, how many energy points does he use in total?',
+      options: ['32 points', '34 points', '36 points', '40 points'],
+    },
+    q21: {
+      question: 'Mochi the Rabbit has 15 apples and buys 8 more at the market. How many apples does Mochi have in total?',
+      options: ['20 apples', '21 apples', '22 apples', '23 apples'],
+    },
+    q22: {
+      question: 'Piko the Bird flies 35 meters and then continues another 48 meters toward his nest. What is the total distance Piko traveled?',
+      options: ['79 meters', '81 meters', '83 meters', '85 meters'],
+    },
+    q23: {
+      question: 'Kiko the Cat has 45 toy mice and stores them equally in 5 boxes. How many toy mice are in each box?',
+      options: ['7 mice', '8 mice', '9 mice', '10 mice'],
+    },
+    q24: {
+      question: 'Hami the Hamster eats 3 sunflower seeds every hour. How many total seeds does Hami eat in 8 hours?',
+      options: ['21 seeds', '22 seeds', '24 seeds', '26 seeds'],
+    },
+    q25: {
+      question: 'Foxy the Fox picks 60 red berries, but 23 of them fall to the ground. How many berries is Foxy still holding?',
+      options: ['35 berries', '37 berries', '39 berries', '41 berries'],
+    },
+    q26: {
+      question: 'Moko the Monkey climbs 6 coconut trees. Each tree has 12 ripe coconuts. How many coconuts does Moko find in total?',
+      options: ['60 coconuts', '66 coconuts', '70 coconuts', '72 coconuts'],
+    },
+    q27: {
+      question: 'Kiko the Cat runs 4 km in the morning and 7 km in the afternoon. What is Kiko\'s total running distance today?',
+      options: ['9 km', '10 km', '11 km', '12 km'],
+    },
+    q28: {
+      question: 'Hami the Hamster collects 25 acorns in the morning and 15 more in the afternoon. How many acorns did Hami collect in total?',
+      options: ['35 acorns', '38 acorns', '40 acorns', '42 acorns'],
+    },
+    q29: {
+      question: 'Foxy the Fox collects 34 berries and Moko the Monkey collects 28 berries. How many berries do they have together?',
+      options: ['56 berries', '60 berries', '62 berries', '64 berries'],
+    },
+    q30: {
+      question: 'Piko the Bird finds 18 red feathers, 24 blue feathers, and 13 yellow feathers to decorate his nest. How many feathers does Piko find in total?',
+      options: ['50 feathers', '53 feathers', '55 feathers', '58 feathers'],
+    },
+    q31: {
+      question: 'Mochi the Rabbit has 100 carrot seeds. She plants 37 seeds in her backyard garden. How many seeds are left?',
+      options: ['53 seeds', '63 seeds', '73 seeds', '83 seeds'],
+    },
+    q32: {
+      question: 'Kiko the Cat has 200 toy mice but gives 75 of them to his friends. How many toy mice does Kiko have left?',
+      options: ['115 mice', '120 mice', '125 mice', '130 mice'],
+    },
+    q33: {
+      question: 'Kiko the Cat has 5 toy baskets. Each basket contains 9 toy mice. How many toy mice does Kiko have in total?',
+      options: ['40 mice', '42 mice', '45 mice', '48 mice'],
+    },
+    q34: {
+      question: 'Hami the Hamster runs 8 km on his wheel every day. How many total kilometers does Hami run in 9 days?',
+      options: ['63 km', '70 km', '72 km', '81 km'],
+    },
+    q35: {
+      question: 'Foxy the Fox earns 50 coins every day from treasure hunting. How many total coins does Foxy have after 6 days?',
+      options: ['250 coins', '280 coins', '300 coins', '320 coins'],
+    },
+    q36: {
+      question: 'Moko the Monkey picks 11 bananas every day for 7 consecutive days. How many bananas does Moko pick in total?',
+      options: ['70 bananas', '74 bananas', '77 bananas', '84 bananas'],
+    },
+    q37: {
+      question: 'Moko the Monkey has 110 bananas in his fruit crate. After eating 47 bananas, how many does Moko have left?',
+      options: ['57 bananas', '60 bananas', '63 bananas', '67 bananas'],
+    },
+    q38: {
+      question: 'Foxy the Fox has 120 gold coins. He spends 55 coins to buy rare berries at the forest market. How many coins does Foxy have left?',
+      options: ['60 coins', '63 coins', '65 coins', '70 coins'],
+    },
+    q39: {
+      question: 'Piko the Bird flies 150 meters toward her nest but turns back 86 meters. How far is Piko from her nest now?',
+      options: ['60 meters', '64 meters', '68 meters', '72 meters'],
+    },
+    q40: {
+      question: 'Hami the Hamster stores 45 sunflower seeds for winter. After eating 18 seeds, how many sunflower seeds remain?',
+      options: ['25 seeds', '26 seeds', '27 seeds', '28 seeds'],
+    },
+    q41: {
+      question: 'Mochi the Rabbit makes 7 hops of 3 meters each during training. What is Mochi\'s total hopping distance?',
+      options: ['18 meters', '20 meters', '21 meters', '24 meters'],
+    },
+    q42: {
+      question: 'Kiko the Cat naps 4 times a day, with each nap lasting 2 hours. How many total hours does Kiko sleep during naps?',
+      options: ['6 hours', '7 hours', '8 hours', '10 hours'],
+    },
+    q43: {
+      question: 'Hami the Hamster digs 6 tunnels each 15 cm long. What is the total length of all of Hami\'s tunnels?',
+      options: ['80 cm', '85 cm', '90 cm', '95 cm'],
+    },
+    q44: {
+      question: 'Piko the Bird sings 12 songs every hour for 5 consecutive hours in the morning. How many songs does Piko sing in total?',
+      options: ['48 songs', '54 songs', '60 songs', '72 songs'],
+    },
+    q45: {
+      question: 'Foxy the Fox performs 3 impressive magic tricks. Each trick earns 25 gold coins. How many total coins does Foxy earn?',
+      options: ['65 coins', '70 coins', '75 coins', '80 coins'],
+    },
+    q46: {
+      question: 'Moko the Monkey eats 9 fresh bananas every day. How many bananas does Moko eat in total over 8 days?',
+      options: ['63 bananas', '70 bananas', '72 bananas', '81 bananas'],
+    },
+    q47: {
+      question: 'Kiko the Cat takes 11 steps per round in the mouse-catching game. If there are 7 rounds, how many total steps does Kiko take?',
+      options: ['63 steps', '70 steps', '77 steps', '84 steps'],
+    },
+    q48: {
+      question: 'Hami the Hamster successfully collects 12 seeds every day. How many total seeds does Hami collect in 4 days?',
+      options: ['40 seeds', '44 seeds', '48 seeds', '52 seeds'],
+    },
+    q49: {
+      question: 'Mochi the Rabbit practices 9 hops per training session. If there are 8 training sessions, how many total hops does Mochi make?',
+      options: ['63 hops', '72 hops', '81 hops', '90 hops'],
+    },
+    q50: {
+      question: 'Foxy the Fox finds 14 gold coins in every forest he visits. If Foxy visits 5 different forests, how many gold coins does he have in total?',
+      options: ['65 coins', '68 coins', '70 coins', '75 coins'],
+    },
+    q51: {
+      question: 'Piko the Bird finds 63 cherries and distributes them equally among 9 small birds in the forest. How many cherries does each bird receive?',
+      options: ['5 cherries', '6 cherries', '7 cherries', '8 cherries'],
+    },
+    q52: {
+      question: 'Kiko the Cat has 45 small fish and places them equally into 9 feeding bowls. How many fish are in each bowl?',
+      options: ['3 fish', '4 fish', '5 fish', '6 fish'],
+    },
+    q53: {
+      question: 'Hami the Hamster has 56 seeds and wants to pack them equally into 8 small bags. How many seeds are in each bag?',
+      options: ['5 seeds', '6 seeds', '7 seeds', '8 seeds'],
+    },
+    q54: {
+      question: 'Moko the Monkey has 84 coconuts picked from 12 different trees. If each tree produces the same amount, how many coconuts come from each tree?',
+      options: ['5 coconuts', '6 coconuts', '7 coconuts', '8 coconuts'],
+    },
+    q55: {
+      question: 'Foxy the Fox picks 96 berries and wants to pack them into boxes. If each box holds 6 berries, how many boxes are needed?',
+      options: ['12 boxes', '14 boxes', '16 boxes', '18 boxes'],
+    },
+    q56: {
+      question: 'Piko the Bird counts 81 beautiful feathers and divides them equally into 9 display groups. How many feathers are in each group?',
+      options: ['7 feathers', '8 feathers', '9 feathers', '10 feathers'],
+    },
+    q57: {
+      question: 'Kiko the Cat has 72 toy mice and stores them equally in 8 toy cages. How many toy mice are in each cage?',
+      options: ['7 mice', '8 mice', '9 mice', '10 mice'],
+    },
+    q58: {
+      question: 'Hami the Hamster has a supply of 120 seeds to last 10 days. How many seeds can Hami eat each day to make it last?',
+      options: ['10 seeds', '11 seeds', '12 seeds', '13 seeds'],
+    },
+    q59: {
+      question: 'Mochi the Rabbit can make 90 hops in 6 minutes of training. What is Mochi\'s average number of hops per minute?',
+      options: ['12 hops', '13 hops', '14 hops', '15 hops'],
+    },
+    q60: {
+      question: 'Foxy the Fox plants 144 berries in his garden arranged in 12 equal rows. How many berries are in each row?',
+      options: ['10 berries', '11 berries', '12 berries', '14 berries'],
+    },
+    q61: {
+      question: 'Kiko the Cat takes 125 steps in the park in the morning and 238 more steps while playing in the afternoon. How many total steps does Kiko take?',
+      options: ['353 steps', '363 steps', '373 steps', '383 steps'],
+    },
+    q62: {
+      question: 'Hami the Hamster stores 456 seeds for winter, but 189 seeds are eaten by naughty mice. How many seeds remain?',
+      options: ['257 seeds', '267 seeds', '277 seeds', '287 seeds'],
+    },
+    q63: {
+      question: 'Foxy the Fox runs 13 meters per lap in a race. How many total meters does Foxy run in 7 complete laps?',
+      options: ['84 meters', '87 meters', '91 meters', '98 meters'],
+    },
+    q64: {
+      question: 'Moko the Monkey picks 18 fresh bananas every day. How many bananas does Moko pick in total over 6 days?',
+      options: ['96 bananas', '102 bananas', '108 bananas', '114 bananas'],
+    },
+    q65: {
+      question: 'Piko the Bird has 96 eggs and divides them equally among 4 different nests. How many eggs are in each nest?',
+      options: ['20 eggs', '22 eggs', '24 eggs', '26 eggs'],
+    },
+    q66: {
+      question: 'Kiko the Cat groups 256 of his toys into 8 equal groups. How many toys are in each group?',
+      options: ['28 toys', '30 toys', '32 toys', '34 toys'],
+    },
+    q67: {
+      question: 'Foxy the Fox has 350 berries and gives 167 berries to his friends as a gift. How many berries does Foxy have left?',
+      options: ['173 berries', '183 berries', '193 berries', '203 berries'],
+    },
+    q68: {
+      question: 'Hami the Hamster finds 78 seeds in the north field and 94 seeds in the south field. How many total seeds does Hami find?',
+      options: ['162 seeds', '168 seeds', '172 seeds', '178 seeds'],
+    },
+    q69: {
+      question: 'Mochi the Rabbit makes 15 hops every minute during training. How many total hops does Mochi make in 8 minutes?',
+      options: ['100 hops', '112 hops', '120 hops', '128 hops'],
+    },
+    q70: {
+      question: 'Moko the Monkey collects 11 bananas from each tree and climbs 11 different trees. How many bananas does Moko collect in total?',
+      options: ['110 bananas', '115 bananas', '121 bananas', '132 bananas'],
+    },
+    q71: {
+      question: 'Foxy the Fox has 400 gold coins and buys adventure equipment worth 175 coins. How many coins does Foxy have left?',
+      options: ['215 coins', '220 coins', '225 coins', '230 coins'],
+    },
+    q72: {
+      question: 'Piko the Bird sings 15 songs every day for 7 consecutive days. How many total songs has Piko sung?',
+      options: ['95 songs', '100 songs', '105 songs', '110 songs'],
+    },
+    q73: {
+      question: 'Kiko the Cat has 168 special treats to eat over 7 weeks. How many treats does Kiko eat each week?',
+      options: ['20 treats', '22 treats', '24 treats', '28 treats'],
+    },
+    q74: {
+      question: 'Hami the Hamster diligently collects 12 seeds every day. How many total seeds does Hami collect in 9 days?',
+      options: ['90 seeds', '99 seeds', '108 seeds', '117 seeds'],
+    },
+    q75: {
+      question: 'Foxy the Fox needs to complete 300 magic tricks divided into 15 training sessions. How many tricks are performed in each session?',
+      options: ['15 tricks', '18 tricks', '20 tricks', '25 tricks'],
+    },
+    q76: {
+      question: 'Moko the Monkey collects 88 beautiful feathers and Piko the Bird gives him 77 more. How many feathers does Moko have in total?',
+      options: ['155 feathers', '160 feathers', '165 feathers', '170 feathers'],
+    },
+    q77: {
+      question: 'Kiko the Cat has 240 fun toys. After giving 95 toys to friends, how many toys does Kiko have left?',
+      options: ['135 toys', '140 toys', '145 toys', '150 toys'],
+    },
+    q78: {
+      question: 'Hami the Hamster diligently collects 9 seeds every day. How many total seeds does Hami collect in 14 days?',
+      options: ['112 seeds', '119 seeds', '126 seeds', '133 seeds'],
+    },
+    q79: {
+      question: 'Foxy the Fox has 500 berries and wants to pack them into bags of 25 each. How many bags does Foxy need?',
+      options: ['15 bags', '18 bags', '20 bags', '25 bags'],
+    },
+    q80: {
+      question: 'Mochi the Rabbit breaks a record by making 13 hops in each of 13 training rounds. How many total hops does Mochi make?',
+      options: ['156 hops', '162 hops', '169 hops', '176 hops'],
+    },
+    q81: {
+      question: 'Foxy the Fox collects 85 berries and Kiko the Cat collects 96 berries for a party. How many berries do they have in total?',
+      options: ['171 berries', '176 berries', '181 berries', '186 berries'],
+    },
+    q82: {
+      question: 'Hami the Hamster stores 750 seeds in his storage. After using 384 seeds during winter, how many seeds remain?',
+      options: ['356 seeds', '366 seeds', '376 seeds', '386 seeds'],
+    },
+    q83: {
+      question: 'Moko the Monkey climbs a tree 17 meters tall every day. How many total meters does Moko climb in 8 days?',
+      options: ['126 meters', '130 meters', '136 meters', '144 meters'],
+    },
+    q84: {
+      question: 'Piko the Bird leads 225 beautiful songs and divides them equally among 9 choir groups. How many songs are assigned to each group?',
+      options: ['20 songs', '23 songs', '25 songs', '27 songs'],
+    },
+    q85: {
+      question: 'Kiko the Cat successfully catches 12 toy mice each day. How many total catches does Kiko make in 14 full days?',
+      options: ['152 mice', '160 mice', '168 mice', '176 mice'],
+    },
+    q86: {
+      question: 'Foxy the Fox has 600 berries and puts them equally into 25 decorative jars. How many berries are in each jar?',
+      options: ['20 berries', '22 berries', '24 berries', '26 berries'],
+    },
+    q87: {
+      question: 'Hami the Hamster finds 48 seeds in the field, 57 seeds in the bushes, and 36 seeds under a big tree. How many seeds does Hami find in total?',
+      options: ['131 seeds', '136 seeds', '141 seeds', '146 seeds'],
+    },
+    q88: {
+      question: 'Moko the Monkey has 900 coconuts on the jungle island and shares 436 coconuts with his extended family. How many coconuts remain?',
+      options: ['444 coconuts', '454 coconuts', '464 coconuts', '474 coconuts'],
+    },
+    q89: {
+      question: 'Piko the Bird flies 19 meters to each tree it visits. How many total meters does Piko travel if he visits 7 trees?',
+      options: ['126 meters', '130 meters', '133 meters', '140 meters'],
+    },
+    q90: {
+      question: 'Kiko the Cat catches 78 small fish and divides them into 6 equal groups. How many fish are in each group?',
+      options: ['11 fish', '12 fish', '13 fish', '14 fish'],
+    },
+    q91: {
+      question: 'Foxy the Fox has 250 coins and Mochi the Rabbit has 375 coins. How many coins do they have together in total?',
+      options: ['600 coins', '615 coins', '625 coins', '635 coins'],
+    },
+    q92: {
+      question: 'Hami the Hamster collects 1000 seeds for winter, but 437 seeds are blown away by strong wind. How many seeds remain?',
+      options: ['553 seeds', '563 seeds', '573 seeds', '583 seeds'],
+    },
+    q93: {
+      question: 'Moko the Monkey diligently picks 12 bananas every day. How many total bananas does Moko pick over 16 days?',
+      options: ['180 bananas', '186 bananas', '192 bananas', '198 bananas'],
+    },
+    q94: {
+      question: 'Piko the Bird has 126 eggs and arranges them in 7 equal rows inside the nest. How many eggs are in each row?',
+      options: ['14 eggs', '16 eggs', '18 eggs', '21 eggs'],
+    },
+    q95: {
+      question: 'Kiko the Cat has 25 toy boxes, and each box contains 8 toy mice. How many total toy mice does Kiko have?',
+      options: ['175 mice', '185 mice', '200 mice', '215 mice'],
+    },
+    q96: {
+      question: 'Foxy the Fox has 450 berries in 18 jars with equal amounts in each. How many berries are in each jar?',
+      options: ['20 berries', '23 berries', '25 berries', '27 berries'],
+    },
+    q97: {
+      question: 'Hami the Hamster collects 132 seeds and Mochi the Rabbit collects 246 seeds for a shared supply. How many total seeds do they collect together?',
+      options: ['358 seeds', '368 seeds', '378 seeds', '388 seeds'],
+    },
+    q98: {
+      question: 'Moko the Monkey has 800 bananas and gives 325 bananas to other monkeys in the forest. How many bananas does Moko still have?',
+      options: ['465 bananas', '470 bananas', '475 bananas', '485 bananas'],
+    },
+    q99: {
+      question: 'Piko the Bird chirps 22 times every hour for 9 full hours on a bright morning. How many total chirps does Piko make?',
+      options: ['180 chirps', '189 chirps', '198 chirps', '207 chirps'],
+    },
+    q100: {
+      question: 'Kiko the Cat has 96 special fish packs and finishes them in 4 days. How many fish packs does Kiko eat each day?',
+      options: ['18 packs', '21 packs', '24 packs', '27 packs'],
+    },
   },
 
   // Error boundary

@@ -332,7 +332,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
             })()}
           </div>
 
-          {/* TWO LARGE HOME SCREEN BUTTONS/CARDS */}
+          {/* THREE LARGE HOME SCREEN BUTTONS/CARDS */}
           <div className="flex-1 flex flex-col justify-center space-y-4 pt-4">
             {/* Button 1: Practice Mode */}
             <m.button
@@ -371,6 +371,30 @@ export const MainMenu: React.FC<MainMenuProps> = ({
                 </h3>
                 <p className="text-[12px] text-ink-muted leading-snug font-normal">
                   {t('menu.shopDesc')}
+                </p>
+              </div>
+              <span className="text-amber-500 text-[11px] font-bold uppercase tracking-wider shrink-0 font-fantasy">Mulai ▶</span>
+            </m.button>
+
+            {/* Button 3: Quiz Mode */}
+            <m.button
+              type="button"
+              onClick={() => {
+                triggerHaptic(ImpactStyle.Light, settings.hapticEnabled);
+                dispatch({ type: 'START_QUIZ' });
+              }}
+              whileTap={{ scale: 0.97 }}
+              className="w-full text-left bg-white dark:bg-[#1a1a24] border border-neutral-200 dark:border-[#d4af37]/35 rounded-[20px] p-5 flex items-center gap-4 transition shadow-[0_4px_12px_rgba(0,0,0,0.02)] hover:border-[#d4af37]/60"
+            >
+              <div className="w-12 h-12 bg-purple-500/10 dark:bg-purple-950/20 border border-purple-500/30 rounded-full flex items-center justify-center text-xl shrink-0 shadow-sm">
+                <span>🏆</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-[16px] font-bold text-[#1d1d1f] dark:text-white mb-0.5 font-fantasy">
+                  {t('quiz.title')}
+                </h3>
+                <p className="text-[12px] text-ink-muted leading-snug font-normal">
+                  {t('quiz.description')}
                 </p>
               </div>
               <span className="text-amber-500 text-[11px] font-bold uppercase tracking-wider shrink-0 font-fantasy">Mulai ▶</span>
