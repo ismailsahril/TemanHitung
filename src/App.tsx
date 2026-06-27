@@ -1,5 +1,7 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState, useRef, useCallback } from 'react';
 import { App as CapApp } from '@capacitor/app';
+import { m, AnimatePresence } from 'framer-motion';
+import { HelpCircle } from 'lucide-react';
 import { useSessionReducer } from './hooks/useSessionReducer';
 import { useSettings } from './hooks/useSettings';
 import { useHighScore } from './hooks/useHighScore';
@@ -8,6 +10,10 @@ import SplashScreen from './components/SplashScreen';
 
 import { usePet } from './hooks/usePet';
 import { PetType } from './types';
+import { triggerHaptic } from './utils/hapticEngine';
+import { ImpactStyle } from '@capacitor/haptics';
+import { id } from './i18n/id';
+import { en } from './i18n/en';
 
 // Lazy-load components to optimize initial page loading and code splitting
 const MainMenu = React.lazy(() => import('./components/MainMenu'));
@@ -20,6 +26,12 @@ const WarungBoard = React.lazy(() => import('./components/WarungBoard'));
 export const App: React.FC = () => {
   const { state, dispatch } = useSessionReducer();
   const [showWebSplash, setShowWebSplash] = useState(true);
+  const [showQuitConfirm, setShowQuitConfirm] = useState(false);
+  const hardwareBackRef = useRef<(() => void) | null>(null);
+
+  const registerBackButton = useCallback((handler: (() => void) | null) => {
+    hardwareBackRef.current = handler;
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -50,6 +62,7 @@ export const App: React.FC = () => {
     addCoins,
     buyUpgrade,
     equipUpgrade,
+    interactWithPet,
     isPetLoaded
   } = usePet();
 
@@ -81,8 +94,8 @@ export const App: React.FC = () => {
   // 4. Handle Android Hardware Back Button navigation
   useEffect(() => {
     const backButtonListener = CapApp.addListener('backButton', () => {
-      if (state.phase === 'playing' || state.phase === 'warung') {
-        dispatch({ type: 'BACK_TO_MENU' });
+      if (hardwareBackRef.current) {
+        hardwareBackRef.current();
       } else if (state.phase === 'summary') {
         dispatch({ type: 'RESTART' });
       } else if (state.phase === 'settings') {
@@ -133,6 +146,22 @@ export const App: React.FC = () => {
     dispatch({ type: 'EQUIP_UPGRADE', payload: { id } });
   };
 
+  const triggerQuitConfirm = useCallback(() => {
+    triggerHaptic(ImpactStyle.Medium, state.settings.hapticEnabled);
+    setShowQuitConfirm(true);
+  }, [state.settings.hapticEnabled]);
+
+  const handleConfirmExit = useCallback(() => {
+    triggerHaptic(ImpactStyle.Light, state.settings.hapticEnabled);
+    setShowQuitConfirm(false);
+    dispatch({ type: 'BACK_TO_MENU' });
+  }, [state.settings.hapticEnabled, dispatch]);
+
+  const handleCancelExit = useCallback(() => {
+    triggerHaptic(ImpactStyle.Light, state.settings.hapticEnabled);
+    setShowQuitConfirm(false);
+  }, [state.settings.hapticEnabled]);
+
   // Active Screen Routing mapping
   const renderScreen = (): React.ReactNode => {
     if (!isSettingsLoaded || !isHighScoreLoaded || !isPetLoaded || showWebSplash) {
@@ -143,9 +172,25 @@ export const App: React.FC = () => {
       case 'onboarding':
         return <AdoptionScreen onAdopt={handleAdoptPet} />;
       case 'menu':
-        return <MainMenu settings={state.settings} dispatch={dispatch} pet={state.pet} updateSetting={updateSetting} />;
+        return (
+          <MainMenu
+            settings={state.settings}
+            dispatch={dispatch}
+            pet={state.pet}
+            updateSetting={updateSetting}
+            interactWithPet={interactWithPet}
+            recentSessions={state.recentSessions}
+          />
+        );
       case 'playing':
-        return <GameBoard state={state} dispatch={dispatch} />;
+        return (
+          <GameBoard 
+            state={state} 
+            dispatch={dispatch} 
+            onBack={triggerQuitConfirm}
+            registerBackButton={registerBackButton}
+          />
+        );
       case 'warung':
         return (
           <WarungBoard 
@@ -155,6 +200,8 @@ export const App: React.FC = () => {
             addCoins={handleAddCoins}
             buyUpgrade={handleBuyUpgrade}
             equipUpgrade={handleEquipUpgrade}
+            onBack={triggerQuitConfirm}
+            registerBackButton={registerBackButton}
           />
         );
       case 'summary':
@@ -164,6 +211,7 @@ export const App: React.FC = () => {
             dispatch={dispatch} 
             saveSessionResult={saveSessionResult} 
             feedPet={feedPet}
+            addCoins={handleAddCoins}
           />
         );
       case 'settings':
@@ -181,7 +229,16 @@ export const App: React.FC = () => {
         );
       default:
         return state.pet.hasAdopted 
-          ? <MainMenu settings={state.settings} dispatch={dispatch} pet={state.pet} updateSetting={updateSetting} />
+          ? (
+            <MainMenu
+              settings={state.settings}
+              dispatch={dispatch}
+              pet={state.pet}
+              updateSetting={updateSetting}
+              interactWithPet={interactWithPet}
+              recentSessions={state.recentSessions}
+            />
+          )
           : <AdoptionScreen onAdopt={handleAdoptPet} />;
     }
   };
@@ -200,6 +257,60 @@ export const App: React.FC = () => {
           }>
             {renderScreen()}
           </Suspense>
+
+          <AnimatePresence>
+            {showQuitConfirm && (
+              <m.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 bg-neutral-950/60 backdrop-blur-md flex items-center justify-center p-4 z-[60]"
+                role="alertdialog"
+                aria-modal="true"
+              >
+                <m.div
+                  initial={{ scale: 0.9, y: 30 }}
+                  animate={{ scale: 1, y: 0 }}
+                  exit={{ scale: 0.9, y: 30 }}
+                  transition={{ type: 'spring', damping: 20, stiffness: 300 }}
+                  className="bg-white dark:bg-[#1c1c27] w-full max-w-xs rounded-[24px] p-6 border border-amber-500/30 dark:border-amber-500/20 text-center shadow-[0_20px_50px_rgba(245,158,11,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] overflow-hidden relative"
+                >
+                  {/* Decorative top strip */}
+                  <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-amber-500 via-yellow-500 to-orange-500" />
+                  
+                  {/* Warning icon */}
+                  <div className="w-14 h-14 bg-amber-500/10 dark:bg-amber-500/5 rounded-full flex items-center justify-center text-amber-500 mx-auto mb-4 border border-amber-500/20">
+                    <HelpCircle className="w-7 h-7" />
+                  </div>
+                  
+                  <h3 className="text-lg font-bold text-[#1d1d1f] dark:text-white mb-2 font-fantasy tracking-wide">
+                    {state.settings.language === 'en' ? en.quitConfirm.title : id.quitConfirm.title}
+                  </h3>
+                  
+                  <p className="text-[13px] text-ink-muted mb-6 leading-relaxed px-2">
+                    {state.settings.language === 'en' ? en.quitConfirm.desc : id.quitConfirm.desc}
+                  </p>
+                  
+                  <div className="flex flex-col gap-2">
+                    <button
+                      type="button"
+                      onClick={handleConfirmExit}
+                      className="btn-danger"
+                    >
+                      {state.settings.language === 'en' ? en.quitConfirm.yes : id.quitConfirm.yes}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleCancelExit}
+                      className="btn-secondary"
+                    >
+                      {state.settings.language === 'en' ? en.quitConfirm.no : id.quitConfirm.no}
+                    </button>
+                  </div>
+                </m.div>
+              </m.div>
+            )}
+          </AnimatePresence>
           
         </div>
       </div>

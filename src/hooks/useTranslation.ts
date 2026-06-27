@@ -1,4 +1,4 @@
-import { useContext, createContext } from 'react';
+import { useContext, createContext, useCallback } from 'react';
 import { AppLanguage } from '../types';
 import { id } from '../i18n/id';
 import { en } from '../i18n/en';
@@ -50,7 +50,7 @@ export function useTranslation(): {
 } {
   const language = useContext(LanguageContext);
 
-  const t = (path: string, params?: Record<string, string | number>): string => {
+  const t = useCallback((path: string, params?: Record<string, string | number>): string => {
     // Select translation strings
     const strings = language === 'en' ? en : id;
     
@@ -64,7 +64,7 @@ export function useTranslation(): {
 
     // Interpolate placeholders
     return interpolate(translated, params);
-  };
+  }, [language]);
 
   return { t, language };
 }

@@ -10,17 +10,20 @@ import { ImpactStyle } from '@capacitor/haptics';
 import ProgressBar from './ProgressBar';
 import NumPad from './NumPad';
 import FeedbackOverlay from './FeedbackOverlay';
+import MathPet from './MathPet';
 
 interface GameBoardProps {
   state: SessionState;
   dispatch: React.Dispatch<SessionAction>;
+  onBack: () => void;
+  registerBackButton: (handler: (() => void) | null) => void;
 }
 
 /**
  * GameBoard component representing the standard mental math practice screen.
  * Displays questions, tracks time, gathers inputs via NumPad, and shows feedback overlay.
  */
-export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
+export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch, onBack, registerBackButton }) => {
   const { t } = useTranslation();
   const { questions, currentIndex, history, score, settings } = state;
 
@@ -29,11 +32,16 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
   const isShowingFeedback = history.length === currentIndex + 1;
   const lastAnswered = isShowingFeedback ? history[currentIndex] : null;
 
+  // Companion Pet Cheerleader states
+  const [petAnimationState, setPetAnimationState] = useState<'idle' | 'eating' | 'levelUp'>('idle');
+  const [petSpeech, setPetSpeech] = useState<string>('');
+
   // Local state for typed input
   const [typedAnswer, setTypedAnswer] = useState<string>('');
   
   // Keep track of time left locally
   const [elapsed, setElapsed] = useState(0);
+  const [timerStage, setTimerStage] = useState<'relaxed' | 'warning' | 'panic' | 'none'>('none');
 
   // Automatically show quick tip if no action for 7 seconds
   const [showTipDueToInactivity, setShowTipDueToInactivity] = useState(false);
@@ -42,6 +50,12 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
   // Focus ref for screen reader accessibility
   const firstNumpadRef = useRef<HTMLDivElement>(null);
 
+  // Register Android hardware back button handler
+  useEffect(() => {
+    registerBackButton(onBack);
+    return () => registerBackButton(null);
+  }, [registerBackButton, onBack]);
+
   // Reset input, elapsed timer, inactivity tip state, and modal state for a new question
   useEffect(() => {
     if (!isShowingFeedback) {
@@ -49,6 +63,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
       setElapsed(0);
       setShowTipDueToInactivity(false);
       setShowTipModal(false);
+      setTimerStage('none');
       
       // Accessibility focus management: set focus to container
       if (firstNumpadRef.current) {
@@ -56,6 +71,42 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
       }
     }
   }, [currentIndex, isShowingFeedback]);
+
+  const timeLeft = settings.timerPerQuestion > 0
+    ? Math.max(0, settings.timerPerQuestion - elapsed)
+    : 0;
+
+  // Dynamically calculate and transition timer stage
+  useEffect(() => {
+    if (isShowingFeedback || state.phase !== 'playing') return;
+
+    // 1. Calculate target stage
+    let targetStage: 'relaxed' | 'warning' | 'panic' = 'relaxed';
+    if (settings.timerPerQuestion > 0) {
+      if (timeLeft <= 3) {
+        targetStage = 'panic';
+      } else if (timeLeft <= settings.timerPerQuestion * 0.5) {
+        targetStage = 'warning';
+      }
+    }
+
+    // 2. On stage transition, update speech and animation
+    if (targetStage !== timerStage) {
+      setTimerStage(targetStage);
+      const randIdx = Math.floor(Math.random() * 20);
+
+      if (targetStage === 'relaxed') {
+        setPetSpeech(t(`pet.practiceTimerRelaxed_${randIdx}`));
+        setPetAnimationState('idle');
+      } else if (targetStage === 'warning') {
+        setPetSpeech(t(`pet.practiceTimerWarning_${randIdx}`));
+        setPetAnimationState('idle');
+      } else if (targetStage === 'panic') {
+        setPetSpeech(t(`pet.practiceTimerPanic_${randIdx}`));
+        setPetAnimationState('eating'); // Panicked chatter animation
+      }
+    }
+  }, [timeLeft, isShowingFeedback, settings.timerPerQuestion, state.phase, timerStage, t]);
 
   // Idle timer to show quick tips after 7 seconds of no action
   useEffect(() => {
@@ -91,10 +142,6 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
     return () => clearInterval(interval);
   }, [settings.timerPerQuestion, isShowingFeedback, state.phase, dispatch]);
 
-  const timeLeft = settings.timerPerQuestion > 0
-    ? Math.max(0, settings.timerPerQuestion - elapsed)
-    : 0;
-
   // Input Sanitizer
   const sanitizeInput = (raw: string): number | null => {
     const cleaned = raw.replace(/[^0-9.\-]/g, '');
@@ -117,9 +164,15 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
     if (isCorrect) {
       playCorrectSound(settings.soundEnabled);
       triggerHaptic(ImpactStyle.Medium, settings.hapticEnabled);
+      setPetAnimationState('eating');
+      const randIdx = Math.floor(Math.random() * 6);
+      setPetSpeech(t(`pet.practiceCorrect_${randIdx}`));
     } else {
       playWrongSound(settings.soundEnabled);
       triggerHaptic(ImpactStyle.Heavy, settings.hapticEnabled);
+      setPetAnimationState('idle');
+      const randIdx = Math.floor(Math.random() * 5);
+      setPetSpeech(t(`pet.practiceWrong_${randIdx}`));
     }
 
     dispatch({ 
@@ -129,6 +182,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
 
     // Pause for 1200ms to allow viewing Feedback overlay, then auto-advance
     setTimeout(() => {
+      setPetAnimationState('idle');
       if (currentIndex === totalQuestions - 1) {
         dispatch({ type: 'END_SESSION' });
       } else {
@@ -136,7 +190,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
       }
     }, 1200);
 
-  }, [currentIndex, totalQuestions, currentQuestion, isShowingFeedback, settings.soundEnabled, settings.hapticEnabled, dispatch]);
+  }, [currentIndex, totalQuestions, currentQuestion, isShowingFeedback, settings.soundEnabled, settings.hapticEnabled, dispatch, t]);
 
   // Handle Timeout
   useEffect(() => {
@@ -198,6 +252,33 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
     });
   }, []);
 
+  // Physical hardware keyboard listener support
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isShowingFeedback) return;
+      
+      if (e.key === 'Backspace') {
+        handleDelete();
+        e.preventDefault();
+      } else if (e.key === 'Enter') {
+        handleSubmitAnswer(typedAnswer);
+        e.preventDefault();
+      } else if (e.key >= '0' && e.key <= '9') {
+        handleInput(e.key);
+        e.preventDefault();
+      } else if (e.key === '.' || e.key === ',') {
+        handleInput('.');
+        e.preventDefault();
+      } else if (e.key === '-') {
+        handleToggleSign();
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleInput, handleDelete, handleToggleSign, handleSubmitAnswer, typedAnswer, isShowingFeedback]);
+
   // Format expression based on settings locale
   const getExpr = (): string => {
     if (!currentQuestion) return '';
@@ -222,7 +303,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
       tabIndex={0}
       animate={shouldShake ? { x: [-10, 10, -8, 8, -5, 5, 0] } : { x: 0 }}
       transition={{ duration: 0.4 }}
-      className="flex-1 flex flex-col justify-between bg-[#fafafc] dark:bg-[#121218] p-5 relative overflow-hidden focus:outline-none font-gacha"
+      className="flex-1 flex flex-col justify-between bg-[#fafafc] dark:bg-[#121218] p-4 relative overflow-hidden focus:outline-none font-gacha"
       style={{ fontSize: 'calc(1rem * var(--font-scale, 1))' }}
     >
       {/* Flash Overlays */}
@@ -248,10 +329,10 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
       </AnimatePresence>
 
       {/* 1. Header */}
-      <header className="flex-shrink-0 flex items-center justify-between gap-4 mb-4">
+      <header className="flex-shrink-0 flex items-center justify-between gap-4 mb-2">
         <m.button
           type="button"
-          onClick={() => dispatch({ type: 'BACK_TO_MENU' })}
+          onTap={onBack}
           whileTap={{ scale: 0.95 }}
           className="btn-icon"
           aria-label={t('settings.backButton')}
@@ -273,7 +354,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
 
       {/* 2. Timer Bar */}
       {settings.timerPerQuestion > 0 && (
-        <div className="w-full bg-neutral-200 dark:bg-neutral-800 h-2 rounded-full overflow-hidden border border-neutral-300/40 dark:border-neutral-700/50 mb-4 shadow-inner">
+        <div className="w-full bg-neutral-200 dark:bg-neutral-800 h-2 rounded-full overflow-hidden border border-neutral-300/40 dark:border-neutral-700/50 mb-2 shadow-inner">
           <div 
             className={`h-full transition-all duration-1000 bg-gradient-to-r ${
               timeLeft <= 3 
@@ -287,8 +368,20 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
         </div>
       )}
 
+      {/* 2.5 Pet Companion Helper Bubble */}
+      {state.pet.hasAdopted && (
+        <div className="flex items-center justify-center gap-2.5 mb-1.5 shrink-0">
+          <MathPet type={state.pet.type} level={state.pet.level} animationState={petAnimationState} className="w-8 h-8" />
+          <div className="relative bg-white dark:bg-[#1a1a24] border border-neutral-200 dark:border-[#d4af37]/25 px-3 py-1 rounded-[10px] text-[10px] font-normal text-[#1d1d1f] dark:text-white/90 leading-tight max-w-[180px] shadow-sm">
+            {/* Small speech arrow pointing left */}
+            <div className="absolute left-[-4px] top-1/2 -translate-y-1/2 w-2 h-2 bg-white dark:bg-[#1a1a24] border-l border-b border-neutral-200 dark:border-[#d4af37]/25 rotate-45" />
+            <span>{petSpeech}</span>
+          </div>
+        </div>
+      )}
+
       {/* 3. Question Card with exit-left / enter-right motion */}
-      <div className="flex-1 flex items-center justify-center my-2 min-h-[90px]">
+      <div className="flex-1 flex items-center justify-center my-1.5 min-h-[70px]">
         <AnimatePresence mode="wait">
           <m.div
             key={currentIndex}
@@ -296,9 +389,9 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: settings.reduceAnimations ? 0 : -50 }}
             transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-            className="relative text-center bg-white dark:bg-[#1a1a24] border border-neutral-300/50 dark:border-[#d4af37]/25 rounded-[20px] px-10 py-6 shadow-sm min-w-[200px]"
+            className="relative text-center bg-white dark:bg-[#1a1a24] border border-neutral-300/50 dark:border-[#d4af37]/25 rounded-[16px] px-8 py-3.5 shadow-sm min-w-[180px]"
           >
-            <span className="text-[34px] sm:text-[40px] font-bold text-[#1d1d1f] dark:text-white tracking-wide font-fantasy">
+            <span className="text-[28px] sm:text-[34px] font-bold text-[#1d1d1f] dark:text-white tracking-wide font-fantasy">
               {getExpr()}
             </span>
 
@@ -312,11 +405,11 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0, opacity: 0 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => setShowTipModal(true)}
-                  className="absolute top-2.5 right-2.5 w-8 h-8 bg-amber-500/10 hover:bg-amber-500/20 dark:bg-amber-500/15 dark:hover:bg-amber-500/25 border border-amber-500/20 rounded-full flex items-center justify-center text-amber-500 transition-all cursor-pointer"
+                  onTap={() => setShowTipModal(true)}
+                  className="absolute top-2 right-2 w-7 h-7 bg-amber-500/10 hover:bg-amber-500/20 dark:bg-amber-500/15 dark:hover:bg-amber-500/25 border border-amber-500/20 rounded-full flex items-center justify-center text-amber-500 transition-all cursor-pointer"
                   aria-label={t('game.tipToggle')}
                 >
-                  <Lightbulb className="w-4 h-4 animate-pulse" />
+                  <Lightbulb className="w-3.5 h-3.5 animate-pulse" />
                 </m.button>
               )}
             </AnimatePresence>
@@ -325,9 +418,9 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
       </div>
 
       {/* 4. Typed Answer Display */}
-      <div className="w-full max-w-[340px] mx-auto mb-4 select-none">
-        <div className="input-display w-full">
-          <span className={`text-[28px] font-bold tracking-tight tabular-nums font-fantasy ${typedAnswer ? 'text-amber-600 dark:text-amber-400' : 'text-neutral-400 dark:text-neutral-600'}`}>
+      <div className="w-full max-w-[340px] mx-auto mb-2 select-none">
+        <div className="input-display w-full py-2 min-h-[48px] flex items-center justify-center">
+          <span className={`text-[22px] font-bold tracking-tight tabular-nums font-fantasy ${typedAnswer ? 'text-amber-600 dark:text-amber-400' : 'text-neutral-400 dark:text-neutral-600'}`}>
             {formatTypedAnswer(typedAnswer, settings.numberFormat)}
           </span>
         </div>
@@ -392,7 +485,7 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
       </AnimatePresence>
 
       {/* 6. Keyboard Grid */}
-      <div className="mb-4">
+      <div className="mb-2">
         <NumPad
           onInput={handleInput}
           onDelete={handleDelete}
@@ -404,15 +497,14 @@ export const GameBoard: React.FC<GameBoardProps> = ({ state, dispatch }) => {
       </div>
 
       {/* 7. Action Submit Button */}
-      <m.button
+      <button
         type="button"
         onClick={() => handleSubmitAnswer(typedAnswer)}
         disabled={!typedAnswer || isShowingFeedback}
-        whileTap={typedAnswer && !isShowingFeedback ? { scale: 0.95 } : undefined}
-        className="btn-primary"
+        className="btn-primary py-2.5 min-h-[38px] text-sm active:scale-[0.98] transition-transform"
       >
         {t('game.submitButton')}
-      </m.button>
+      </button>
 
       {/* 8. Full-screen correctness overlay */}
       <FeedbackOverlay

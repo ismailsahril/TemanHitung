@@ -1,54 +1,17 @@
 import { Question, SessionConfig, Operation } from '../types';
 
 // Constants for number generation to avoid magic numbers
-const EASY_ADD_MIN_A = 10;
-const EASY_ADD_MAX_A = 50;
-const EASY_ADD_MIN_B = 1;
-const EASY_ADD_MAX_B = 20;
+// --- EASY (1-digit: 1 to 9) ---
+const EASY_MIN = 1;
+const EASY_MAX = 9;
 
-const EASY_SUB_MIN_A = 10;
-const EASY_SUB_MAX_A = 50;
+// --- MEDIUM (2-digits: 10 to 99) ---
+const MEDIUM_MIN = 10;
+const MEDIUM_MAX = 99;
 
-
-const EASY_MULT_MIN_OTHER = 2;
-const EASY_MULT_MAX_OTHER = 12;
-const EASY_MULT_DIVISORS_TRIES = [2, 3, 4, 5];
-
-const EASY_DIV_MIN_RESULT = 2;
-const EASY_DIV_MAX_RESULT = 10;
-const EASY_DIV_DIVISORS = [2, 3, 4, 5];
-
-const MEDIUM_ADD_MIN_A = 50;
-const MEDIUM_ADD_MAX_A = 200;
-const MEDIUM_ADD_MIN_B = 10;
-const MEDIUM_ADD_MAX_B = 100;
-
-const MEDIUM_SUB_MIN_A = 50;
-const MEDIUM_SUB_MAX_A = 300;
-
-const MEDIUM_MULT_MIN = 6;
-const MEDIUM_MULT_MAX = 15;
-
-const MEDIUM_DIV_DIVISOR_MIN = 6;
-const MEDIUM_DIV_DIVISOR_MAX = 12;
-const MEDIUM_DIV_RESULT_MIN = 3;
-const MEDIUM_DIV_RESULT_MAX = 15;
-
-const HARD_ADD_MIN_A = 100;
-const HARD_ADD_MAX_A = 999;
-const HARD_ADD_MIN_B = 100;
-const HARD_ADD_MAX_B = 999;
-
-const HARD_SUB_MIN_A = 200;
-const HARD_SUB_MAX_A = 999;
-
-const HARD_MULT_MIN = 12;
-const HARD_MULT_MAX = 25;
-
-const HARD_DIV_DIVISOR_MIN = 7;
-const HARD_DIV_DIVISOR_MAX = 20;
-const HARD_DIV_RESULT_MIN = 5;
-const HARD_DIV_RESULT_MAX = 30;
+// --- HARD (3-digits: 100 to 999) ---
+const HARD_MIN = 100;
+const HARD_MAX = 999;
 
 // Helper to generate a random integer within range [min, max]
 function getRandomInt(min: number, max: number): number {
@@ -286,48 +249,92 @@ export function generateQuestion(config: SessionConfig, language: 'id' | 'en' = 
 
   const isDecimal = mode === 'decimal';
 
-  // Easy Difficulty
+  // Easy Difficulty: max 1 digit (1 to 9)
   if (difficulty === 'easy') {
     if (operation === 'addition') {
       if (isDecimal) {
-        operandA = getRandomFloat1Dec(EASY_ADD_MIN_A, EASY_ADD_MAX_A);
-        operandB = getRandomInt(EASY_ADD_MIN_B, EASY_ADD_MAX_B); // Operand B integer per spec
+        operandA = getRandomFloat1Dec(EASY_MIN, EASY_MAX);
+        operandB = getRandomInt(EASY_MIN, EASY_MAX); // Operand B integer per spec
       } else {
-        operandA = getRandomInt(EASY_ADD_MIN_A, EASY_ADD_MAX_A);
-        operandB = getRandomInt(EASY_ADD_MIN_B, EASY_ADD_MAX_B);
+        operandA = getRandomInt(EASY_MIN, EASY_MAX);
+        operandB = getRandomInt(EASY_MIN, EASY_MAX);
       }
       correctAnswer = operandA + operandB;
     } else if (operation === 'subtraction') {
       if (isDecimal) {
-        operandA = getRandomFloat1Dec(EASY_SUB_MIN_A, EASY_SUB_MAX_A);
-        operandB = getRandomInt(EASY_ADD_MIN_B, Math.floor(operandA)); // result >= 0
+        operandA = getRandomFloat1Dec(EASY_MIN, EASY_MAX);
+        operandB = getRandomInt(EASY_MIN, Math.floor(operandA)); // result >= 0
       } else {
-        operandA = getRandomInt(EASY_SUB_MIN_A, EASY_ADD_MAX_A);
-        operandB = getRandomInt(EASY_ADD_MIN_B, operandA); // result >= 0
+        operandA = getRandomInt(EASY_MIN, EASY_MAX);
+        operandB = getRandomInt(EASY_MIN, operandA); // result >= 0
       }
       correctAnswer = operandA - operandB;
     } else if (operation === 'multiplication') {
-      operandA = EASY_MULT_DIVISORS_TRIES[getRandomInt(0, EASY_MULT_DIVISORS_TRIES.length - 1)]; // 2, 3, 4, 5
-      operandB = getRandomInt(EASY_MULT_MIN_OTHER, EASY_MULT_MAX_OTHER); // 2-12
-      // Randomly swap so it's not always single digit first
+      // Multiplication up to 1-digit x 1-digit
+      operandA = getRandomInt(EASY_MIN, EASY_MAX);
+      operandB = getRandomInt(EASY_MIN, EASY_MAX);
+      if (isDecimal) {
+        // Generate decimal for one operand to stay within easy difficulty
+        operandA = getRandomFloat1Dec(EASY_MIN, EASY_MAX);
+      }
+      correctAnswer = operandA * operandB;
+    } else {
+      // Division: 1-digit divisor and 1-digit quotient
+      const divisor = getRandomInt(2, EASY_MAX); // Avoid dividing by 1
+      const quotient = getRandomInt(2, EASY_MAX);
+      if (isDecimal) {
+        operandB = divisor;
+        operandA = getRandomFloat1Dec(EASY_MIN, EASY_MAX);
+        correctAnswer = Math.round((operandA / operandB) * 100) / 100;
+      } else {
+        operandA = divisor * quotient;
+        operandB = divisor;
+        correctAnswer = quotient;
+      }
+    }
+  }
+
+  // Medium Difficulty: max 2 digits (10 to 99)
+  else if (difficulty === 'medium') {
+    if (operation === 'addition') {
+      if (isDecimal) {
+        operandA = getRandomFloat1Dec(MEDIUM_MIN, MEDIUM_MAX);
+        operandB = getRandomFloat1Dec(MEDIUM_MIN, MEDIUM_MAX);
+      } else {
+        operandA = getRandomInt(MEDIUM_MIN, MEDIUM_MAX);
+        operandB = getRandomInt(MEDIUM_MIN, MEDIUM_MAX);
+      }
+      correctAnswer = operandA + operandB;
+    } else if (operation === 'subtraction') {
+      if (isDecimal) {
+        operandA = getRandomFloat1Dec(MEDIUM_MIN, MEDIUM_MAX);
+        operandB = getRandomFloat1Dec(MEDIUM_MIN, operandA);
+      } else {
+        operandA = getRandomInt(MEDIUM_MIN, MEDIUM_MAX);
+        operandB = getRandomInt(MEDIUM_MIN, operandA);
+      }
+      correctAnswer = operandA - operandB;
+    } else if (operation === 'multiplication') {
+      // 2-digit by 1-digit multiplication
+      operandA = getRandomInt(MEDIUM_MIN, MEDIUM_MAX);
+      operandB = getRandomInt(2, 9);
       if (Math.random() > 0.5) {
         const temp = operandA;
         operandA = operandB;
         operandB = temp;
       }
       if (isDecimal) {
-        // Decimal only in operandA
-        operandA = Math.round(operandA * 1.5 * 10) / 10;
+        operandA = getRandomFloat1Dec(MEDIUM_MIN, MEDIUM_MAX);
+        operandB = getRandomFloat1Dec(2, 9);
       }
       correctAnswer = operandA * operandB;
     } else {
-      // Division
-      const divisor = EASY_DIV_DIVISORS[getRandomInt(0, EASY_DIV_DIVISORS.length - 1)];
-      const quotient = getRandomInt(EASY_DIV_MIN_RESULT, EASY_DIV_MAX_RESULT);
+      // Division: 1-digit divisor and 2-digit quotient
+      const divisor = getRandomInt(2, 9);
+      const quotient = getRandomInt(MEDIUM_MIN, MEDIUM_MAX);
       if (isDecimal) {
-        // Generate decimal results and round to 2 decimals
         operandB = divisor;
-        operandA = getRandomFloat1Dec(10, 49);
+        operandA = getRandomFloat1Dec(MEDIUM_MIN, MEDIUM_MAX);
         correctAnswer = Math.round((operandA / operandB) * 100) / 100;
       } else {
         operandA = divisor * quotient;
@@ -337,87 +344,47 @@ export function generateQuestion(config: SessionConfig, language: 'id' | 'en' = 
     }
   }
 
-  // Medium Difficulty
-  else if (difficulty === 'medium') {
-    if (operation === 'addition') {
-      if (isDecimal) {
-        operandA = getRandomFloat1Dec(MEDIUM_ADD_MIN_A, MEDIUM_ADD_MAX_A);
-        operandB = getRandomFloat1Dec(MEDIUM_ADD_MIN_B, MEDIUM_ADD_MAX_B);
-      } else {
-        operandA = getRandomInt(MEDIUM_ADD_MIN_A, MEDIUM_ADD_MAX_A);
-        operandB = getRandomInt(MEDIUM_ADD_MIN_B, MEDIUM_ADD_MAX_B);
-      }
-      correctAnswer = operandA + operandB;
-    } else if (operation === 'subtraction') {
-      if (isDecimal) {
-        operandA = getRandomFloat1Dec(MEDIUM_SUB_MIN_A, MEDIUM_SUB_MAX_A);
-        operandB = getRandomFloat1Dec(MEDIUM_ADD_MIN_B, operandA);
-      } else {
-        operandA = getRandomInt(MEDIUM_SUB_MIN_A, MEDIUM_SUB_MAX_A);
-        operandB = getRandomInt(MEDIUM_ADD_MIN_B, operandA);
-      }
-      correctAnswer = operandA - operandB;
-    } else if (operation === 'multiplication') {
-      if (isDecimal) {
-        operandA = getRandomFloat1Dec(MEDIUM_MULT_MIN, MEDIUM_MULT_MAX);
-        operandB = getRandomFloat1Dec(MEDIUM_MULT_MIN, MEDIUM_MULT_MAX);
-      } else {
-        operandA = getRandomInt(MEDIUM_MULT_MIN, MEDIUM_MULT_MAX);
-        operandB = getRandomInt(MEDIUM_MULT_MIN, MEDIUM_MULT_MAX);
-      }
-      correctAnswer = operandA * operandB;
-    } else {
-      // Division
-      const divisor = getRandomInt(MEDIUM_DIV_DIVISOR_MIN, MEDIUM_DIV_DIVISOR_MAX);
-      const quotient = getRandomInt(MEDIUM_DIV_RESULT_MIN, MEDIUM_DIV_RESULT_MAX);
-      if (isDecimal) {
-        operandB = divisor;
-        operandA = getRandomFloat1Dec(50, 199);
-        correctAnswer = Math.round((operandA / operandB) * 100) / 100;
-      } else {
-        operandA = divisor * quotient;
-        operandB = divisor;
-        correctAnswer = quotient;
-      }
-    }
-  }
-
-  // Hard Difficulty
+  // Hard (Difficult) Difficulty: max 3 digits (100 to 999)
   else {
     if (operation === 'addition') {
       if (isDecimal) {
-        operandA = getRandomFloat1Dec(HARD_ADD_MIN_A, HARD_ADD_MAX_A);
-        operandB = getRandomFloat1Dec(HARD_ADD_MIN_B, HARD_ADD_MAX_B);
+        operandA = getRandomFloat1Dec(HARD_MIN, HARD_MAX);
+        operandB = getRandomFloat1Dec(HARD_MIN, HARD_MAX);
       } else {
-        operandA = getRandomInt(HARD_ADD_MIN_A, HARD_ADD_MAX_A);
-        operandB = getRandomInt(HARD_ADD_MIN_B, HARD_ADD_MAX_B);
+        operandA = getRandomInt(HARD_MIN, HARD_MAX);
+        operandB = getRandomInt(HARD_MIN, HARD_MAX);
       }
       correctAnswer = operandA + operandB;
     } else if (operation === 'subtraction') {
       if (isDecimal) {
-        operandA = getRandomFloat1Dec(HARD_SUB_MIN_A, HARD_SUB_MAX_A);
-        operandB = getRandomFloat1Dec(HARD_ADD_MIN_B, operandA);
+        operandA = getRandomFloat1Dec(HARD_MIN, HARD_MAX);
+        operandB = getRandomFloat1Dec(HARD_MIN, operandA);
       } else {
-        operandA = getRandomInt(HARD_SUB_MIN_A, HARD_SUB_MAX_A);
-        operandB = getRandomInt(HARD_ADD_MIN_B, operandA);
+        operandA = getRandomInt(HARD_MIN, HARD_MAX);
+        operandB = getRandomInt(HARD_MIN, operandA);
       }
       correctAnswer = operandA - operandB;
     } else if (operation === 'multiplication') {
+      // 3-digit by 1-digit or 2-digit, or 2-digit by 2-digit
+      operandA = getRandomInt(HARD_MIN, HARD_MAX);
+      operandB = getRandomInt(2, 99);
+      if (Math.random() > 0.5) {
+        const temp = operandA;
+        operandA = operandB;
+        operandB = temp;
+      }
       if (isDecimal) {
-        operandA = getRandomFloat1Dec(HARD_MULT_MIN, HARD_MULT_MAX);
-        operandB = getRandomFloat1Dec(HARD_MULT_MIN, HARD_MULT_MAX);
-      } else {
-        operandA = getRandomInt(HARD_MULT_MIN, HARD_MULT_MAX);
-        operandB = getRandomInt(HARD_MULT_MIN, HARD_MULT_MAX);
+        operandA = getRandomFloat1Dec(HARD_MIN, HARD_MAX);
+        operandB = getRandomFloat1Dec(2, 99);
       }
       correctAnswer = operandA * operandB;
     } else {
-      // Division
-      const divisor = getRandomInt(HARD_DIV_DIVISOR_MIN, HARD_DIV_DIVISOR_MAX);
-      const quotient = getRandomInt(HARD_DIV_RESULT_MIN, HARD_DIV_RESULT_MAX);
+      // Division: 2-digit divisor and 2-digit quotient
+      const divisor = getRandomInt(10, 99);
+      const quotient = getRandomInt(10, 99);
       if (isDecimal) {
         operandB = divisor;
-        operandA = getRandomFloat1Dec(200, 999);
+        operandA = getRandomFloat1Dec(HARD_MIN, HARD_MAX);
         correctAnswer = Math.round((operandA / operandB) * 100) / 100;
       } else {
         operandA = divisor * quotient;
@@ -462,12 +429,27 @@ export function generateQuestion(config: SessionConfig, language: 'id' | 'en' = 
   };
 }
 
-// Pre-generates the session questions
+// Pre-generates the session questions ensuring uniqueness of questions where possible
 export function generateSession(config: SessionConfig, language: 'id' | 'en' = 'id'): Question[] {
   const count = config.questionCount || 10;
   const questions: Question[] = [];
+  
   for (let i = 0; i < count; i++) {
-    questions.push(generateQuestion(config, language));
+    let attempts = 0;
+    let newQuestion: Question;
+    let isDuplicate = false;
+    
+    do {
+      newQuestion = generateQuestion(config, language);
+      isDuplicate = questions.some(q => 
+        q.operandA === newQuestion.operandA && 
+        q.operandB === newQuestion.operandB && 
+        q.operation === newQuestion.operation
+      );
+      attempts++;
+    } while (isDuplicate && attempts < 100);
+    
+    questions.push(newQuestion);
   }
   return questions;
 }

@@ -19,6 +19,7 @@ interface ScoreSummaryProps {
     outOf: number
   ) => Promise<{ isNewRecord: boolean; previousBest: number }>;
   feedPet: (expGained: number) => Promise<{ leveledUp: boolean; nextLevel: number }>;
+  addCoins: (amount: number) => Promise<void>;
 }
 
 /**
@@ -30,6 +31,7 @@ export const ScoreSummary: React.FC<ScoreSummaryProps> = ({
   dispatch,
   saveSessionResult,
   feedPet,
+  addCoins,
 }) => {
   const { t } = useTranslation();
   const { score, questions, history, settings, pet } = state;
@@ -58,6 +60,13 @@ export const ScoreSummary: React.FC<ScoreSummaryProps> = ({
         );
         setIsNewRecord(result.isNewRecord);
         setPreviousBest(result.previousBest);
+        
+        // Award coins based on correct answers score
+        if (score > 0) {
+          await addCoins(score);
+          dispatch({ type: 'ADD_COINS', payload: { amount: score } });
+        }
+
         setIsSaved(true);
       } catch (err) {
         const isDev = import.meta.env.DEV;
@@ -67,7 +76,7 @@ export const ScoreSummary: React.FC<ScoreSummaryProps> = ({
       }
     }
     save();
-  }, [state.config, score, total, saveSessionResult, isSaved]);
+  }, [state.config, score, total, saveSessionResult, isSaved, addCoins, dispatch]);
 
   // Set initial speech bubble
   useEffect(() => {
@@ -206,9 +215,17 @@ export const ScoreSummary: React.FC<ScoreSummaryProps> = ({
         )}
 
         {/* Animated Score Title */}
-        <h1 className="text-[28px] font-semibold text-[#1d1d1f] dark:text-white tracking-tight mb-2 select-none">
+        <h1 className="text-[28px] font-semibold text-[#1d1d1f] dark:text-white tracking-tight mb-1 select-none">
           {t('summary.title', { score: animatedScore, total })}
         </h1>
+
+        {/* Coins Earned Indicator */}
+        {score > 0 && (
+          <div className="flex items-center gap-1.5 text-[13px] font-bold text-amber-600 dark:text-amber-400 font-fantasy mb-2.5">
+            <span>+{score} 🪙</span>
+            <span className="font-normal text-[11px] text-ink-muted">(Hadiah Koin Latihan)</span>
+          </div>
+        )}
 
         {/* High Score / New Record Badge */}
         {isSaved && (

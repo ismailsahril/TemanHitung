@@ -36,6 +36,8 @@ interface WarungBoardProps {
   addCoins: (amount: number) => Promise<void>;
   buyUpgrade: (id: string, cost: number) => Promise<void>;
   equipUpgrade: (id: string) => Promise<void>;
+  onBack: () => void;
+  registerBackButton: (handler: (() => void) | null) => void;
 }
 
 interface UpgradeItem {
@@ -291,7 +293,16 @@ function generateRandomCustomer(language: string): CustomerProfile {
  * Gameplay container for the "Kasir Warung" (Warung Cashier) mode.
  * Contains item calculations, change calculations, pet companion rewards, and a daily summary receipt.
  */
-export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedPet, addCoins, buyUpgrade, equipUpgrade }) => {
+export const WarungBoard: React.FC<WarungBoardProps> = ({ 
+  state, 
+  dispatch, 
+  feedPet, 
+  addCoins, 
+  buyUpgrade, 
+  equipUpgrade,
+  onBack,
+  registerBackButton 
+}) => {
   const { t } = useTranslation();
   const { settings, pet } = state;
   const difficulty = state.config?.difficulty || 'easy';
@@ -457,6 +468,27 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
 
   const handleToggleSign = useCallback(() => {}, []);
 
+  // Physical hardware keyboard listener support
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isSubmitting) return;
+
+      if (e.key === 'Backspace') {
+        handleDelete();
+        e.preventDefault();
+      } else if (e.key === 'Enter') {
+        handleAnswerSubmit();
+        e.preventDefault();
+      } else if (e.key >= '0' && e.key <= '9') {
+        handleInput(e.key);
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleInput, handleDelete, isSubmitting, typedAnswer]);
+
   // Submits the typed answer and validates it based on the active stage (Total or Change)
   const handleAnswerSubmit = (): void => {
     if (isSubmitting || !typedAnswer) return;
@@ -574,7 +606,7 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
   };
 
   // Feeds the pet with earned EXP and returns to the Main Menu
-  const handleClaimReward = async (): Promise<void> => {
+  const handleClaimReward = useCallback(async (): Promise<void> => {
     const expGained = successCount * 10;
     if (expGained > 0 && pet.hasAdopted) {
       await feedPet(expGained);
@@ -584,7 +616,22 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
       await addCoins(sessionTipsTotal);
     }
     dispatch({ type: 'BACK_TO_MENU' });
-  };
+  }, [successCount, pet.hasAdopted, feedPet, dispatch, sessionTipsTotal, addCoins]);
+
+  // Handle back navigation based on game progress/stage
+  const handleBackClick = useCallback(() => {
+    if (stage === 'completed') {
+      handleClaimReward();
+    } else {
+      onBack();
+    }
+  }, [stage, handleClaimReward, onBack]);
+
+  // Register Android hardware back button handler
+  useEffect(() => {
+    registerBackButton(handleBackClick);
+    return () => registerBackButton(null);
+  }, [registerBackButton, handleBackClick]);
 
   // Formats currency string with standard Indonesian format (e.g. Rp10.000)
   const formatDisplayValue = (raw: string): string => {
@@ -684,7 +731,7 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
       <header className={`flex-shrink-0 flex items-center justify-between gap-4 border-b p-3 z-10 transition-colors duration-300 ${getHeaderClass()}`}>
         <m.button
           type="button"
-          onClick={() => dispatch({ type: 'BACK_TO_MENU' })}
+          onClick={handleBackClick}
           whileTap={{ scale: 0.95 }}
           className="btn-icon"
           aria-label={t('settings.backButton')}
@@ -720,7 +767,7 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
       </header>
 
       {/* 2. Interactive Counter Table */}
-      <main className="p-3 flex-1 flex flex-col justify-between overflow-y-auto space-y-2.5">
+      <main className="p-3 flex-1 flex flex-col justify-between overflow-hidden space-y-2.5">
         
         {/* Customer & Pet Interaction Area */}
         <div className="grid grid-cols-2 gap-3 bg-white/95 dark:bg-[#1a1a24]/95 border border-neutral-200 dark:border-[#d4af37]/25 rounded-[14px] p-2.5 relative select-none shadow-sm">
@@ -786,11 +833,11 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
         </div>
 
         {/* Stage Area */}
-        <div className="flex-1 flex flex-col justify-center my-0.5 relative">
+        <div className="flex-1 flex flex-col min-h-0 my-0.5 relative w-full overflow-hidden justify-center">
           {stage === 'total' ? (
             /* Items List */
-            <div className="flex flex-col space-y-2 max-w-[340px] mx-auto w-full">
-              <div className="flex flex-col gap-2 w-full">
+            <div className="flex-1 flex flex-col min-h-0 max-w-[340px] mx-auto w-full">
+              <div className="flex-1 overflow-y-auto space-y-2 w-full pr-1.5 scrollbar-thin py-1">
                 {currentOrder.items.map((item) => (
                   <div 
                     key={item.id}
@@ -830,7 +877,7 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
                 <m.div
                   initial={{ scale: 0.95, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="border-2 border-dashed border-red-500/50 dark:border-red-500/60 bg-red-500/5 dark:bg-red-950/20 rounded-[14px] p-2 flex items-center justify-between text-red-600 dark:text-red-400 select-none animate-pulse"
+                  className="mt-2 border-2 border-dashed border-red-500/50 dark:border-red-500/60 bg-red-500/5 dark:bg-red-950/20 rounded-[14px] p-2 flex items-center justify-between text-red-600 dark:text-red-400 select-none shrink-0 animate-pulse"
                 >
                   <span className="text-[11px] font-bold tracking-tight font-fantasy">
                     {t('warung.couponLabel', { amount: currentOrder.couponAmount.toLocaleString('id-ID') })}
@@ -947,15 +994,14 @@ export const WarungBoard: React.FC<WarungBoardProps> = ({ state, dispatch, feedP
         </div>
 
         {/* Submit Action */}
-        <m.button
+        <button
           type="button"
           onClick={handleAnswerSubmit}
           disabled={!typedAnswer || isSubmitting}
-          whileTap={typedAnswer && !isSubmitting ? { scale: 0.95 } : undefined}
-          className="btn-primary"
+          className="btn-primary active:scale-[0.98] transition-transform"
         >
           {t('game.submitButton')}
-        </m.button>
+        </button>
       </main>
 
       {/* Success Feedback Overlay */}

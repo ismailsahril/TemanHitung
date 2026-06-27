@@ -18,6 +18,18 @@
 
 ---
 
+## 📸 Screenshots
+
+<p align="center">
+  <img src="assets/screenshot_menu.png" width="260" alt="Main Menu & Companion Pet" />
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/screenshot_practice.png" width="260" alt="Math Practice Mode & Tips" />
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/screenshot_warung.png" width="260" alt="Warung Cashier Simulation" />
+</p>
+
+---
+
 ## 📖 About the App
 
 **TemanHitung** (translates to "Counting Buddy") is a mobile-friendly mental math training application designed specifically to make learning fun. Sporting a vibrant RPG/fantasy game style, practicing mathematics feels like playing a game rather than doing boring homework.

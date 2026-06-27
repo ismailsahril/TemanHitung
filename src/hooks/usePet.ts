@@ -25,6 +25,7 @@ export function usePet(): {
   addCoins: (amount: number) => Promise<void>;
   buyUpgrade: (id: string, cost: number) => Promise<void>;
   equipUpgrade: (id: string) => Promise<void>;
+  interactWithPet: (cost: number, expGained: number) => Promise<{ leveledUp: boolean; nextLevel: number }>;
   isPetLoaded: boolean;
 } {
   const [petState, setPetState] = useState<PetState>(DEFAULT_PET_STATE);
@@ -214,6 +215,42 @@ export function usePet(): {
     }
   }, []);
 
+  const interactWithPet = useCallback(async (cost: number, expGained: number): Promise<{ leveledUp: boolean; nextLevel: number }> => {
+    let leveledUp = false;
+    let currentLevel = petState.level;
+    let currentExp = petState.exp + expGained;
+
+    while (currentExp >= getExpNeededForNextLevel(currentLevel)) {
+      currentExp -= getExpNeededForNextLevel(currentLevel);
+      currentLevel += 1;
+      leveledUp = true;
+    }
+
+    const newState: PetState = {
+      ...petState,
+      coins: Math.max(0, (petState.coins || 0) - cost),
+      level: currentLevel,
+      exp: currentExp,
+    };
+
+    setPetState(newState);
+    memoryPetState = newState;
+
+    try {
+      await Preferences.set({
+        key: PET_STATE_KEY,
+        value: JSON.stringify(newState),
+      });
+    } catch (err) {
+      const isDev = import.meta.env.DEV;
+      if (isDev) {
+        console.error('Failed to save pet interaction state:', err);
+      }
+    }
+
+    return { leveledUp, nextLevel: currentLevel };
+  }, [petState]);
+
   return {
     petState,
     adoptPet,
@@ -222,6 +259,7 @@ export function usePet(): {
     addCoins,
     buyUpgrade,
     equipUpgrade,
+    interactWithPet,
     isPetLoaded,
   };
 }
